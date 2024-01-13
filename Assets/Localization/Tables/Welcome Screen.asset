@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: Welcome Screen
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 88c41568203545e4e8b1c01edea01a83, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: ecaef50c837d63844b45eb5e107b7b7b, type: 2}
+  - {fileID: 11400000, guid: d19975a97cf385d4dbb63151ebe4b5ab, type: 2}
+  m_Extensions: []
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds: []

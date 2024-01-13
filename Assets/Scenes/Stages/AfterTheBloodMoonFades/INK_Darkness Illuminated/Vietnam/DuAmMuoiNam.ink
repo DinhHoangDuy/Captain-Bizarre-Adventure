@@ -1,0 +1,1 @@
+Chưa hoàn thiện.#clear:yes #background:white #BGM:Lifeless Fireworks #speaker:Dư âm mười năm
