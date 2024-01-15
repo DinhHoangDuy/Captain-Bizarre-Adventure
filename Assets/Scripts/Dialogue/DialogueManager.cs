@@ -61,9 +61,8 @@ public class DialogueManager : MonoBehaviour
     private const string VideoPath = "Videos/";
     private const string VIDEO_TAG = "video";
     private string VideoFilePath = "";
-    private bool IsVideoPlaying = false;
-    //private bool IsVideoPrepared;
-    [SerializeField] private Canvas[] playerControllerCanvas;
+    private bool IsVideoPlaying = false;   
+
     private Coroutine skipButtonCoroutine;
 
 
@@ -466,10 +465,6 @@ public class DialogueManager : MonoBehaviour
         backgroundAnimator.gameObject.SetActive(false);
         showHideObj.SetActive(false);
         skipDialogueButton.gameObject.SetActive(false);
-        foreach (Canvas canvas in playerControllerCanvas)
-        {
-            canvas.enabled = false;
-        }
         skipVideoButton.gameObject.SetActive(true);
         videoPlayer.Play();
         Debug.Log("The video is Playing");
@@ -480,11 +475,7 @@ public class DialogueManager : MonoBehaviour
         videoPlayer.clip = null;
         IsVideoPlaying = false;
         CanContinueToNextLine = true;
-        //Show player controller
-        foreach (Canvas canvas in playerControllerCanvas)
-        {
-            canvas.enabled = true;
-        }
+        
         //Auto move to the next line or exit the dialogue when it ends after the video
         if (currentStory.canContinue)
             {
