@@ -66,28 +66,27 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private void HandleHorizontalMovement()
     {
-        //float moveDirection = Input.GetAxis("Horizontal");
-        //Character.velocity = new Vector2(moveDirection * runSpeed, Character.velocity.y);
-
-        Vector2 moveDirection = InputManager.GetInstance().GetMoveDirection();
-        Character.velocity = new Vector2(moveDirection.x * runSpeed, Character.velocity.y);
-
         Vector3 scale = transform.localScale;
 
-        //Flip Character to face left or right
-        //if ((moveDirection < 0 && isFacingRight) || (moveDirection > 0 && !isFacingRight))
-        if ((moveDirection.x < 0 && isFacingRight) || (moveDirection.x > 0 && !isFacingRight))
+        
+        //Vector2 moveDirection = InputManager.GetInstance().GetMoveDirection();
+        //Character.velocity = new Vector2(moveDirection.x * runSpeed, Character.velocity.y);
+        //if ((moveDirection.x < 0 && isFacingRight) || (moveDirection.x > 0 && !isFacingRight))
+        float moveDirection = Input.GetAxis("Horizontal");
+        Character.velocity = new Vector2(moveDirection * runSpeed, Character.velocity.y);
+        if ((moveDirection < 0 && isFacingRight) || (moveDirection > 0 && !isFacingRight))
         {
             isFacingRight = !isFacingRight;
             scale.x *= -1;
             transform.localScale = scale;
+            //Flip Character to face left or right
         }
     }
 
     private void HandleJumping()
     {
-        //bool jumpPressed = Input.GetButtonDown("Jump");
-        bool jumpPressed = InputManager.GetInstance().GetJumpPressed();
+        bool jumpPressed = Input.GetButtonDown("Jump");
+        //bool jumpPressed = InputManager.GetInstance().GetJumpPressed();
         if ((isGrounded || extraJump > 0) && jumpPressed)
         {
             Character.velocity = new Vector2(Character.velocity.x, jumpSpeed);

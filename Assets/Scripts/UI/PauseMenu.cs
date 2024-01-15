@@ -32,8 +32,8 @@ public class PauseMenu : MonoBehaviour
         }
 
         //=====Pause Menu Trigger=====
-        bool pausePressed = InputManager.GetInstance().GetPausePressed();
-        //bool pausePressed = Input.GetButtonDown("Cancel");
+        //bool pausePressed = InputManager.GetInstance().GetPausePressed();
+        bool pausePressed = Input.GetButtonDown("Cancel");
         if (pausePressed)
         {
             if (isPaused)
