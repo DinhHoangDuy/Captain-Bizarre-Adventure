@@ -992,8 +992,6 @@ MonoBehaviour:
   videoPlayer: {fileID: 4410630860692144466}
   skipVideoButton: {fileID: 8938713954435146590}
   autoHideDelay: 3
-  playerControllerCanvas:
-  - {fileID: 3526972783314930451, guid: 51b89211f509d9e499d2f56be15fbe93, type: 3}
 --- !u!1 &4177685108148715191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2581,13 +2579,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

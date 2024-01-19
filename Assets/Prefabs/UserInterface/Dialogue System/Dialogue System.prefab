@@ -61,6 +61,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Canvas_Dialogue
       objectReference: {fileID: 0}
+    - target: {fileID: 618681174332055577, guid: d681e6641fc7a0f4f90697c6e2cc6b31,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1877745532387600724, guid: d681e6641fc7a0f4f90697c6e2cc6b31,
         type: 3}
       propertyPath: m_Pivot.x
