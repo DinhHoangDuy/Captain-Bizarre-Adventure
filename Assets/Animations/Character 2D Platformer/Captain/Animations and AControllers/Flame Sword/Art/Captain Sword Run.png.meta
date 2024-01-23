@@ -113,12 +113,12 @@ TextureImporter:
       name: Captain Sword Run_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 48
-        height: 48
+        x: 10
+        y: 8
+        width: 24
+        height: 30
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -131,36 +131,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run_1
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9f1ce26c37cb8c340a866402cb02e94c
-      internalID: -432239270
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Captain Sword Run_2
       rect:
         serializedVersion: 2
-        x: 96
-        y: 0
-        width: 48
-        height: 48
+        x: 57
+        y: 8
+        width: 24
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,36 +152,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run_3
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4a0413140a4678d4990aaf5a14b872d2
-      internalID: -444674280
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Captain Sword Run_4
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
-        width: 48
-        height: 48
+        x: 107
+        y: 8
+        width: 25
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,36 +173,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run_5
-      rect:
-        serializedVersion: 2
-        x: 240
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 60d44ce7afc87c74bb44310503cb6622
-      internalID: 194406307
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Captain Sword Run_6
       rect:
         serializedVersion: 2
-        x: 288
-        y: 0
-        width: 48
-        height: 48
+        x: 156
+        y: 8
+        width: 24
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,22 +194,85 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run_7
+      name: Captain Sword Run_8
       rect:
         serializedVersion: 2
-        x: 336
-        y: 0
-        width: 48
-        height: 48
+        x: 204
+        y: 8
+        width: 25
+        height: 31
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 71e9e4b3f9668ca42887a3fdecaef960
-      internalID: 534217504
+      spriteID: 23acdcb4fcdfffc4ea07b18985f54677
+      internalID: -1278390469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Captain Sword Run_10
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 8
+        width: 25
+        height: 37
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bb8194363323904ca41b3ac55421d4c
+      internalID: 1296934305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Captain Sword Run_12
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 8
+        width: 27
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab97ba700d03ba4438253bf53ee0d0dc
+      internalID: 2053622278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Captain Sword Run_14
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 8
+        width: 28
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ad743e16ec3cb9449caef57646377d4
+      internalID: 1226960448
       vertices: []
       indices: 
       edges: []
@@ -290,12 +290,19 @@ TextureImporter:
     nameFileIdTable:
       Captain Sword Run_0: -1931765604
       Captain Sword Run_1: -432239270
+      Captain Sword Run_10: 1296934305
+      Captain Sword Run_11: 1708455053
+      Captain Sword Run_12: 2053622278
+      Captain Sword Run_13: -463214598
+      Captain Sword Run_14: 1226960448
       Captain Sword Run_2: -243701286
       Captain Sword Run_3: -444674280
       Captain Sword Run_4: -1376035198
       Captain Sword Run_5: 194406307
       Captain Sword Run_6: -1782769273
       Captain Sword Run_7: 534217504
+      Captain Sword Run_8: -1278390469
+      Captain Sword Run_9: -1824931759
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

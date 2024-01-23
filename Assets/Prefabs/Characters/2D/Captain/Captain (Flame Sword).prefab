@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &453969931653311321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4581188678316556191}
+  m_Layer: 0
+  m_Name: Attack Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4581188678316556191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453969931653311321}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.374, y: 0.045, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7069759243441496267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &769648960938377852
 GameObject:
   m_ObjectHideFlags: 0
@@ -26,6 +57,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.8612, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7069759243441496267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6693898376037216103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 316680785405734290}
+  m_Layer: 0
+  m_Name: WallCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &316680785405734290
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6693898376037216103}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.602, y: 0.045, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -67,6 +129,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3267595905367962633}
+  - {fileID: 316680785405734290}
+  - {fileID: 4581188678316556191}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &157167080231217789
@@ -110,7 +174,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1635636074, guid: 4d753360fbf3ab24fabb4d0e21b5a53e, type: 3}
+  m_Sprite: {fileID: 1422825943, guid: 4d753360fbf3ab24fabb4d0e21b5a53e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -153,18 +217,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.11866677, y: 0.0036070049}
+  m_Offset: {x: 0, y: 0.014812171}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.6666667, y: 2.6666667}
+    oldSize: {x: 1.3333334, y: 1.7222222}
     newSize: {x: 1.3333334, y: 1.7222222}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.2373333, y: 1.7896585}
+  m_Size: {x: 1.2373333, y: 1.7672483}
   m_EdgeRadius: 0
 --- !u!50 &3284716594175782235
 Rigidbody2D:
@@ -203,7 +267,7 @@ Animator:
   m_GameObject: {fileID: 6855818143754167541}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d8a0cfb71ebb1cf4a88e3a49b40921a3, type: 2}
+  m_Controller: {fileID: 9100000, guid: 170538ae47975d94095028f846ff8d5e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -229,9 +293,13 @@ MonoBehaviour:
   movementSpeed: 6
   movementSlowEffect: 0.3
   groundCheck: {fileID: 3267595905367962633}
+  wallCheck: {fileID: 316680785405734290}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 512
   jumpForce: 13
   characterGravityScale: 4
   extraJumpValue: 1
@@ -247,3 +315,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f0e0138ae8f8be4e8d3cb97990a253d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPoint: {fileID: 4581188678316556191}
+  attackRange: 0.99
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 448
+  health: 4
+  StartSP: 30
+  MaxSP: 60
+  BaseATKDamage: 30
+  AttackRate: 2
+  SPGain: 1.2
+  BurstDMGBuff: 45
+  BurstModeDuration: 10
+  RequiredSP: 40
+  UltimateSkillCooldown: 17

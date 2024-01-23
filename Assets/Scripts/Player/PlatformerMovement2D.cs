@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -12,29 +13,28 @@ public class PlatformerMovement2D : MonoBehaviour
     /*Player components (Some of them will be taken from the character, others will be used for other stuff
         such as directions, etc)*/
     private Rigidbody2D rb2d;
-    private SpriteRenderer spriteRenderer;
-    private float movement;
+    private float horizontalInput;
     //Player status (movement blocked, movement slowed, health...)
     public static bool blocked = false;
     private bool slowed = false;
     private bool trapped = false;
 
     [Header("Character Parameters")]
-    [Tooltip("Speed of the Character")] [SerializeField] private float movementSpeed = 6f;
-    [Tooltip("How much the character is slowed (from 0.1 to 0.9)")] [SerializeField] private float movementSlowEffect = 0.3f;
+    [Tooltip("Speed of the Character")][SerializeField] private float movementSpeed = 6f;
+    [Tooltip("How much the character is slowed (from 0.1 to 0.9)")][SerializeField] private float movementSlowEffect = 0.3f;
     private float normalMovementSpeed; //The normal speed, not slowed by any bad status of the character.
-
+    
     [Header("Jumping")]
     [SerializeField] private Transform groundCheck;
     private readonly float groundCheckRadius = 0.2f;
-    [SerializeField] private LayerMask groundLayer;    
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float jumpForce = 13.0f;
     private float normaljumpForce;
     [Tooltip("How heavy is the character?")]
     [SerializeField] private float characterGravityScale = 4.0f;
     [Tooltip("Allow the character to jump multiple times")]
     [SerializeField] private int extraJumpValue = 1;
-    private bool isGrounded = false;
+    public static bool isGrounded = false;
     private int extraJump = 0;
 
     //Animation
@@ -42,8 +42,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        CharacterAnimator = GetComponent<Animator>();        
+        CharacterAnimator = GetComponent<Animator>();
     }
     private void Start()
     {
@@ -59,35 +58,33 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private void Update()
     {
-        if(blocked) return;
+        if (blocked) return;
 
         HandleMoveMent();
         UpdateIsGrounded();
         HandleJumping();
+        AutoUpdateAnimationState();
     }
     private void HandleMoveMent()
     {
         //Check player status (slowed, trapped, etc...) 
         BadStatusCheck();
 
-        movement = Input.GetAxisRaw("Horizontal");
-        CharacterAnimator.SetFloat("Speed", Mathf.Abs(movement));
-        rb2d.velocity = new Vector2(movement * movementSpeed, rb2d.velocity.y);
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        rb2d.velocity = new Vector2(horizontalInput * movementSpeed, rb2d.velocity.y);
         //Flip Character when moving left or right
-        if (movement == -1)
+        if ((horizontalInput == -1 && transform.localScale.x == 1) || (horizontalInput == 1 && transform.localScale.x == -1))
         {
-            spriteRenderer.flipX = true;
-        }
-        else if (movement == 1)
-        {
-            spriteRenderer.flipX = false;
+            Vector2 newScale = transform.localScale;
+            newScale.x *= -1;
+            transform.localScale = newScale;
         }
     }
     private void BadStatusCheck()
     {
         if (slowed) //reduce left and right speed
         {
-            movementSpeed = movementSpeed * (1 - movementSlowEffect); 
+            movementSpeed = movementSpeed * (1 - movementSlowEffect);
         }
         else if (trapped)
         {
@@ -100,60 +97,52 @@ public class PlatformerMovement2D : MonoBehaviour
             jumpForce = normaljumpForce;
         }
     }
-    private void UpdateIsGrounded()
+    private bool UpdateIsGrounded()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         if (isGrounded)
         {
             extraJump = extraJumpValue;
-            LandAnimation();
+            CharacterAnimator.SetTrigger("Landed");
+            CharacterAnimator.SetBool("Falling", false);
         }
         else
         {
-            if(rb2d.velocity.y < 0)
+            if (rb2d.velocity.y < 0)
             {
-                FallingAnimation();
+                //FallingAnimation();
+                CharacterAnimator.SetBool("Falling", true);
+                CharacterAnimator.SetBool("Jumping", false);
             }
         }
+        return isGrounded;
     }
     private void HandleJumping()
     {
-        bool jumpPressed = Input.GetButtonDown("Jump");
+        bool jumpPressed = Input.GetButtonDown("Jump");        
         if (jumpPressed)
         {
-            if(isGrounded)
+            if (isGrounded)
             {
                 Jump();
             }
-            else if(extraJump > 0)
+            else if (extraJump > 0)
             {
                 Jump();
                 extraJump--;
             }
-                         
         }
     }
     private void Jump()
     {
         rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
-        JumpAnimation();
+        CharacterAnimator.SetBool("Jumping", true);
     }
 
     //Animate character functions
-    private void JumpAnimation()
+    private void AutoUpdateAnimationState()
     {
-        CharacterAnimator.SetBool("Jumping", true);
-        CharacterAnimator.SetBool("Grounded", false);        
-    }
-    private void FallingAnimation()
-    {
-        CharacterAnimator.SetBool("Falling", true);
-        CharacterAnimator.SetBool("Jumping", false);
-    }
-    private void LandAnimation()
-    {
-        CharacterAnimator.SetBool("Jumping", false);
-        CharacterAnimator.SetBool("Falling", false);
-        CharacterAnimator.SetBool("Grounded", true);
+        CharacterAnimator.SetBool("Running", horizontalInput != 0);
+        CharacterAnimator.SetBool("Grounded", UpdateIsGrounded());
     }
 }

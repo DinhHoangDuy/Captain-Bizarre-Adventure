@@ -113,12 +113,12 @@ TextureImporter:
       name: Captain Flame Sword ATK_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
+        x: 10
+        y: 16
+        width: 33
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -131,36 +131,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword ATK_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e693c9774f8f0ca41923258374b4f080
-      internalID: -1790525784
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Captain Flame Sword ATK_2
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
-        width: 64
-        height: 64
+        x: 74
+        y: 16
+        width: 35
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,36 +152,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword ATK_3
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d292b33b4f05dfe4f8b04022547c7629
-      internalID: 1877792347
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Captain Flame Sword ATK_4
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
-        width: 64
-        height: 64
+        x: 139
+        y: 16
+        width: 36
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -218,12 +176,12 @@ TextureImporter:
       name: Captain Flame Sword ATK_5
       rect:
         serializedVersion: 2
-        x: 320
-        y: 0
-        width: 64
-        height: 64
+        x: 215
+        y: 16
+        width: 38
+        height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,6 +189,48 @@ TextureImporter:
       bones: []
       spriteID: 5de8d577338ca6242a360edcfe8f270b
       internalID: 1850330263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Captain Flame Sword ATK_7
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 16
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ff723c9b4c7f2b4d81a7595b02bf2af
+      internalID: 1354198173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Captain Flame Sword ATK_9
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 16
+        width: 21
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b1d5c36179711d4aa4acd2732d02b7f
+      internalID: -2000750960
       vertices: []
       indices: 
       edges: []
@@ -252,6 +252,10 @@ TextureImporter:
       Captain Flame Sword ATK_3: 1877792347
       Captain Flame Sword ATK_4: 2140657001
       Captain Flame Sword ATK_5: 1850330263
+      Captain Flame Sword ATK_6: -1190531161
+      Captain Flame Sword ATK_7: 1354198173
+      Captain Flame Sword ATK_8: 1629237561
+      Captain Flame Sword ATK_9: -2000750960
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
