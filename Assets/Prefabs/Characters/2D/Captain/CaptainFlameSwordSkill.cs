@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-
-[RequireComponent(typeof(PlatformerMovement2D))]
 public class CaptainFlameSwordSkill : MonoBehaviour
 {
     [Header("Captain's Attack Behaviors")]
@@ -12,11 +10,11 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     [SerializeField] private LayerMask enemyLayerMask;
 
     [Header("Captain's Stats")]
+    [Tooltip("Captain Flame Sword Damage Type")][SerializeField] private DamageType damageType = DamageType.Fire;
     [Tooltip("Captain's Health")][SerializeField] private int health = 4;
     [Tooltip("Captain's Starter SP")][SerializeField] private float StartSP = 50f;
     [Tooltip("Captain's Maximum SP")][SerializeField] private float MaxSP = 50f;
     [Tooltip("Captain Flame Sword basic ATK damage")][SerializeField] private float BaseATKDamage = 30f;
-    [Tooltip("Captain Flame Sword Damage Type")][SerializeField] private string Type = "Fire";
     [Tooltip("Captain Flame Sword attack rate")][SerializeField] private float AttackRate = 2f;
     [Tooltip("Captain Flame Sword SP gain per attack")][SerializeField] private float SPGain = 1.2f;    
     private float SPRegenBoost = 0f;
@@ -26,7 +24,8 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     [Tooltip("Captain Flame Sword Burst Damage Boost (use 1% to 100% format")][SerializeField] private float BurstDMGBuff = 30f;
     [Tooltip("Captain Flame Sword Burst Mode Duration")][SerializeField] private int BurstModeDuration = 15;
     [Tooltip("Captain's Required SP for the Ultimate")][SerializeField] private float RequiredSP = 40f;
-    [Tooltip("Captain Flame Sword Ult Cooldown")][SerializeField] private int UltimateSkillCooldown = 23;        
+    [Tooltip("Captain Flame Sword Ult Cooldown")][SerializeField] private int UltimateSkillCooldown = 23;
+
 
     //Debug Only
     private float currentSP;
@@ -61,7 +60,7 @@ public class CaptainFlameSwordSkill : MonoBehaviour
             }
         }
         
-        if(Input.GetButton("Ultimate"))
+        if(Input.GetButtonDown("Ultimate"))
         {
             if (!BurstMode)
             {
@@ -70,7 +69,7 @@ public class CaptainFlameSwordSkill : MonoBehaviour
                     currentSP -= RequiredSP;
                     StartCoroutine(UltimateSkill());
                 }
-                else if (currentSP <= RequiredSP)
+                else if (currentSP < RequiredSP)
                 {
                     Debug.Log("Not enough SP!");
                 }
@@ -155,16 +154,9 @@ public class CaptainFlameSwordSkill : MonoBehaviour
             }
             //Damage enemy
             foreach (Collider2D enemy in hitEnemy)
-            {
-                if (enemy.CompareTag("Dummy"))
-                {
-                    Debug.Log("We hit " + enemy.name + ", damage is " + currentATKDamage);
-                }
-                else
-                {
-                    Debug.Log("We hit " + enemy.name + ", damage is " + currentATKDamage);
-                    enemy.GetComponent<Enemy>().TakeMeleeDamage(currentATKDamage, Type);
-                }
+            {   
+                enemy.GetComponent<Enemy>().TakeMeleeDamage(currentATKDamage, damageType);
+                //enemy.GetComponent<Enemy>().TakeMeleeDamage(currentATKDamage);
             }
         }      
         

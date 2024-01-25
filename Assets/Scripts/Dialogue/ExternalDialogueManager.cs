@@ -8,8 +8,10 @@ public class ExternalDialogueManager : MonoBehaviour
     
     [Header("Dialogue Canvas")]
     [SerializeField] private GameObject dialogueCanvas;
+    /*
     [Header("Player Controller Canvas to hide (From Scene only)")]
     [SerializeField] private Canvas playerControllerCanvas;
+    */
     private void Awake()
     {
         if (instance != null)
@@ -34,14 +36,14 @@ public class ExternalDialogueManager : MonoBehaviour
         dialogueCanvas.SetActive(true);
         PlatformerMovement2D.blocked = true;
         //Hide player controller
-        playerControllerCanvas.enabled = false;
+        //playerControllerCanvas.enabled = false;
         DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
     }
     public void ExitDialogueMode()
     {
         PlatformerMovement2D.blocked = false;
         //Show player controller
-        playerControllerCanvas.enabled = true;
+        //playerControllerCanvas.enabled = true;
         dialogueCanvas.SetActive(false);
         Debug.Log("Dialogue Exited");
     }

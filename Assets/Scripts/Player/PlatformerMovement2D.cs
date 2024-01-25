@@ -13,11 +13,14 @@ public class PlatformerMovement2D : MonoBehaviour
     /*Player components (Some of them will be taken from the character, others will be used for other stuff
         such as directions, etc)*/
     private Rigidbody2D rb2d;
+    private BoxCollider2D bc2d;
     private float horizontalInput;
+    private bool isLookingRight = true;
     //Player status (movement blocked, movement slowed, health...)
     public static bool blocked = false;
     private bool slowed = false;
     private bool trapped = false;
+    private bool movementAllowed = true;
 
     [Header("Character Parameters")]
     [Tooltip("Speed of the Character")][SerializeField] private float movementSpeed = 6f;
@@ -32,8 +35,11 @@ public class PlatformerMovement2D : MonoBehaviour
     private float normaljumpForce;
     [Tooltip("How heavy is the character?")]
     [SerializeField] private float characterGravityScale = 4.0f;
+
     [Tooltip("Allow the character to jump multiple times")]
     [SerializeField] private int extraJumpValue = 1;
+    [Tooltip("How strong is the second jump? (Apply to the second jump only)")]
+    [SerializeField] private float doubleJumpForce = 1.5f;
     public static bool isGrounded = false;
     private int extraJump = 0;
 
@@ -42,6 +48,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        bc2d = GetComponent<BoxCollider2D>();
         CharacterAnimator = GetComponent<Animator>();
     }
     private void Start()
@@ -60,24 +67,34 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         if (blocked) return;
 
-        HandleMoveMent();
-        UpdateIsGrounded();
+        HandleMoveMent();        
         HandleJumping();
+        HandleDashing();
         AutoUpdateAnimationState();
+    }
+    private void FixedUpdate()
+    {
+        UpdateIsGrounded();
+        UpdateIsOnWall();
     }
     private void HandleMoveMent()
     {
+        if(!movementAllowed) return;
         //Check player status (slowed, trapped, etc...) 
         BadStatusCheck();
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
         rb2d.velocity = new Vector2(horizontalInput * movementSpeed, rb2d.velocity.y);
         //Flip Character when moving left or right
-        if ((horizontalInput == -1 && transform.localScale.x == 1) || (horizontalInput == 1 && transform.localScale.x == -1))
+        if ((horizontalInput == -1 && isLookingRight) || (horizontalInput == 1 && !isLookingRight))
         {
+            /*
             Vector2 newScale = transform.localScale;
             newScale.x *= -1;
             transform.localScale = newScale;
+            */
+            transform.Rotate(0f, 180f, 0f);
+            isLookingRight = !isLookingRight;
         }
     }
     private void BadStatusCheck()
@@ -97,14 +114,21 @@ public class PlatformerMovement2D : MonoBehaviour
             jumpForce = normaljumpForce;
         }
     }
+    private bool IsGrounded()
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(bc2d.bounds.center, bc2d.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        return raycastHit.collider != null;
+    }
     private bool UpdateIsGrounded()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        //isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        isGrounded = IsGrounded();
         if (isGrounded)
         {
             extraJump = extraJumpValue;
             CharacterAnimator.SetTrigger("Landed");
             CharacterAnimator.SetBool("Falling", false);
+            CharacterAnimator.SetBool("Jumping Up", false);
         }
         else
         {
@@ -112,10 +136,19 @@ public class PlatformerMovement2D : MonoBehaviour
             {
                 //FallingAnimation();
                 CharacterAnimator.SetBool("Falling", true);
-                CharacterAnimator.SetBool("Jumping", false);
+                //CharacterAnimator.SetBool("Jumping", false);
+                CharacterAnimator.SetBool("Jumping Up", false);
+            }
+            else if(rb2d.velocity.y > 0)
+            {
+                CharacterAnimator.SetBool("Jumping Up", true);
             }
         }
         return isGrounded;
+    }
+    private void UpdateIsOnWall()
+    {
+
     }
     private void HandleJumping()
     {
@@ -124,19 +157,18 @@ public class PlatformerMovement2D : MonoBehaviour
         {
             if (isGrounded)
             {
-                Jump();
+                Jump(jumpForce);
             }
             else if (extraJump > 0)
-            {
-                Jump();
+            {                
+                Jump(jumpForce * doubleJumpForce);
                 extraJump--;
             }
         }
     }
-    private void Jump()
+    private void Jump( float jumpForce)
     {
         rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
-        CharacterAnimator.SetBool("Jumping", true);
     }
 
     //Animate character functions
@@ -144,5 +176,12 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         CharacterAnimator.SetBool("Running", horizontalInput != 0);
         CharacterAnimator.SetBool("Grounded", UpdateIsGrounded());
+    }
+    private void HandleDashing()
+    {
+        if(Input.GetButtonDown("Dash"))
+        {
+            Debug.Log("Player Dashed!");
+        }
     }
 }
