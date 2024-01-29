@@ -11,14 +11,15 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     private PlatformerInputAction platformerInputaction;
     private InputAction fireInput;
     private InputAction ultInput;
-
-    [Header("Captain's Attack Behaviors")]
+    //Grab status from PlatformerMovement2D script
+    private PlatformerMovement2D platformerMovement2D;
+    [Header("Character's Attack Behaviors")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float attackRange = 1f;
     [SerializeField] private LayerMask enemyLayerMask;
 
     [Header("Captain's Stats")]
-    [Tooltip("Captain Flame Sword Damage Type")][SerializeField] private DamageType damageType = DamageType.Fire;
+    [Tooltip("Damage Type")][SerializeField] private DamageType damageType = DamageType.Fire;
     [Tooltip("Captain's Health")][SerializeField] private int health = 4;
     [Tooltip("Captain's Starter SP")][SerializeField] private float StartSP = 50f;
     [Tooltip("Captain's Maximum SP")][SerializeField] private float MaxSP = 50f;
@@ -77,7 +78,7 @@ public class CaptainFlameSwordSkill : MonoBehaviour
         if (PauseMenu.isPaused) return;
         if (Time.time >= nextAttackTime)
         {
-            if (PlatformerMovement2D.isGrounded)
+            if (platformerMovement2D.UpdateIsGrounded())
             {
                 CharacterAnimator.SetTrigger("Basic Attack");
                 nextAttackTime = Time.time + 1f / AttackRate;

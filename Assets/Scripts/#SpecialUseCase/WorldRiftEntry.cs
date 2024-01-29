@@ -8,8 +8,10 @@ public class WorldRiftEntry : MonoBehaviour
     private Animator textAnimator;
     public float delaySeconds = 4f;
     [SerializeField] private BoxCollider2D firstTrigger;
+
     //[SerializeField] private GameObject DialogueManager;
     // Start is called before the first frame update
+    [System.Obsolete]
     void Start()
     {        
         PlatformerMovement2D.blocked = true;
@@ -30,6 +32,5 @@ public class WorldRiftEntry : MonoBehaviour
         yield return new WaitForSeconds(delaySeconds);
         textAnimator.SetBool("textHidden", true);
         firstTrigger.enabled = true;
-        //DialogueManager.SetActive(true);
     }
 }
