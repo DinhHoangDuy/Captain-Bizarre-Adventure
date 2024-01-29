@@ -113,10 +113,10 @@ TextureImporter:
       name: Captain Flame Sword Idle_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 8
-        width: 24
-        height: 31
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,10 +134,10 @@ TextureImporter:
       name: Captain Flame Sword Idle_2
       rect:
         serializedVersion: 2
-        x: 60
-        y: 8
-        width: 24
-        height: 31
+        x: 96
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,10 +155,10 @@ TextureImporter:
       name: Captain Flame Sword Idle_4
       rect:
         serializedVersion: 2
-        x: 108
-        y: 8
-        width: 24
-        height: 31
+        x: 192
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,10 +176,10 @@ TextureImporter:
       name: Captain Flame Sword Idle_6
       rect:
         serializedVersion: 2
-        x: 156
-        y: 8
-        width: 24
-        height: 31
+        x: 288
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,10 +197,10 @@ TextureImporter:
       name: Captain Flame Sword Idle_8
       rect:
         serializedVersion: 2
-        x: 204
-        y: 8
-        width: 24
-        height: 31
+        x: 384
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,13 +215,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword Idle_10
+      name: Captain Flame Sword Idle_1
       rect:
         serializedVersion: 2
-        x: 252
-        y: 8
-        width: 24
-        height: 31
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -229,20 +229,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 001f0365d70a470488d7d78b932cf1d3
-      internalID: -757081436
+      spriteID: 19e51fea79b70df45b75adbd1bfdfdfa
+      internalID: -97758406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword Idle_12
+      name: Captain Flame Sword Idle_3
       rect:
         serializedVersion: 2
-        x: 300
-        y: 8
-        width: 24
-        height: 31
+        x: 144
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -250,20 +250,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2d22766b9efcc04293b028402a120b8
-      internalID: 173901726
+      spriteID: d1edd89b7a9e2e9469f65342c671bfec
+      internalID: 2053195090
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword Idle_14
+      name: Captain Flame Sword Idle_5
       rect:
         serializedVersion: 2
-        x: 348
-        y: 8
-        width: 24
-        height: 31
+        x: 240
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -271,20 +271,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a9dfae31375b7e429b710981a3a9c66
-      internalID: -765366824
+      spriteID: a30103ebbc0e5684aa3688a6cf1a2e7f
+      internalID: 1062684648
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword Idle_16
+      name: Captain Flame Sword Idle_7
       rect:
         serializedVersion: 2
-        x: 396
-        y: 8
-        width: 24
-        height: 31
+        x: 336
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -292,20 +292,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c3ad1647c0eb99846a63e762714b7477
-      internalID: -1873279879
+      spriteID: 83b57b42766688f41bf0428c83aecdc7
+      internalID: -1414254047
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword Idle_18
+      name: Captain Flame Sword Idle_9
       rect:
         serializedVersion: 2
-        x: 444
-        y: 8
-        width: 24
-        height: 31
+        x: 432
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -313,8 +313,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5634a071fc527474f9e6335fba91d607
-      internalID: -1046343074
+      spriteID: f27bccc153ba1c14a82c3632778f4f2d
+      internalID: -315627816
       vertices: []
       indices: 
       edges: []
@@ -332,15 +332,6 @@ TextureImporter:
     nameFileIdTable:
       Captain Flame Sword Idle_0: 1422825943
       Captain Flame Sword Idle_1: -97758406
-      Captain Flame Sword Idle_10: -757081436
-      Captain Flame Sword Idle_11: 1403032451
-      Captain Flame Sword Idle_12: 173901726
-      Captain Flame Sword Idle_13: 1330392045
-      Captain Flame Sword Idle_14: -765366824
-      Captain Flame Sword Idle_15: -40671250
-      Captain Flame Sword Idle_16: -1873279879
-      Captain Flame Sword Idle_17: 1048191338
-      Captain Flame Sword Idle_18: -1046343074
       Captain Flame Sword Idle_2: 1142984871
       Captain Flame Sword Idle_3: 2053195090
       Captain Flame Sword Idle_4: 1641406941

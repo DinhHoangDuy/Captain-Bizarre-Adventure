@@ -1,12 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(SpriteRenderer))]
 public class CaptainFlameSwordSkill : MonoBehaviour
 {
+    //Adapt the new Input system
+    private PlatformerInputAction platformerInputaction;
+    private InputAction fireInput;
+    private InputAction ultInput;
+
     [Header("Captain's Attack Behaviors")]
     [SerializeField] private Transform attackPoint;
-    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float attackRange = 1f;
     [SerializeField] private LayerMask enemyLayerMask;
 
     [Header("Captain's Stats")]
@@ -16,7 +24,7 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     [Tooltip("Captain's Maximum SP")][SerializeField] private float MaxSP = 50f;
     [Tooltip("Captain Flame Sword basic ATK damage")][SerializeField] private float BaseATKDamage = 30f;
     [Tooltip("Captain Flame Sword attack rate")][SerializeField] private float AttackRate = 2f;
-    [Tooltip("Captain Flame Sword SP gain per attack")][SerializeField] private float SPGain = 1.2f;    
+    [Tooltip("Captain Flame Sword SP gain per attack")][SerializeField] private float SPGain = 1.2f;
     private float SPRegenBoost = 0f;
     private float currentATKDamage;
     float nextAttackTime = 0f;
@@ -34,74 +42,72 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     private int UltCurrentCooldown = 0;
 
     private Animator CharacterAnimator;
-    private void Start()
+    private void OnEnable()
     {
+        //Enable Moving
+        fireInput = platformerInputaction.Player.Fire;
+        fireInput.performed += BasicAttack;
+        fireInput.Enable();
+
+        ultInput = platformerInputaction.Player.Ultimate;
+        ultInput.performed += Ultimate;
+        ultInput.Enable();
+    }
+
+    private void OnDisable()
+    {
+        fireInput.Disable();
+        ultInput.Disable();
+    }
+
+    private void Awake()
+    {
+        platformerInputaction = new PlatformerInputAction();
         CharacterAnimator = GetComponent<Animator>();
+    }
+    void Start()
+    {        
         currentATKDamage = BaseATKDamage;
         currentSP = StartSP;
     }
-    private void Update()
-    {
-        //UpdateAttackPoint();
-        UpdateAttackButton();
-    }
 
-    private void UpdateAttackButton()
+    //If the fire and ultimate button is pressed (performed)
+    private void BasicAttack(InputAction.CallbackContext context)
     {
-        if(Time.time >= nextAttackTime)
+        if (PauseMenu.isPaused) return;
+        if (Time.time >= nextAttackTime)
         {
-            if (Input.GetButtonDown("BasicATK"))
+            if (PlatformerMovement2D.isGrounded)
             {
-                if (PlatformerMovement2D.isGrounded)
-                {
-                    BasicAttack();
-                    nextAttackTime = Time.time + 1f/AttackRate;
-                }
+                CharacterAnimator.SetTrigger("Basic Attack");
+                nextAttackTime = Time.time + 1f / AttackRate;
             }
         }
-        
-        if(Input.GetButtonDown("Ultimate"))
-        {
-            if (!BurstMode)
-            {
-                if((currentSP >= RequiredSP) && UltCurrentCooldown == 0)
-                {
-                    currentSP -= RequiredSP;
-                    StartCoroutine(UltimateSkill());
-                }
-                else if (currentSP < RequiredSP)
-                {
-                    Debug.Log("Not enough SP!");
-                }
-                else if(UltCurrentCooldown > 0)
-                {
-                    Debug.Log("The Ult is not ready!");
-                }
-            }
-            else Debug.Log("Burst Mode is Active! You can't use Ultimate during Burst Mode");
-        }
     }
-
-    //This section controls the skill of the Character
-    /*
-        Captain - "The Inherited Flame" skillset:
-        1/ Basic Melee attack - deal Melee DMG
-        2/ Enchance Captain's melee attacks with ult, enter Blade of Blade Form (count as Burst Mode) and its attack damage is 30% increased
-           and each attack will inflict Burn effect (which will deal damage over time) for 3s
-        3/ Both basic and Burst mode attack have their own animation set, currently jumping and falling animation will use the unarmed animations
-            which makes the weapon disappeared when the Captain is in the air.
-        4/ The Captain should not attack when he's in the air             
-    */
-
-    private void BasicAttack()
+    private void Ultimate(InputAction.CallbackContext context)
     {
-        //Play Basic Attack Animation
-        CharacterAnimator.SetTrigger("Basic Attack");
-    }    
+        if (!BurstMode)
+        {
+            if ((currentSP >= RequiredSP) && UltCurrentCooldown == 0)
+            {
+                currentSP -= RequiredSP;
+                StartCoroutine(UltimateSkill());
+            }
+            else if (currentSP < RequiredSP)
+            {
+                Debug.Log("Not enough SP!");
+            }
+            else if (UltCurrentCooldown > 0)
+            {
+                Debug.Log("The Ult is not ready!");
+            }
+        }
+        else Debug.Log("Burst Mode is Active! You can't use Ultimate during Burst Mode");
+    }
     private IEnumerator UltimateSkill()
     {
         //Enter Burst mode and change Character Visual
-        currentATKDamage += BaseATKDamage * ((100 + BurstDMGBuff)/100);
+        currentATKDamage += BaseATKDamage * ((100 + BurstDMGBuff) / 100);
         Debug.Log("Burst Mode Started, " + BurstModeDuration + " remaning!");
         //Update character behavior and put ultimate on a cooldown
         StartCoroutine(UltCooldownCoroutine(UltimateSkillCooldown));
@@ -134,19 +140,18 @@ public class CaptainFlameSwordSkill : MonoBehaviour
         //ultimateButton.interactable = true; // Enable button after cooldown
     }
 
-
     //This function is created and added to the Animation Events (Check them in the Animation Tab on the Editor)
     public void BasicATKEnemy()
     {
         //Detect enemy and obstacles (both of them all listed in the LayerMask[] enemyLayerMask
         Collider2D[] hitEnemy = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayerMask);
         //Check if Captain hits any enemy/dummy
-        if (hitEnemy != null )
+        if (hitEnemy != null)
         {
             //Gain SP if Captain hits enemy (it can stack if Captain hit multiple enemy in one hit, but it only boost a little more, and it's indepent from SPRegenBoost)
-            if(currentSP < MaxSP)
+            if (currentSP < MaxSP)
             {
-                if(hitEnemy.Length > 1)
+                if (hitEnemy.Length > 1)
                 {
                     currentSP += SPGain * (1 + SPRegenBoost) + 0.5f;
                 }
@@ -154,13 +159,13 @@ public class CaptainFlameSwordSkill : MonoBehaviour
             }
             //Damage enemy
             foreach (Collider2D enemy in hitEnemy)
-            {   
+            {
                 enemy.GetComponent<Enemy>().TakeMeleeDamage(currentATKDamage, damageType);
                 //enemy.GetComponent<Enemy>().TakeMeleeDamage(currentATKDamage);
             }
-        }      
-        
+        }
     }
+
     //This section works in Unity Editor and will not affect gameplay
     private void OnDrawGizmosSelected()
     {
@@ -178,3 +183,5 @@ public class CaptainFlameSwordSkill : MonoBehaviour
         }
     }
 }
+
+    

@@ -1,55 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
-    public static bool isPaused;
-    public GameObject pauseMenuCanvas;
-    //public UnityEngine.UI.Button pauseButton;
-    // Start is called before the first frame update
+    [SerializeField] private GameObject pauseMenuPanel;
+    [SerializeField] private UnityEngine.UI.Button pauseButton;
+    public static bool isPaused = false;
+    //Adapt new Input System
+    private PlatformerInputAction platformerInputaction;
+    private InputAction pauseInput;
+    private void Awake()
+    {
+        platformerInputaction = new PlatformerInputAction();
+    }
+    private void OnEnable()
+    {
+        pauseInput = platformerInputaction.Player.Pause;
+        pauseInput.performed += PauseMenuPanel;
+        pauseInput.Enable();
+    }
+    private void OnDisable()
+    {
+        pauseInput.Disable();
+    }
 
-    void Start()
+    private void Start()
     {
         //=====Pause Menu=====
         //Preventing the game automatically paused when started
         Time.timeScale = 1f;
-        pauseMenuCanvas.SetActive(false);        
-        //pauseButton.onClick.AddListener(PauseBtnClick);
-
+        pauseMenuPanel.SetActive(false);        
+        pauseButton.onClick.AddListener(PauseBtnClick);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        //Stop this script if the player is not supposed to be able to move or pause the game
-        if(PlatformerMovement2D.blocked)
-        {
-            return;
-        }
-
-        //=====Pause Menu Trigger=====
-        //bool pausePressed = InputManager.GetInstance().GetPausePressed();
-        bool pausePressed = Input.GetButtonDown("Cancel");
-        if (pausePressed)
-        {
-            if (isPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
-        }
+        //Auto enable pause menu Panel 
+        pauseMenuPanel.SetActive(isPaused);
     }
 
-
+    //pauseInput trigger method
+    private void PauseMenuPanel(InputAction.CallbackContext context)
+    {
+        if (isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
     //=====Pause Menu functions=====
-    /*
     void PauseBtnClick() //For Pause Menu Button
     {
         if (!isPaused)
@@ -57,17 +66,14 @@ public class PauseMenu : MonoBehaviour
             PauseGame();
         }
     }
-    */
     public void PauseGame()
     {
-        pauseMenuCanvas.SetActive(true);
-        Time.timeScale = 0f;
         isPaused = true;
+        Time.timeScale = 0f;        
     }
     public void ResumeGame()
     {
-        pauseMenuCanvas.SetActive(false);
-        Time.timeScale = 1f;
         isPaused = false;
+        Time.timeScale = 1f;
     }
 }

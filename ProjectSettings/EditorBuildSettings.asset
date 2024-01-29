@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Darkness Illuminated.unity
     guid: 8132678276ae74a4ba51beb8234e5945
   - enabled: 1
+    path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Tutorial.unity
+    guid: d85a67c1f5595a84dbc9b18baf5c39b2
+  - enabled: 1
     path: Assets/Scenes/Stages/AfterTheBloodMoonFades/SelectLevel.unity
     guid: cf0be436176ef4d45b299de67e7bbb78
   m_configObjects:

@@ -113,12 +113,12 @@ TextureImporter:
       name: Captain Unarmed Run_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 8
-        width: 25
-        height: 32
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Captain Unarmed Run_1
       rect:
         serializedVersion: 2
-        x: 58
-        y: 8
-        width: 25
-        height: 32
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,12 +155,12 @@ TextureImporter:
       name: Captain Unarmed Run_3
       rect:
         serializedVersion: 2
-        x: 108
-        y: 8
-        width: 25
-        height: 32
+        x: 144
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,12 +176,12 @@ TextureImporter:
       name: Captain Unarmed Run_5
       rect:
         serializedVersion: 2
-        x: 154
-        y: 8
-        width: 25
-        height: 32
+        x: 240
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,12 +197,12 @@ TextureImporter:
       name: Captain Unarmed Run_6
       rect:
         serializedVersion: 2
-        x: 202
-        y: 8
-        width: 25
-        height: 32
+        x: 288
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -215,64 +215,64 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Unarmed Run_8
+      name: Captain Unarmed Run_2
       rect:
         serializedVersion: 2
-        x: 250
-        y: 8
-        width: 25
-        height: 32
+        x: 96
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e2e1dbc8b99a79642b79ca545802157e
-      internalID: 31636378
+      spriteID: 1b8fce97185005348bd9d3ba563be3e5
+      internalID: -1481826535
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Unarmed Run_10
+      name: Captain Unarmed Run_4
       rect:
         serializedVersion: 2
-        x: 298
-        y: 8
-        width: 25
-        height: 32
+        x: 192
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a215142b3b5dab64b9f91233a17cb670
-      internalID: -2132419692
+      spriteID: ebc3c2aecfadd484fa52cd7805da0513
+      internalID: 1438751949
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Unarmed Run_11
+      name: Captain Unarmed Run_7
       rect:
         serializedVersion: 2
-        x: 346
-        y: 8
-        width: 25
-        height: 32
+        x: 336
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 826c7eaae677a35418cf9bb0b536e645
-      internalID: -1387487432
+      spriteID: bd54217990cc0aa49b840428f66bf509
+      internalID: 2061741110
       vertices: []
       indices: 
       edges: []
@@ -290,16 +290,12 @@ TextureImporter:
     nameFileIdTable:
       Captain Unarmed Run_0: 303509831
       Captain Unarmed Run_1: 1474550430
-      Captain Unarmed Run_10: -2132419692
-      Captain Unarmed Run_11: -1387487432
       Captain Unarmed Run_2: -1481826535
       Captain Unarmed Run_3: 713546297
       Captain Unarmed Run_4: 1438751949
       Captain Unarmed Run_5: 1419166972
       Captain Unarmed Run_6: -1095616173
       Captain Unarmed Run_7: 2061741110
-      Captain Unarmed Run_8: 31636378
-      Captain Unarmed Run_9: -1555701634
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

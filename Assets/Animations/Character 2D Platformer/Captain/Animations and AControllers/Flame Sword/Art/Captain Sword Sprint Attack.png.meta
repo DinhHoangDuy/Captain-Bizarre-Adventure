@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a30122a4c7f558b47be11793b115e10a
+guid: 1c10cbb708b9d37489077226c90483f1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Captain Flame Sword ATK - Burst Mode_0
+      name: Captain Sword Sprint Attack_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6e5e6ad62baf0440b4ca9c208d31944
-      internalID: 388809844
+      spriteID: 0944fc2aade63c942a41e0f2100cc419
+      internalID: -1234012383
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword ATK - Burst Mode_1
+      name: Captain Sword Sprint Attack_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 48
         y: 0
-        width: 64
-        height: 64
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +145,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6185fe3d03a069a409fcf84c24539fd9
-      internalID: 468557388
+      spriteID: 99aac788c8113df429d4e24053f81106
+      internalID: 431055694
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword ATK - Burst Mode_2
+      name: Captain Sword Sprint Attack_2
       rect:
         serializedVersion: 2
-        x: 128
+        x: 96
         y: 0
-        width: 64
-        height: 64
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,20 +166,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9cad380bc55dbdb4c95c49626126dc72
-      internalID: -1085676125
+      spriteID: 91019ecef24b17a43a1472a7e18ea5fd
+      internalID: -2140647981
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword ATK - Burst Mode_3
+      name: Captain Sword Sprint Attack_3
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eca59ab8dca44974580d41abe00fbace
+      internalID: -2087633604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Captain Sword Sprint Attack_4
       rect:
         serializedVersion: 2
         x: 192
         y: 0
-        width: 64
-        height: 64
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,20 +208,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42aa29d15eb2a914e9d70acab880bef9
-      internalID: -1340249844
+      spriteID: fe03485c292afcf4e878fae9d3de022a
+      internalID: -796941462
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Flame Sword ATK - Burst Mode_4
+      name: Captain Sword Sprint Attack_5
       rect:
         serializedVersion: 2
-        x: 256
+        x: 240
         y: 0
-        width: 64
-        height: 64
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,29 +229,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a3c82ff72077e2f43be164efe0c2f8ac
-      internalID: 239089449
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Captain Flame Sword ATK - Burst Mode_5
-      rect:
-        serializedVersion: 2
-        x: 320
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f665a365a5275074884e226141e31769
-      internalID: -811356451
+      spriteID: 9e245674922b4ee409db92797733d1ae
+      internalID: 1659086427
       vertices: []
       indices: 
       edges: []
@@ -238,7 +238,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 1dd1dbbf6e1730c4ab46073bf8c8c188
     internalID: 0
     vertices: []
     indices: 
@@ -246,12 +246,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Captain Flame Sword ATK - Burst Mode_0: 388809844
-      Captain Flame Sword ATK - Burst Mode_1: 468557388
-      Captain Flame Sword ATK - Burst Mode_2: -1085676125
-      Captain Flame Sword ATK - Burst Mode_3: -1340249844
-      Captain Flame Sword ATK - Burst Mode_4: 239089449
-      Captain Flame Sword ATK - Burst Mode_5: -811356451
+      Captain Sword Sprint Attack_0: -1234012383
+      Captain Sword Sprint Attack_1: 431055694
+      Captain Sword Sprint Attack_2: -2140647981
+      Captain Sword Sprint Attack_3: -2087633604
+      Captain Sword Sprint Attack_4: -796941462
+      Captain Sword Sprint Attack_5: 1659086427
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

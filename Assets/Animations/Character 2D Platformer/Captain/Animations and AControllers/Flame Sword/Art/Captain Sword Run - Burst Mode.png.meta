@@ -113,12 +113,12 @@ TextureImporter:
       name: Captain Sword Run - Burst Mode_0
       rect:
         serializedVersion: 2
-        x: 9
-        y: 8
-        width: 27
-        height: 31
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Captain Sword Run - Burst Mode_2
       rect:
         serializedVersion: 2
-        x: 60
-        y: 8
-        width: 24
-        height: 31
+        x: 96
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,12 +155,12 @@ TextureImporter:
       name: Captain Sword Run - Burst Mode_4
       rect:
         serializedVersion: 2
-        x: 106
-        y: 8
-        width: 26
-        height: 31
+        x: 192
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,12 +176,12 @@ TextureImporter:
       name: Captain Sword Run - Burst Mode_6
       rect:
         serializedVersion: 2
-        x: 156
-        y: 8
-        width: 24
-        height: 31
+        x: 288
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,85 +194,85 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run - Burst Mode_8
+      name: Captain Sword Run - Burst Mode_1
       rect:
         serializedVersion: 2
-        x: 203
-        y: 8
-        width: 26
-        height: 31
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d2bfad982686ee4587a7f5d18f69965
-      internalID: 561853988
+      spriteID: c9fece93ea4d5344e983e693b42e209b
+      internalID: 468029650
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run - Burst Mode_10
+      name: Captain Sword Run - Burst Mode_3
       rect:
         serializedVersion: 2
-        x: 252
-        y: 8
-        width: 24
-        height: 37
+        x: 144
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4d3634ecede6d614b999881cd07d5a22
-      internalID: -1594506056
+      spriteID: f3ecac17ae4abfe4ebe4db8b324ca1fe
+      internalID: -925926422
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run - Burst Mode_12
+      name: Captain Sword Run - Burst Mode_5
       rect:
         serializedVersion: 2
-        x: 300
-        y: 8
-        width: 27
-        height: 32
+        x: 240
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 66091fc3220f0df4594831171677523e
-      internalID: -1613427052
+      spriteID: 6d08071443acf164f88d91e71e5de5b4
+      internalID: 594285120
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Sword Run - Burst Mode_14
+      name: Captain Sword Run - Burst Mode_7
       rect:
         serializedVersion: 2
-        x: 348
-        y: 8
-        width: 27
-        height: 31
+        x: 336
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7041646728782aa42ab486e244370362
-      internalID: 1111184831
+      spriteID: 145e3ef5047262f4b8efec3c1bd28d29
+      internalID: -1776249598
       vertices: []
       indices: 
       edges: []
@@ -290,19 +290,12 @@ TextureImporter:
     nameFileIdTable:
       Captain Sword Run - Burst Mode_0: 1482950491
       Captain Sword Run - Burst Mode_1: 468029650
-      Captain Sword Run - Burst Mode_10: -1594506056
-      Captain Sword Run - Burst Mode_11: -1673907997
-      Captain Sword Run - Burst Mode_12: -1613427052
-      Captain Sword Run - Burst Mode_13: 993889555
-      Captain Sword Run - Burst Mode_14: 1111184831
       Captain Sword Run - Burst Mode_2: 1345453515
       Captain Sword Run - Burst Mode_3: -925926422
       Captain Sword Run - Burst Mode_4: -303629889
       Captain Sword Run - Burst Mode_5: 594285120
       Captain Sword Run - Burst Mode_6: 1441008469
       Captain Sword Run - Burst Mode_7: -1776249598
-      Captain Sword Run - Burst Mode_8: 561853988
-      Captain Sword Run - Burst Mode_9: -1495160321
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

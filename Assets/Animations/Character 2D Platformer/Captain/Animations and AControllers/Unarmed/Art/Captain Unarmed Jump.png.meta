@@ -113,12 +113,12 @@ TextureImporter:
       name: Captain Unarmed Jump_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 4
-        width: 21
-        height: 36
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Captain Unarmed Jump_1
       rect:
         serializedVersion: 2
-        x: 56
-        y: 4
-        width: 24
-        height: 36
+        x: 48
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,22 +152,22 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Captain Unarmed Jump_4
+      name: Captain Unarmed Jump_2
       rect:
         serializedVersion: 2
-        x: 108
-        y: 3
-        width: 21
-        height: 36
+        x: 96
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce87891c189ef1e49ae84ea1944f9bd0
-      internalID: -1301303047
+      spriteID: 0bdb8e025803cab48aa425067dc167bc
+      internalID: -1743278768
       vertices: []
       indices: 
       edges: []
@@ -186,8 +186,6 @@ TextureImporter:
       Captain Unarmed Jump_0: 1006248429
       Captain Unarmed Jump_1: -1176998416
       Captain Unarmed Jump_2: -1743278768
-      Captain Unarmed Jump_3: 1996312579
-      Captain Unarmed Jump_4: -1301303047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
