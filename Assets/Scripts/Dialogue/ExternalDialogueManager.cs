@@ -34,14 +34,12 @@ public class ExternalDialogueManager : MonoBehaviour
     public void EnterDialogueMode(TextAsset inkJSON)
     {
         dialogueCanvas.SetActive(true);
-        PlatformerMovement2D.blocked = true;
         //Hide player controller
         //playerControllerCanvas.enabled = false;
         DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
     }
     public void ExitDialogueMode()
     {
-        PlatformerMovement2D.blocked = false;
         //Show player controller
         //playerControllerCanvas.enabled = true;
         dialogueCanvas.SetActive(false);

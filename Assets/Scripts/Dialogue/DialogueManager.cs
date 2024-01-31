@@ -65,7 +65,6 @@ public class DialogueManager : MonoBehaviour
 
     private Coroutine skipButtonCoroutine;
 
-
     //Others
     private Coroutine displayLineCoroutine;
     private bool CanContinueToNextLine = false;
@@ -162,6 +161,7 @@ public class DialogueManager : MonoBehaviour
     {
         currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
+        PlatformerMovement2D.blocked = false;
         Debug.Log("The Dialogue trigger is used");
 
         //Set default Dialogue portrait and background to check for startup error (Mostly related to the Ink file)
@@ -179,6 +179,7 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         DialogueIsPlaying = false;    
         dialogueText.text = "";
+        PlatformerMovement2D.blocked = false;
         ExternalDialogueManager.GetInstance().ExitDialogueMode();
     }
     private void ClickToContinue()

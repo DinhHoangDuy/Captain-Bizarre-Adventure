@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,13 +19,11 @@ public class PlatformerMovement2D : MonoBehaviour
     /*Player components (Some of them will be taken from the character, others will be used for other stuff
         such as directions, etc)*/
     private Rigidbody2D rb2d;
-    private CapsuleCollider2D CharacterCollider;
     private Animator CharacterAnimator;
 
     //Player status (movement blocked, movement slowed, health...)
     public static bool blocked = false;
     private bool trapped = false;
-    private bool movementArrested = false;
 
     [Header("Character Parameters")]
     [Tooltip("Speed of the Character")][SerializeField] private float movementSpeed = 8f;
@@ -37,11 +33,12 @@ public class PlatformerMovement2D : MonoBehaviour
     [SerializeField] private float jumpForce = 16.0f;
     [Tooltip("How heavy is the character?")]
     [SerializeField] private float characterGravityScale = 4f;
-    [Tooltip("How strong is the second jump? (Apply to the second jump only)")] [SerializeField] private float doubleJumpForce = 1.5f;
+    [Tooltip("How strong is the second jump? (Apply to the second jump only)")][SerializeField] private float doubleJumpForce = 1.5f;
 
     [Header("Character Controller Dependencies")]
     [SerializeField] private GameObject leftWallCheck;
     [SerializeField] private GameObject rightWallCheck;
+    [SerializeField] private GameObject groundCheck;
 
     [Header("Character Effects")]
     [SerializeField] private TrailRenderer dashTrailEffect;
@@ -81,22 +78,26 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         CharacterAnimator = GetComponent<Animator>();
-        CharacterCollider = GetComponent<CapsuleCollider2D>();
         platformerInputaction = new PlatformerInputAction();
     }
+
+    // This method is called when the object becomes enabled and active.
+    // It sets up the input actions for movement, jump, and dash
     private void OnEnable()
     {
         horizontalInput = platformerInputaction.Player.Movement;
         horizontalInput.Enable();
 
         jumpInput = platformerInputaction.Player.Jump;
-        jumpInput.performed += Jump;
+        jumpInput.performed += JumpPresed;
         jumpInput.Enable();
 
         dashInput = platformerInputaction.Player.Dash;
-        dashInput.performed += Dash;
+        dashInput.performed += DashPressed;
         dashInput.Enable();
     }
+    //This method is called when the behaviour becomes disabled or inactive.
+    //It disables the input actions for movement, jump, and dash.
     private void OnDisable()
     {
         horizontalInput.Disable();
@@ -124,8 +125,8 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         //No Update if the character is not allowed to move in specific scenario (Dialogue system, intro, etc...)
         if (blocked) return;
-        
-        if (movementArrested)
+
+        if (trapped)
         {
             //Not allow Character to move if movementArrested == true
             Move(0);
@@ -151,7 +152,7 @@ public class PlatformerMovement2D : MonoBehaviour
 
         //Read the Movement button values
         horizontalMovementValue = horizontalInput.ReadValue<Vector2>().x;
-        if(horizontalMovementValue == 0)
+        if (horizontalMovementValue == 0)
         {
             isRunning = false;
             rb2d.velocity = new Vector2(0, rb2d.velocity.y);
@@ -164,13 +165,14 @@ public class PlatformerMovement2D : MonoBehaviour
 
             //Move the Character Left or Right
             horizontalMovement = horizontalMovementValue * movementSpeed;
-            rb2d.velocity = new Vector2(horizontalMovement, rb2d.velocity.y);   
+            rb2d.velocity = new Vector2(horizontalMovement, rb2d.velocity.y);
         }
 
     }
 
-    private void Jump(InputAction.CallbackContext context)
+    private void JumpPresed(InputAction.CallbackContext context)
     {
+        if(blocked) return;
         if (isGrounded)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
@@ -180,53 +182,58 @@ public class PlatformerMovement2D : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce * doubleJumpForce);
             doubleJumpTrailEffect.emitting = true;
             jumpCount++;
-        }        
+        }
     }
-    private void Dash(InputAction.CallbackContext context)
+    private void DashPressed(InputAction.CallbackContext context)
     {
+        if(blocked) return;
         if (canDash && !isDashing)
         {
-            if(isGrounded || !dashedOnAir)
+            if (isGrounded || !dashedOnAir)
             {
-                StartCoroutine(StartDash());
-                if (!isGrounded) dashedOnAir = true;
+                rb2d.velocity = Vector2.zero;
+                if (!isGrounded) dashedOnAir = true; //dashedOnAir is used to prevent the character from dashing again while on air
+                StartCoroutine(Dash());
             }
         }
     }
-    private IEnumerator StartDash()
+    private IEnumerator Dash()
     {
-        //Prevent from dashing again while dashing
-        canDash = false;
-        isDashing = true;
-        movementArrested = true;
-        float originalGravity = rb2d.gravityScale;
-        rb2d.gravityScale = 0f;       
-
         //Calculate the dash velocity
         float dashVelocity = movementSpeed * dashForce;
 
-        //Flip the dash velocity if the character is facing left or if the character is not running while still on the ground
-        if(!isLookingRight) dashVelocity *= -1;
-        if(isGrounded && !isRunning) dashVelocity *= -1;
+        //Prevent from dashing again while dashing
+        canDash = false;
+        isDashing = true;
+        blocked = true;
+        float originalGravity = rb2d.gravityScale;
+        rb2d.gravityScale = 0f;
 
-        //Apply the dash velocity and start the dash trail effect
+        //Flip the dash velocity if the character is facing left
+        if (!isLookingRight) dashVelocity *= -1;
+        /*Flip the dash velocity if the character is on the ground and not running
+            (this meant for auto dodging attacks)*/
+        if (isGrounded && !isRunning) dashVelocity *= -1;
+
+        //Apply the dash velocity and start the dash trail effect        
         rb2d.velocity = new Vector2(dashVelocity, 0f);
+        Debug.Log("Dashing! Rigidbody Velocity is: " + rb2d.velocity);
         dashTrailEffect.emitting = true;
-        
+
         yield return new WaitForSeconds(dashingTime);
         //Reset the velocity and movement status
         rb2d.gravityScale = originalGravity;
-        movementArrested = false;
-        isDashing = false;        
+        blocked = false;
+        isDashing = false;
         dashTrailEffect.emitting = false;
         //Start the cooldown
-        yield return new WaitForSeconds(dashingCooldown);        
+        yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
     public bool UpdateIsGrounded()
     {
-        //Check if the character is grounded or not (using BoxCast and CapsuleCollider)
-        isGrounded = Physics2D.BoxCast(CharacterCollider.bounds.center, CharacterCollider.bounds.size, 0f, Vector2.down, 0.2f, groundLayer);
+        //isGrounded = Physics2D.BoxCast(CharacterCollider.bounds.center, CharacterCollider.bounds.size, 0f, Vector2.down, 0.2f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.transform.position, 0.2f, groundLayer);
         if (isGrounded)
         {
             jumpCount = 0;
@@ -236,47 +243,13 @@ public class PlatformerMovement2D : MonoBehaviour
     }
     public bool UpdateIsOnWall()
     {
-        isOnWall = Physics2D.OverlapCircle(leftWallCheck.transform.position, 0.2f, groundLayer) 
+        isOnWall = Physics2D.OverlapCircle(leftWallCheck.transform.position, 0.2f, groundLayer)
                    || Physics2D.OverlapCircle(rightWallCheck.transform.position, 0.2f, groundLayer);
         if (isOnWall)
         {
             dashedOnAir = false;
         }
         return isOnWall;
-    }
-
-    private void AutoUpdateAnimationState()
-    {
-        //Flip Character while moving left or right
-        if ((horizontalMovementValue < 0 && isLookingRight) || (horizontalMovementValue > 0 && !isLookingRight))
-        {
-            transform.Rotate(0f, 180f, 0f);
-            isLookingRight = !isLookingRight;
-        }
-
-        //Update the animation state
-        isRunning = horizontalMovementValue != 0;
-        isJumping = !isGrounded && rb2d.velocity.y > 0;
-        isFalling = !isGrounded && rb2d.velocity.y < 0;
-        isOnAir = !isGrounded && rb2d.velocity.y == 0;
-        if(isOnAir || isFalling) doubleJumpTrailEffect.emitting = false;
-
-        //Skip if the character animator is null
-        if (CharacterAnimator == null) return;
-        //On the ground animation
-        CharacterAnimator.SetBool("Running", isRunning);
-        CharacterAnimator.SetBool("Grounded", isGrounded);
-
-        //Jumping animation
-        CharacterAnimator.SetBool("Falling", isFalling);
-        CharacterAnimator.SetBool("Jumping Up", isJumping);
-
-        //Landing animation
-        if (isGrounded)
-        {
-            CharacterAnimator.SetTrigger("Landed");
-        }
-
     }
 
     //Status Check
@@ -296,11 +269,41 @@ public class PlatformerMovement2D : MonoBehaviour
         }
     }
 
+    //Animation Handling
+    private void AutoUpdateAnimationState()
+    {
+        //Flip Character while moving left or right
+        if ((horizontalMovementValue < 0 && isLookingRight) || (horizontalMovementValue > 0 && !isLookingRight))
+        {
+            transform.Rotate(0f, 180f, 0f);
+            isLookingRight = !isLookingRight;
+        }
+
+        //Update the animation state
+        isRunning = horizontalMovementValue != 0;
+        isJumping = !isGrounded && rb2d.velocity.y > 0;
+        isFalling = !isGrounded && rb2d.velocity.y < 0;
+        isOnAir = !isGrounded && rb2d.velocity.y == 0;
+        if (isOnAir || isFalling) doubleJumpTrailEffect.emitting = false;
+
+        //Skip if the character animator is null
+        if (CharacterAnimator == null) return;
+        //On the ground animation
+        CharacterAnimator.SetBool("Running", isRunning);
+        CharacterAnimator.SetBool("Grounded", isGrounded);
+
+        //Jumping animation
+        CharacterAnimator.SetBool("Falling", isFalling);
+        CharacterAnimator.SetBool("Jumping Up", isJumping);
+        CharacterAnimator.SetBool("Mid Air", isOnAir);
+    }
+
     //Gizmos only for debugging
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(leftWallCheck.transform.position, 0.2f);
         Gizmos.DrawWireSphere(rightWallCheck.transform.position, 0.2f);
+        Gizmos.DrawWireSphere(groundCheck.transform.position, 0.2f);
     }
 }
