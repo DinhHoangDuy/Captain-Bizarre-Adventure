@@ -12,7 +12,6 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     private PlayerStats playerStats;
     //Player Components
     private Animator CharacterAnimator;
-    private PlatformerMovement2D platformerMovement2D;
 
     [Header("Captain's Ultimate")]
     [Tooltip("Captain Flame Sword Burst Damage Boost (use 1% to 100% format")][SerializeField] private float BurstDMGBuff = 30f;
@@ -46,17 +45,6 @@ public class CaptainFlameSwordSkill : MonoBehaviour
     }
 
     //This function is created and added to the Animation Events (Check them in the Animation Tab on the Editor)
-    public void BlockAllMovement()
-    {
-        playerStats.ATKAllowed = false;
-
-        PlatformerMovement2D.blocked = true;
-    }
-    public void UnblockAllMovement()
-    {
-        playerStats.ATKAllowed = true;
-        PlatformerMovement2D.blocked = false;
-    }
     public void BasicATKEnemy()
     {
         //Detect enemy and obstacles (both of them all listed in the LayerMask[] enemyLayerMask

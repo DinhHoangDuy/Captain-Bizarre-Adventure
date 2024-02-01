@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlatformerMovement2D))]
 public class PlayerStats : MonoBehaviour
 {
     [Header("Character's Attack Behaviors")]
@@ -153,6 +154,18 @@ public class PlayerStats : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
     #endregion
+    //This function is created and added to the Animation Events (Check them in the Animation Tab on the Editor)
+    public void BlockAllMovement()
+    {
+        ATKAllowed = false;
+        PlatformerMovement2D.blocked = true;
+        platformerMovement2D.rb2d.velocity = Vector2.zero;
+    }
+    public void UnblockAllMovement()
+    {
+        ATKAllowed = true;
+        PlatformerMovement2D.blocked = false;
+    }
     //Debugging Only
     private void TrackCurrentSP()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,15 +19,19 @@ public class PlatformerMovement2D : MonoBehaviour
 
     /*Player components (Some of them will be taken from the character, others will be used for other stuff
         such as directions, etc)*/
-    private Rigidbody2D rb2d;
+    [HideInInspector]public Rigidbody2D rb2d;
     private Animator CharacterAnimator;
+    private PlayerStats playerStats;
 
     //Player status (movement blocked, movement slowed, health...)
     public static bool blocked = false;
     private bool trapped = false;
+    private const float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+
 
     [Header("Character Parameters")]
-    [Tooltip("Speed of the Character")][SerializeField] private float movementSpeed = 8f;
+    [Tooltip("Speed of the Character")] public float movementSpeed = 8f;
     [Tooltip("Character Dash Force")][SerializeField] private float dashForce = 2.5f;
     [Header("Jumping")]
     [SerializeField] private LayerMask groundLayer;
@@ -54,7 +59,7 @@ public class PlatformerMovement2D : MonoBehaviour
     #region Jump
     private bool isGrounded = false;
     private int maxAirJumpCount = 1;
-    private int jumpCount = 0;
+    private int airJumpCount = 0;
     #endregion
 
     #region Wall and Ground
@@ -79,6 +84,7 @@ public class PlatformerMovement2D : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         CharacterAnimator = GetComponent<Animator>();
         platformerInputaction = new PlatformerInputAction();
+        playerStats = GetComponent<PlayerStats>();
     }
 
     // This method is called when the object becomes enabled and active.
@@ -90,12 +96,14 @@ public class PlatformerMovement2D : MonoBehaviour
 
         jumpInput = platformerInputaction.Player.Jump;
         jumpInput.performed += JumpPresed;
+        jumpInput.canceled += ResetCoyoteTime;
         jumpInput.Enable();
 
         dashInput = platformerInputaction.Player.Dash;
         dashInput.performed += DashPressed;
         dashInput.Enable();
-    }
+    }    
+
     //This method is called when the behaviour becomes disabled or inactive.
     //It disables the input actions for movement, jump, and dash.
     private void OnDisable()
@@ -114,7 +122,7 @@ public class PlatformerMovement2D : MonoBehaviour
         normaljumpForce = jumpForce;
 
         //Reset Jump Count
-        jumpCount = 0;
+        airJumpCount = 0;
 
         //Disable trail effect
         dashTrailEffect.emitting = false;
@@ -126,12 +134,25 @@ public class PlatformerMovement2D : MonoBehaviour
         //No Update if the character is not allowed to move in specific scenario (Dialogue system, intro, etc...)
         if (blocked) return;
 
+        #region Trapped
         if (trapped)
         {
             //Not allow Character to move if movementArrested == true
             Move(0);
         }
         else Move(movementSpeed); //Allow character to move normally
+        #endregion
+
+        #region Coyote Time        
+        if(UpdateIsGrounded())
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+        #endregion
     }
     private void FixedUpdate()
     {
@@ -173,16 +194,21 @@ public class PlatformerMovement2D : MonoBehaviour
     private void JumpPresed(InputAction.CallbackContext context)
     {
         if(blocked) return;
-        if (isGrounded)
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
+        if (coyoteTimeCounter > 0f)
+        { 
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);            
         }
-        else if (jumpCount < maxAirJumpCount)
+
+        if (coyoteTimeCounter <= 0 && airJumpCount < maxAirJumpCount)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce * doubleJumpForce);
             doubleJumpTrailEffect.emitting = true;
-            jumpCount++;
+            airJumpCount++;
         }
+    }
+    private void ResetCoyoteTime(InputAction.CallbackContext context)
+    {
+        coyoteTimeCounter = 0;
     }
     private void DashPressed(InputAction.CallbackContext context)
     {
@@ -217,7 +243,6 @@ public class PlatformerMovement2D : MonoBehaviour
 
         //Apply the dash velocity and start the dash trail effect        
         rb2d.velocity = new Vector2(dashVelocity, 0f);
-        Debug.Log("Dashing! Rigidbody Velocity is: " + rb2d.velocity);
         dashTrailEffect.emitting = true;
 
         yield return new WaitForSeconds(dashingTime);
@@ -236,7 +261,7 @@ public class PlatformerMovement2D : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(groundCheck.transform.position, 0.2f, groundLayer);
         if (isGrounded)
         {
-            jumpCount = 0;
+            airJumpCount = 0;
             dashedOnAir = false;
         }
         return isGrounded;
@@ -284,6 +309,7 @@ public class PlatformerMovement2D : MonoBehaviour
         isJumping = !isGrounded && rb2d.velocity.y > 0;
         isFalling = !isGrounded && rb2d.velocity.y < 0;
         isOnAir = !isGrounded && rb2d.velocity.y == 0;
+        BehaviourHandling(isRunning, isJumping, isFalling, isOnAir);
         if (isOnAir || isFalling) doubleJumpTrailEffect.emitting = false;
 
         //Skip if the character animator is null
@@ -296,6 +322,13 @@ public class PlatformerMovement2D : MonoBehaviour
         CharacterAnimator.SetBool("Falling", isFalling);
         CharacterAnimator.SetBool("Jumping Up", isJumping);
         CharacterAnimator.SetBool("Mid Air", isOnAir);
+    }
+    private void BehaviourHandling(bool isRunning, bool isJumping, bool isFalling, bool isOnAir)
+    {
+        if(isJumping || isFalling)
+        {
+            playerStats.UnblockAllMovement();
+        }
     }
 
     //Gizmos only for debugging

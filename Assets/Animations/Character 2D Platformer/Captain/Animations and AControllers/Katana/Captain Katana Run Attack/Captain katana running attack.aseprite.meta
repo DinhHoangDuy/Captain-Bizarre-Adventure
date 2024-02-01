@@ -35,7 +35,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 100
+    spritePixelsToUnits: 18
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -78,9 +78,9 @@ ScriptedImporter:
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
-    addSortingGroup: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 0
     addShadowCasters: 0
   asepriteImporterSettings:
     fileImportMode: 1
@@ -90,12 +90,12 @@ ScriptedImporter:
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
-    generateModelPrefab: 1
-    generateAnimationClips: 1
-    addSortingGroup: 1
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 0
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638423432640939215
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -121,15 +121,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Captain katana running attack_Frame_0
     originalName: 
-    pivot: {x: 0.35185185, y: -1.625}
+    pivot: {x: 0.6818182, y: -1.3333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 65
-      y: 66
-      width: 54
-      height: 16
+      x: 153
+      y: 67
+      width: 22
+      height: 12
     spriteID: b85b8bc7acb88f4489e79ba64aceeba5
     spriteBone: []
     spriteOutline: []
@@ -138,18 +138,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 65, y: 66}
+    uvTransform: {x: 153, y: 67}
   - name: Captain katana running attack_Frame_1
     originalName: 
-    pivot: {x: 0.4074074, y: -1.0416667}
+    pivot: {x: 0.35185185, y: -0.826087}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 65
+      x: 192
       y: 4
       width: 54
-      height: 24
+      height: 23
     spriteID: e626c88e9ccb75741a6065b786e40f01
     spriteBone: []
     spriteOutline: []
@@ -158,18 +158,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 65, y: 4}
+    uvTransform: {x: 192, y: 4}
   - name: Captain katana running attack_Frame_2
     originalName: 
-    pivot: {x: 0.6571429, y: -1.1904762}
+    pivot: {x: 0.4074074, y: -0.4848485}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 65
-      y: 90
-      width: 35
-      height: 21
+      y: 4
+      width: 54
+      height: 33
     spriteID: 45ae82633719c504f89bee4fdd12d943
     spriteBone: []
     spriteOutline: []
@@ -178,18 +178,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 65, y: 90}
+    uvTransform: {x: 65, y: 4}
   - name: Captain katana running attack_Frame_3
     originalName: 
-    pivot: {x: 0.6571429, y: -1.1904762}
+    pivot: {x: 0.6571429, y: -0.53333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 46
+      y: 49
       width: 35
-      height: 21
+      height: 30
     spriteID: f79d3dcc80a0e71428dd5a727d4f4d27
     spriteBone: []
     spriteOutline: []
@@ -198,18 +198,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 46}
+    uvTransform: {x: 4, y: 49}
   - name: Captain katana running attack_Frame_4
     originalName: 
-    pivot: {x: 0.36842105, y: -1.1818182}
+    pivot: {x: 0.6571429, y: -0.53333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 65
-      y: 36
-      width: 57
-      height: 22
+      x: 47
+      y: 49
+      width: 35
+      height: 30
     spriteID: f2d30961181f45245915616c10da4b59
     spriteBone: []
     spriteOutline: []
@@ -218,18 +218,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 65, y: 36}
+    uvTransform: {x: 47, y: 49}
   - name: Captain katana running attack_Frame_5
     originalName: 
-    pivot: {x: 0.41509435, y: -0.5588235}
+    pivot: {x: 0.36842105, y: -0.71428573}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
+      x: 127
       y: 4
-      width: 53
-      height: 34
+      width: 57
+      height: 28
     spriteID: 0cb63810c4bdbf64781d6e904daaf784
     spriteBone: []
     spriteOutline: []
@@ -238,18 +238,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 127, y: 4}
   - name: Captain katana running attack_Frame_6
     originalName: 
-    pivot: {x: 0.41176474, y: -1}
+    pivot: {x: 0.41509435, y: -0.43243244}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 75
-      width: 17
-      height: 27
+      y: 4
+      width: 53
+      height: 37
     spriteID: 1481bf5ee762c1d4b9d9a00b5818e0e6
     spriteBone: []
     spriteOutline: []
@@ -258,18 +258,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 75}
+    uvTransform: {x: 4, y: 4}
   - name: Captain katana running attack_Frame_7
     originalName: 
-    pivot: {x: 0.41176474, y: -1.0384616}
+    pivot: {x: 0.41176474, y: -0.42105263}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 29
-      y: 75
+      x: 4
+      y: 132
       width: 17
-      height: 26
+      height: 38
     spriteID: 7cfda0df6458f7c4688040b067776d7e
     spriteBone: []
     spriteOutline: []
@@ -278,7 +278,167 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 29, y: 75}
+    uvTransform: {x: 4, y: 132}
+  - name: Captain katana running attack_Frame_8
+    originalName: 
+    pivot: {x: 0.6, y: -0.43243244}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 87
+      width: 25
+      height: 37
+    spriteID: 8999d3d64e7dda04ba02accd2db63e9d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 87}
+  - name: Captain katana running attack_Frame_9
+    originalName: 
+    pivot: {x: 0.5333333, y: -1.9}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 90
+      y: 49
+      width: 30
+      height: 10
+    spriteID: 220e273933929f746a2d608d5acd8290
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 90, y: 49}
+  - name: Captain katana running attack_Frame_10
+    originalName: 
+    pivot: {x: 0.5217391, y: -1.3333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 122
+      y: 67
+      width: 23
+      height: 12
+    spriteID: 59dacb3f744e8f14eb485908af09ade4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 122, y: 67}
+  - name: Captain katana running attack_Frame_11
+    originalName: 
+    pivot: {x: 0.5833334, y: -1.3333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 222
+      y: 67
+      width: 12
+      height: 12
+    spriteID: f2a83e15991023e46bf28d9c1517b2b1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 222, y: 67}
+  - name: Captain katana running attack_Frame_12
+    originalName: 
+    pivot: {x: 0.6666667, y: -1.2307693}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 87
+      width: 21
+      height: 13
+    spriteID: b0b907b994c4e4d4a993d8aa9a61f9a3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 87}
+  - name: Captain katana running attack_Frame_13
+    originalName: 
+    pivot: {x: 0.51612896, y: -2.5}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 183
+      y: 67
+      width: 31
+      height: 8
+    spriteID: c11c0aa25b1a3b849a3f9e12d7a9608a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 183, y: 67}
+  - name: Captain katana running attack_Frame_14
+    originalName: 
+    pivot: {x: 0.45833328, y: -1.3333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 90
+      y: 67
+      width: 24
+      height: 12
+    spriteID: 9159b983f7be6354e951d522852b0be7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 90, y: 67}
+  - name: Captain katana running attack_Frame_15
+    originalName: 
+    pivot: {x: 0.5999999, y: -1.3333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 242
+      y: 67
+      width: 10
+      height: 12
+    spriteID: 9f6e6b144ed643b4aa052a48b4e2a87e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 242, y: 67}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -288,70 +448,134 @@ ScriptedImporter:
     layerType: 0
     blendMode: 0
     cells:
+    - name: Captain katana running attack_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 25
+        y: 16
+        width: 22
+        height: 12
+      spriteId: b85b8bc7acb88f4489e79ba64aceeba5
     - name: Captain katana running attack_Frame_1
       frameIndex: 1
       cellRect:
         x: 21
-        y: 26
+        y: 19
         width: 54
-        height: 16
-      spriteId: b85b8bc7acb88f4489e79ba64aceeba5
+        height: 23
+      spriteId: e626c88e9ccb75741a6065b786e40f01
     - name: Captain katana running attack_Frame_2
       frameIndex: 2
       cellRect:
         x: 18
-        y: 25
+        y: 16
         width: 54
-        height: 24
-      spriteId: e626c88e9ccb75741a6065b786e40f01
+        height: 33
+      spriteId: 45ae82633719c504f89bee4fdd12d943
     - name: Captain katana running attack_Frame_3
       frameIndex: 3
       cellRect:
         x: 17
-        y: 25
+        y: 16
         width: 35
-        height: 21
-      spriteId: 45ae82633719c504f89bee4fdd12d943
+        height: 30
+      spriteId: f79d3dcc80a0e71428dd5a727d4f4d27
     - name: Captain katana running attack_Frame_4
       frameIndex: 4
       cellRect:
         x: 17
-        y: 25
+        y: 16
         width: 35
-        height: 21
-      spriteId: f79d3dcc80a0e71428dd5a727d4f4d27
+        height: 30
+      spriteId: f2d30961181f45245915616c10da4b59
     - name: Captain katana running attack_Frame_5
       frameIndex: 5
       cellRect:
         x: 19
-        y: 26
+        y: 20
         width: 57
-        height: 22
-      spriteId: f2d30961181f45245915616c10da4b59
+        height: 28
+      spriteId: 0cb63810c4bdbf64781d6e904daaf784
     - name: Captain katana running attack_Frame_6
       frameIndex: 6
       cellRect:
         x: 18
-        y: 19
+        y: 16
         width: 53
-        height: 34
-      spriteId: 0cb63810c4bdbf64781d6e904daaf784
+        height: 37
+      spriteId: 1481bf5ee762c1d4b9d9a00b5818e0e6
     - name: Captain katana running attack_Frame_7
       frameIndex: 7
       cellRect:
         x: 33
-        y: 27
+        y: 16
         width: 17
-        height: 27
-      spriteId: 1481bf5ee762c1d4b9d9a00b5818e0e6
+        height: 38
+      spriteId: 7cfda0df6458f7c4688040b067776d7e
     - name: Captain katana running attack_Frame_8
       frameIndex: 8
       cellRect:
+        x: 25
+        y: 16
+        width: 25
+        height: 37
+      spriteId: 8999d3d64e7dda04ba02accd2db63e9d
+    - name: Captain katana running attack_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 24
+        y: 19
+        width: 30
+        height: 10
+      spriteId: 220e273933929f746a2d608d5acd8290
+    - name: Captain katana running attack_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 28
+        y: 16
+        width: 23
+        height: 12
+      spriteId: 59dacb3f744e8f14eb485908af09ade4
+    - name: Captain katana running attack_Frame_11
+      frameIndex: 11
+      cellRect:
         x: 33
-        y: 27
-        width: 17
-        height: 26
-      spriteId: 7cfda0df6458f7c4688040b067776d7e
+        y: 16
+        width: 12
+        height: 12
+      spriteId: f2a83e15991023e46bf28d9c1517b2b1
+    - name: Captain katana running attack_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 26
+        y: 16
+        width: 21
+        height: 13
+      spriteId: b0b907b994c4e4d4a993d8aa9a61f9a3
+    - name: Captain katana running attack_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 24
+        y: 20
+        width: 31
+        height: 8
+      spriteId: c11c0aa25b1a3b849a3f9e12d7a9608a
+    - name: Captain katana running attack_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 29
+        y: 16
+        width: 24
+        height: 12
+      spriteId: 9159b983f7be6354e951d522852b0be7
+    - name: Captain katana running attack_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 34
+        y: 16
+        width: 10
+        height: 12
+      spriteId: 9f6e6b144ed643b4aa052a48b4e2a87e
     linkedCells: []
     parentIndex: -1
   platformSettings: []
