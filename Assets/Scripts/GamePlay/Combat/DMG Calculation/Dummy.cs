@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(DMGInput))]
 public class Dummy : MonoBehaviour
-{
-    private float DMGTaken = 0f;    
+{ 
     private void Start()
     {
         // Get the Enemy script attached to the same GameObject
@@ -16,13 +16,19 @@ public class Dummy : MonoBehaviour
         if (dmgInputScript != null)
         {
             dmgInputScript.OnHitDamageReceived += HandleHitDamage;
+            dmgInputScript.OnHitDestroyableReceived += HandleDestroyableDamage;
         }
     }
 
-    private void HandleHitDamage(float damageAmount, DamageType DMGType)
+    private void HandleDestroyableDamage(int objDMG)
     {
-        Debug.Log("DMG Character dealt " +  damageAmount + " " + DMGType + " damage");
+        Debug.Log("As a destroyable object, Dummy took " + objDMG + " damage from the player");
+    }
 
+    private void HandleHitDamage(float damageAmount, DamageType DMGType, DamageRange damageRange)
+    {
+        Debug.Log("Character dealt " +  damageAmount + " " + DMGType + " of " + damageRange + " damage");
+        Debug.Log("As an enemy, the dummy took " +  damageAmount + " " + DMGType + " of " + damageRange + " damage");
     }
 }
 
@@ -41,5 +47,20 @@ public class Dummy : MonoBehaviour
         default:
             DMGTaken = damageAmount;
             break;
-}  
+    }
+    switch (damageRange)
+    {
+        case DamageRange.Melee:
+            // Implement melee damage logic
+            DMGTaken = damageAmount * 0.5f;  //This is to reduce the melee damage taken by 50%
+            break;
+        case DamageRange.Range:
+            // Implement range damage logic
+            DMGTaken = damageAmount * 1.5f; //This is to increase the range damage taken by 50%
+            break;
+        // Add more cases for other damage ranges as needed
+        default:
+            DMGTaken = damageAmount;
+            break;
+    }     
 */

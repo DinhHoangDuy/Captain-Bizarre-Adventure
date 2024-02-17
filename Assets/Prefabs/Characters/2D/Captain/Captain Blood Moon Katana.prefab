@@ -281,10 +281,9 @@ GameObject:
   - component: {fileID: 157167080231217789}
   - component: {fileID: 3284716594175782235}
   - component: {fileID: 7201850538215919687}
-  - component: {fileID: 440501906025435210}
-  - component: {fileID: 5568485051632083507}
-  - component: {fileID: 370086324046690398}
   - component: {fileID: 6139979184735650366}
+  - component: {fileID: 5894197361587367112}
+  - component: {fileID: 3817026157998205221}
   m_Layer: 0
   m_Name: Captain Blood Moon Katana
   m_TagString: Player
@@ -414,74 +413,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &440501906025435210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5048f58672c57a84a94d0d082fb5cff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb2d: {fileID: 0}
-  movementSpeed: 8
-  dashForce: 2.5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  jumpForce: 16
-  characterGravityScale: 4
-  doubleJumpForce: 1.5
-  leftWallCheck: {fileID: 6617033573333375749}
-  rightWallCheck: {fileID: 5056371752367157563}
-  groundCheck: {fileID: 1556852264647823986}
-  dashTrailEffect: {fileID: 1691375614550857047}
-  doubleJumpTrailEffect: {fileID: 4722025420248123540}
---- !u!114 &5568485051632083507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06153d8bf2125534890b983c08cce368, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  UltDMG: 70
---- !u!114 &370086324046690398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55b9ced21c794e5488f2bd4ebcb08dfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackPoint: {fileID: 5593513566568407175}
-  attackRange: 1
-  enemyLayerMask:
-    serializedVersion: 2
-    m_Bits: 192
-  health: 4
-  damageType: 0
-  StartSP: 20
-  MaxSP: 40
-  BaseATKDamage: 30
-  SPGain: 1.5
-  ultRequiredSP: 40
-  UltimateSkillCooldown: 20
-  SPRegenBoost: 0
-  currentATKDamage: 0
-  currentSP: 0
-  ATKAllowed: 1
 --- !u!70 &6139979184735650366
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -517,6 +448,69 @@ CapsuleCollider2D:
   m_Offset: {x: -0.0014863014, y: -0.05889356}
   m_Size: {x: 0.9016161, y: 1.7093933}
   m_Direction: 0
+--- !u!114 &5894197361587367112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5048f58672c57a84a94d0d082fb5cff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb2d: {fileID: 0}
+  movementSpeed: 8
+  dashForce: 2.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  jumpForce: 16
+  characterGravityScale: 4
+  doubleJumpForce: 1.5
+  leftWallCheck: {fileID: 6617033573333375749}
+  rightWallCheck: {fileID: 5056371752367157563}
+  groundCheck: {fileID: 1556852264647823986}
+  dashTrailEffect: {fileID: 1691375614550857047}
+  doubleJumpTrailEffect: {fileID: 4722025420248123540}
+--- !u!114 &3817026157998205221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d9b8e3a13e4c24ca16deb0ff8cd97b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicDamage: 100
+  damageType: 0
+  criticalRate: 20
+  criticalDamageMultiplier: 150
+  startSP: 20
+  SPRegenRate: 2
+  maxSP: 90
+  basicAttackBaseDMG: 10
+  basicAttackMultiplier: 60
+  waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
+    type: 3}
+  ultimateBaseDamage: 150
+  ultimatePhysicalAttackMultiplier: 100
+  requiredSP: 50
+  maxUltStack: 3
+  ultStackGenerationTime: 10
+  ultStackUsageDelay: 3
+  passiveTriggerChance: 20
+  passiveDamageBuff: 20
+  passiveDuration: 5
+  attackPoint: {fileID: 5593513566568407175}
+  attackRange: 1
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0
