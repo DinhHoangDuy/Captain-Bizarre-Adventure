@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Captain-Bizarre-Adventure-3D.sln"
+    "dotnet.defaultSolution": "Captain-Bizarre-Adventure-3D.sln",
+    "dotnet.preferCSharpExtension": true
 }
