@@ -10,17 +10,19 @@ public class MoonWaveProjectile : MonoBehaviour
     private Rigidbody2D rb;
 
     //Variables
-    public float speed;
-    public LayerMask wallLayer;
-    public LayerMask enemyLayer;
+    [SerializeField] private float speed;
+    [SerializeField] private  LayerMask wallLayer;
+    [SerializeField] private  LayerMask enemyLayer;
 
     #region Wave Damage
         //Wave Damage
-        public float waveDamage;
+        public float waveDamage { get; private set;}
+        public DamageType damageType { get; private set;}
 
-        public void SetWaveDamage(float damage)
+        public void SetWaveDamage(float damage, DamageType DMGType)
         {
             waveDamage = damage;
+            damageType = DMGType;
         }
     #endregion
     private void Awake()
@@ -48,7 +50,7 @@ public class MoonWaveProjectile : MonoBehaviour
         Collider2D hitEnemy = Physics2D.OverlapCircle(transform.position, 0.5f, enemyLayer);
         if (hitEnemy)
         {
-            hitEnemy.GetComponent<DMGInput>().TakeRangeDamage(waveDamage, DamageType.Lightning);
+            hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType);
             Debug.Log("Wave Destroyed by Enemy");
             Destroy(gameObject);
             return;

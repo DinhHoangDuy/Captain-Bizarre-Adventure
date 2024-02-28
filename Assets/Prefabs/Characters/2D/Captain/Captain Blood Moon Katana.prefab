@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 6139979184735650366}
   - component: {fileID: 5894197361587367112}
   - component: {fileID: 3817026157998205221}
+  - component: {fileID: 8460930798486986441}
   m_Layer: 0
   m_Name: Captain Blood Moon Katana
   m_TagString: Player
@@ -466,14 +467,16 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  jumpForce: 16
-  characterGravityScale: 4
-  doubleJumpForce: 1.5
+  jumpForce: 18
+  characterGravityScale: 3
+  fallingGravityScale: 4
+  doubleJumpForce: 1
   leftWallCheck: {fileID: 6617033573333375749}
   rightWallCheck: {fileID: 5056371752367157563}
   groundCheck: {fileID: 1556852264647823986}
   dashTrailEffect: {fileID: 1691375614550857047}
   doubleJumpTrailEffect: {fileID: 4722025420248123540}
+  isLookingRight: 1
 --- !u!114 &3817026157998205221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,22 +498,31 @@ MonoBehaviour:
   maxSP: 90
   basicAttackBaseDMG: 10
   basicAttackMultiplier: 60
+  passiveTriggerChance: 20
   waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
     type: 3}
   ultimateBaseDamage: 150
-  ultimatePhysicalAttackMultiplier: 100
+  ultimateDamageMultiplier: 105
   requiredSP: 50
-  maxUltStack: 3
-  ultStackGenerationTime: 10
-  ultStackUsageDelay: 3
-  passiveTriggerChance: 20
-  passiveDamageBuff: 20
   passiveDuration: 5
   attackPoint: {fileID: 5593513566568407175}
   attackRange: 1
   enemyLayers:
     serializedVersion: 2
     m_Bits: 192
+--- !u!114 &8460930798486986441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc47257a0416bb94b93b2076a77dfae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalDMGBoost: 0
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

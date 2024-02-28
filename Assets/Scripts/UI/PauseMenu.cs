@@ -10,7 +10,6 @@ public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenuPanel;
-    [SerializeField] private UnityEngine.UI.Button pauseButton;
     public static bool isPaused = false;
     //Adapt new Input System
     private PlatformerInputAction platformerInputaction;
@@ -36,7 +35,6 @@ public class PauseMenu : MonoBehaviour
         //Preventing the game automatically paused when started
         Time.timeScale = 1f;
         pauseMenuPanel.SetActive(false);        
-        pauseButton.onClick.AddListener(PauseBtnClick);
     }
 
     // Update is called once per frame
