@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3267595905367962633}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1648860636723790500}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 879430797244042891}
   - component: {fileID: 4722025420248123540}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Double Jump Trail Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8656487302753511447}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightWallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4030414313041973073}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftWallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,9 @@ GameObject:
   - component: {fileID: 5894197361587367112}
   - component: {fileID: 3817026157998205221}
   - component: {fileID: 8460930798486986441}
-  m_Layer: 0
+  - component: {fileID: 2704698798196703481}
+  - component: {fileID: 9161213949794349923}
+  m_Layer: 8
   m_Name: Captain Blood Moon Katana
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -503,13 +505,16 @@ MonoBehaviour:
     type: 3}
   ultimateBaseDamage: 150
   ultimateDamageMultiplier: 105
+  ultimatePassiveBonus: 10
   requiredSP: 50
   passiveDuration: 5
+  passiveDMGBoost: 30
   attackPoint: {fileID: 5593513566568407175}
   attackRange: 1
   enemyLayers:
     serializedVersion: 2
     m_Bits: 192
+  SPBar: {fileID: 0}
 --- !u!114 &8460930798486986441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,6 +528,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalDMGBoost: 0
+--- !u!114 &2704698798196703481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab5fd70a2fb92554792837206e7110a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9161213949794349923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e6f208bd4282a4f83424cc9acb8c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 5
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,7 +563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 854023719993366937}
   - component: {fileID: 1691375614550857047}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Dash Trail Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,7 +707,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5593513566568407175}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Attack Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}

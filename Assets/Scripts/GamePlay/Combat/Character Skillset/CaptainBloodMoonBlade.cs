@@ -8,12 +8,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BoostDMG))]
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
+[RequireComponent(typeof(TakeDMG))]
+[RequireComponent(typeof(SkillButtonManager))]
 public class CaptainBloodMoonBlade : MonoBehaviour
 {
     #region Captain's Skill Set Description
     /*
-    Captain's Back Story: 
-    - A normal human who fall in love with a vampire. He made a vow to seek his love and to protect her from cruel and evil rules that stop them from being together.
     Captain's Skill Set Description:
     - Basic Damage: 100
     - Critical Rate: 20%
@@ -21,7 +21,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     - Damage type: Physical
     - Blood Moon Blade: Captain's basic attack is a 2-hit in a single button. Each hit deals 10 + 60%/70%/80% of Captain's basic attack damage as physical damage.
     - About the Ultimate skill "The Vow under the Moon":
-        + Shoots a wave of energy in a straight line, dealing 150/170 (+ 105% of physical attack) as physical damage to all enemies hit. This attack can't crit.
+        + Shoots a wave of energy in a straight line, dealing 150/170 (+ 105% of physical attack) as physical damage to the first enemy hit. This attack can't crit.
         + "The Vow under the Moon" will grant the "Unbreakable Will" for 5 seconds if the buff is not active.
     - About the Ultimate skill requirement:
         + The skill will use a stack system.
@@ -57,7 +57,10 @@ public class CaptainBloodMoonBlade : MonoBehaviour
             [SerializeField] private float ultimateBaseDamage = 150;
             [SerializeField] private float ultimateDamageMultiplier = 105f;
             [SerializeField] private float ultimatePassiveBonus = 10f;
-            [SerializeField] private int requiredSP = 30;           
+            [SerializeField] private int requiredSP = 30; 
+            [SerializeField] private int requiredHeartStack = 1; //This is for the "Blood for Blood!" skill
+            [SerializeField] private float ultimateCooldown = 10f;
+
         
         //Passive
         [Header("Captain's Passive Attributes")]
@@ -75,12 +78,16 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         private Animator animator;
         private BoostDMG boostDMG;
     #endregion
-    //Current Status
+
+    #region Current Status 
     private bool isPassiveActive = false;
     float basicAttackDamage;
     private bool criticalHit = false;
     public float currentSP { get; private set;}
-    private float ultimateDamage;    
+    private float ultimateDamage;
+    private float currentUltimateCooldown = 0f;
+    public float _currentUltimateCooldown { get { return currentUltimateCooldown; } }
+    #endregion   
 
     #region New Input System
     private PlatformerInputAction platformerInputaction;
@@ -146,10 +153,15 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         {
             currentSP = maxSP;
         }
+        //Update the Ultimate Cooldown
+        if(currentUltimateCooldown > 0)
+        {
+            currentUltimateCooldown -= Time.deltaTime;
+        }
     }
 
     #region Captain Skill Set Methods
-    private void BasicAttack()
+    public void BasicAttack()
     {   
         //Calculate the Basic Attack Damage
         basicAttackDamage = basicAttackBaseDMG + (basicDamage * basicAttackMultiplier / 100);
@@ -170,7 +182,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         //Play the animation
         animator.SetTrigger("Basic Attack");
     }
-    private void UltimateAttack()
+    public void UltimateAttack()
     {
         //Sent the ultimate damage to the wave of energy prefab
         ultimateDamage = ultimateBaseDamage + (basicDamage * ultimateDamageMultiplier / 100);
@@ -196,6 +208,8 @@ public class CaptainBloodMoonBlade : MonoBehaviour
             currentSP -= requiredSP;
             //Play the animation
             animator.SetTrigger("Ultimate");
+            //Set the Ultimate Cooldown
+            currentUltimateCooldown = ultimateCooldown;
 
             //Activate the Passive if it is not active, otherwise, remove the passive
             if(isPassiveActive)
@@ -211,13 +225,20 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     //Ultimate Requirement
     private bool CanCastUltimate()
     {
-        if(currentSP >= requiredSP)
+        if(currentSP >= requiredSP && currentUltimateCooldown <= 0)
         {
             return true;
         }
         else
         {
-            Debug.Log("Not enough SP to cast the Ultimate");
+            if(currentSP < requiredSP)
+            {
+                Debug.Log("Not enough SP to cast the Ultimate");
+            }
+            if(currentUltimateCooldown > 0)
+            {
+                Debug.Log("Ultimate is on cooldown");
+            }            
             return false;
         }
     }

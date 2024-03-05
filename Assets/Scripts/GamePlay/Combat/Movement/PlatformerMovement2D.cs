@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 public class PlatformerMovement2D : MonoBehaviour
 {
     //Adapt the new Input system
-    private PlatformerInputAction platformerInputaction;
+    private PlatformerInputAction inputActions;
     private InputAction horizontalInput;
     private float horizontalMovementValue;
     private InputAction jumpInput;
@@ -79,6 +79,7 @@ public class PlatformerMovement2D : MonoBehaviour
 
     #region Dash
     private bool canDash = true;
+    public bool _canDash { get { return canDash; } }
     private bool isDashing = false;
     private bool dashedOnAir = false;
     private float dashingTime = 0.17f;
@@ -90,22 +91,22 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         CharacterAnimator = GetComponent<Animator>();
-        platformerInputaction = new PlatformerInputAction();
+        inputActions = new PlatformerInputAction();
     }
 
     // This method is called when the object becomes enabled and active.
     // It sets up the input actions for movement, jump, and dash
     private void OnEnable()
     {
-        horizontalInput = platformerInputaction.Player.Movement;
+        horizontalInput = inputActions.Player.Movement;
         horizontalInput.Enable();
 
-        jumpInput = platformerInputaction.Player.Jump;
+        jumpInput = inputActions.Player.Jump;
         jumpInput.performed += JumpPresed;
         jumpInput.canceled += ResetCoyoteTime;
         jumpInput.Enable();
 
-        dashInput = platformerInputaction.Player.Dash;
+        dashInput = inputActions.Player.Dash;
         dashInput.performed += DashPressed;
         dashInput.Enable();
     }    
