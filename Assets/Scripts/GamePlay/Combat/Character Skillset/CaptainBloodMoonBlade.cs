@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(BoostDMG))]
+[RequireComponent(typeof(DamageOutCalculator))]
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
 [RequireComponent(typeof(TakeDMG))]
@@ -56,37 +56,49 @@ public class CaptainBloodMoonBlade : MonoBehaviour
             [SerializeField] private GameObject waveOfEnergyPrefab;
             [SerializeField] private float ultimateBaseDamage = 150;
             [SerializeField] private float ultimateDamageMultiplier = 105f;
+
+            [Tooltip("Ultimate Boost when passive is available")]
             [SerializeField] private float ultimatePassiveBonus = 10f;
-            [SerializeField] private int requiredSP = 30; 
-            [SerializeField] private int requiredHeartStack = 1; //This is for the "Blood for Blood!" skill
+
             [SerializeField] private float ultimateCooldown = 10f;
+            [SerializeField] private int requiredSP = 30;
+
+            [Tooltip("Captain's Ultimate if Blood for Blood is enabled")]
+            [SerializeField] private int requiredHeartStack = 1; //This is for the "Blood for Blood!" skill
 
         
         //Passive
         [Header("Captain's Passive Attributes")]
             [SerializeField] private float passiveDuration = 5f;
             [SerializeField] private int passiveDMGBoost = 30;
-            private PlatformerMovement2D platformerMovement2D;
+        [Header("Captain's Skill Tree")]
+            [SerializeField] private bool bloodForBlood = false;
+            [SerializeField] private int bloodForBloodHeartUse = 1;
+            [SerializeField] private int bloodForBloodBonus = 10;
     #endregion
 
     #region Script Dependencies
         [Header("Script Dependencies")]
+        private PlatformerMovement2D platformerMovement2D;
         [SerializeField] private Transform attackPoint;
         [SerializeField] private float attackRange = 1f;
         [SerializeField] private LayerMask enemyLayers;
+        [SerializeField] private LayerMask destroyableLayers;
         [SerializeField] private SPBar SPBar;
         private Animator animator;
-        private BoostDMG boostDMG;
+        private DamageOutCalculator dmgCalulator;
     #endregion
 
     #region Current Status 
-    private bool isPassiveActive = false;
-    float basicAttackDamage;
+    [SerializeField] private bool isPassiveActive = false;
+    private float basicAttackDamage;
+    private float totalDamageBoost = 0;
     private bool criticalHit = false;
     public float currentSP { get; private set;}
     private float ultimateDamage;
     private float currentUltimateCooldown = 0f;
     public float _currentUltimateCooldown { get { return currentUltimateCooldown; } }
+    public float _ultimateCooldown { get { return ultimateCooldown; } }
     #endregion   
 
     #region New Input System
@@ -108,12 +120,10 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     private void FirePressed()
     {
         BasicAttack();
-        //throw new NotImplementedException();
     }
     private void UltimatePressed()
     {
         UltimateAttack();
-        Debug.Log("Ultimate Pressed");
     }
 
     #endregion
@@ -122,7 +132,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         platformerMovement2D = GetComponent<PlatformerMovement2D>();
-        boostDMG = GetComponent<BoostDMG>();
+        dmgCalulator = GetComponent<DamageOutCalculator>();
     }
     private void Start()    
     {
@@ -165,20 +175,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     {   
         //Calculate the Basic Attack Damage
         basicAttackDamage = basicAttackBaseDMG + (basicDamage * basicAttackMultiplier / 100);
-        basicAttackDamage = boostDMG.BoostDamage(basicAttackDamage);
-        /*
-            Test Case
-            - Captain's basic damage is 100
-            - The basic attack base damage is 10
-            - The basic attack multiplier is 60%
-            - The Passive will add 30% total damage boost
-            - Basic attack damage (no passive, no critical) = 10 + (100 * 60%) = 70
-            - Basic attack damage (with passive, no critical) = 70 + (70 * 30%) = 91
-            - Critical Rate is 20%
-            - Critical Damage Multiplier is 150%
-            - Basic attack damage (no passive, with critical) = 70 * 150% = 105
-            - Basic attack damage (with passive, with critical) = 91 * 150% = 136.5
-        */
+        basicAttackDamage = dmgCalulator.BoostDamage(basicAttackDamage);
         //Play the animation
         animator.SetTrigger("Basic Attack");
     }
@@ -186,26 +183,30 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     {
         //Sent the ultimate damage to the wave of energy prefab
         ultimateDamage = ultimateBaseDamage + (basicDamage * ultimateDamageMultiplier / 100);
-        ultimateDamage = boostDMG.BoostDamage(ultimateDamage);
+        ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
         if(isPassiveActive)
         {
             ultimateDamage += ultimateDamage * ultimatePassiveBonus / 100;
         }
-        /*
-            Test Case:
-            - Captain's basic damage is 100
-            - The ultimate base damage is 150
-            - The ultimate damage multiplier is 105%
-            - Ultimate Damage without passive = 150 + (100 * 105%) = 255
-            - The passive will add 10% more damage to the Ultimate Damage if it is active
-            - Ultimate Damage with passive = 255 + (255 * 10%) = 280.5
-        */
-
-
+        if(bloodForBlood)
+        {
+            PlayerHealth playerHealth = GetComponent<PlayerHealth>();
+            bool hasMoreThanOneHeart = playerHealth.currentHealth > 1;
+            if(hasMoreThanOneHeart)
+            {
+                ultimateDamage += ultimateDamage * bloodForBloodBonus / 100;
+            }
+        }
         //Check if Captain has enough SP and one stack to cast the ultimate
         if(CanCastUltimate())
         {
             currentSP -= requiredSP;
+
+            PlayerHealth playerHealth = GetComponent<PlayerHealth>();
+            if(bloodForBlood && playerHealth.currentHealth > 1)
+            {
+                playerHealth.SacrificiceHealth(bloodForBloodHeartUse);
+            }
             //Play the animation
             animator.SetTrigger("Ultimate");
             //Set the Ultimate Cooldown
@@ -225,22 +226,10 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     //Ultimate Requirement
     private bool CanCastUltimate()
     {
-        if(currentSP >= requiredSP && currentUltimateCooldown <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            if(currentSP < requiredSP)
-            {
-                Debug.Log("Not enough SP to cast the Ultimate");
-            }
-            if(currentUltimateCooldown > 0)
-            {
-                Debug.Log("Ultimate is on cooldown");
-            }            
-            return false;
-        }
+        bool hasEnoughSP = currentSP >= requiredSP;
+        bool isCooldownOver = currentUltimateCooldown <= 0;
+        bool canCast = hasEnoughSP && isCooldownOver;
+        return canCast;
     }
     //Passive
     private Coroutine passiveCoroutine;
@@ -259,8 +248,8 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     private void UltRemovePassive()
     {
         StopCoroutine(ActivatePassive());
+        dmgCalulator.DecreaseDMGBoost(passiveDMGBoost);
         isPassiveActive = false;
-        Debug.Log("Unbreakable Will is inactive: Passive is removed by the Ultimate skill");
     }
         
     private IEnumerator ActivatePassive()
@@ -268,17 +257,11 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         if(!isPassiveActive)
         {
             isPassiveActive = true;
-            boostDMG.IncreaseDMGBoost(passiveDMGBoost);
-            Debug.Log("Unbreakable Will is active");
-        }
-        else if(isPassiveActive)
-        {
-            Debug.Log("Unbreakable Will is refreshed");
+            dmgCalulator.IncreaseDMGBoost(passiveDMGBoost);
         }
         yield return new WaitForSeconds(passiveDuration);
-        boostDMG.DecreaseDMGBoost(passiveDMGBoost);
+        dmgCalulator.DecreaseDMGBoost(passiveDMGBoost);
         isPassiveActive = false;        
-        Debug.Log("Unbreakable Will is inactive: Passive is removed by the duration");
     }
     #endregion
 
@@ -287,7 +270,8 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     {
         //Detect enemies in range of attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-        if(hitEnemies.Length > 0)
+        Collider2D[] hitDestroyables = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, destroyableLayers);
+        if(hitEnemies.Length > 0 || hitDestroyables.Length > 0)
         {
             //SP Regen
             if(currentSP < maxSP)
@@ -318,8 +302,11 @@ public class CaptainBloodMoonBlade : MonoBehaviour
                 enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackCriticalDamage, damageType);
                 criticalHit = false; //This is to reset the critical hit status
             }            
-            enemy.GetComponent<TakeDMG>().TakeDestroyableDamage(1);
-        }        
+        }   
+        foreach (Collider2D destroyable in hitDestroyables)
+        {
+            destroyable.GetComponent<TakeDMG>().TakeDestroyableDamage(1);
+        }
     }
     public void ShootEnergyWave()
     {

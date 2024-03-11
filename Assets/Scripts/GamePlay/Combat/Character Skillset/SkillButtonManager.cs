@@ -6,10 +6,9 @@ using UnityEngine.UI;
 public class SkillButtonManager : MonoBehaviour
 {
     #region Inspector Variables
-    [SerializeField] private Button attackButton;
-    [SerializeField] private Button dashButton;
     [SerializeField] private Button ultButton;
-    [SerializeField] private TextMeshProUGUI ultCooldownText;
+    [SerializeField] private Image ultCooldownImage;
+
     #endregion
 
     #region Script Dependencies
@@ -21,11 +20,6 @@ public class SkillButtonManager : MonoBehaviour
         captainBloodMoonBlade = GetComponent<CaptainBloodMoonBlade>();
         platformerMovement2D = GetComponent<PlatformerMovement2D>();
     }
-    private void Start()
-    {
-        attackButton.onClick.AddListener(TriggerAttack);
-        ultButton.onClick.AddListener(TriggerUltimate);
-    }
 
     private void Update()
     {
@@ -33,26 +27,13 @@ public class SkillButtonManager : MonoBehaviour
         if (captainBloodMoonBlade._currentUltimateCooldown > 0)
         {
             ultButton.interactable = false;
-            ultCooldownText.text = captainBloodMoonBlade._currentUltimateCooldown.ToString("F1");
+            ultCooldownImage.fillAmount += Time.deltaTime / captainBloodMoonBlade._ultimateCooldown;
         }
         else
         {
             ultButton.interactable = true;
-            ultCooldownText.text = "";
+            ultCooldownImage.fillAmount = 0;
         }
         #endregion
-    }
-
-    private void TriggerAttack()
-    {
-        captainBloodMoonBlade.BasicAttack();
-    }
-    private void TriggerUltimate()
-    {
-        captainBloodMoonBlade.UltimateAttack();
-    }
-    private void TriggerDash()
-    {
-        
     }
 }

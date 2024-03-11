@@ -30,14 +30,6 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        // Debug the current health of the player to test the health system
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            TakeDamage(1);
-        }
-    }
 
     private void TakeDamage(int damage)
     {
@@ -60,6 +52,10 @@ public class PlayerHealth : MonoBehaviour
         {
             StartCoroutine(IFrame());
         }
+    }
+    public void SacrificiceHealth(int healthToSacrifice)
+    {
+        currentHealth = Mathf.Clamp(currentHealth - healthToSacrifice, 0, maxHealth);
     }
 
     private IEnumerator IFrame()

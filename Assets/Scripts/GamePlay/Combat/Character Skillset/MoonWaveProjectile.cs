@@ -41,7 +41,6 @@ public class MoonWaveProjectile : MonoBehaviour
         RaycastHit2D hitWall = Physics2D.Raycast(transform.position, transform.right, 0.5f, wallLayer);
         if (hitWall)
         {
-            Debug.Log("Wave Destroyed by Wall");
             Destroy(gameObject);
             return;
         }
@@ -51,7 +50,6 @@ public class MoonWaveProjectile : MonoBehaviour
         if (hitEnemy)
         {
             hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType);
-            Debug.Log("Wave Destroyed by Enemy");
             Destroy(gameObject);
             return;
         }

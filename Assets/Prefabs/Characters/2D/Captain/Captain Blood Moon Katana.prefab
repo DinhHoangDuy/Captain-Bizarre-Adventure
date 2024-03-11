@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 8460930798486986441}
   - component: {fileID: 2704698798196703481}
   - component: {fileID: 9161213949794349923}
+  - component: {fileID: 6662194843668956556}
   m_Layer: 8
   m_Name: Captain Blood Moon Katana
   m_TagString: Player
@@ -500,21 +501,33 @@ MonoBehaviour:
   maxSP: 90
   basicAttackBaseDMG: 10
   basicAttackMultiplier: 60
-  passiveTriggerChance: 20
+  passiveTriggerChance: 10
   waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
     type: 3}
   ultimateBaseDamage: 150
   ultimateDamageMultiplier: 105
   ultimatePassiveBonus: 10
+  ultimateCooldown: 10
   requiredSP: 50
+  requiredHeartStack: 1
   passiveDuration: 5
   passiveDMGBoost: 30
+  bloodForBlood: 0
+  bloodForBloodHeartUse: 1
+  bloodForBloodBonus: 10
+  boilingBlood: 0
+  boilingBloodBoostPerStack: 5
+  boilingBloodMaxBoost: 25
   attackPoint: {fileID: 5593513566568407175}
   attackRange: 1
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 64
+  destroyableLayers:
+    serializedVersion: 2
+    m_Bits: 128
   SPBar: {fileID: 0}
+  isPassiveActive: 0
 --- !u!114 &8460930798486986441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,6 +566,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 5
+--- !u!114 &6662194843668956556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2419b10f4fd2eb547862754b88875731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ultButton: {fileID: 0}
+  ultCooldownImage: {fileID: 0}
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

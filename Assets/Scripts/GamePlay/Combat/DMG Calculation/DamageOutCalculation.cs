@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoostDMG : MonoBehaviour
+public class DamageOutCalculator : MonoBehaviour
 {
     //The total amount of damage boost (uses %)
-    public int totalDMGBoost = 0;
+    [SerializeField] private int totalDMGBoost = 0;
+    public int _totalDMGBoost { get { return totalDMGBoost; } }
     
     //Increase the totalDMGBoost by the amount of the boost
     public void IncreaseDMGBoost(int boost)
