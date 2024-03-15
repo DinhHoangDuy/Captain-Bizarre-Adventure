@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,12 +25,15 @@ public class DamageOutCalculator : MonoBehaviour
         return damage + (damage * totalDMGBoost / 100);
     }
 
-    public void Update()
+    private void Update()
     {
         if(totalDMGBoost < 0)
         {
             totalDMGBoost = 0;
         }
+
+        //Limit the totalDMGBoost as low as 0% and high as MaxValue
+        Mathf.Clamp(totalDMGBoost, 0, int.MaxValue);
     }
 }
 

@@ -3,14 +3,14 @@ using UnityEngine;
 public class TakeDMG : MonoBehaviour
 {
     //Enemy Take Damage
-    public event System.Action<float, DamageType, DamageRange> OnHitDamageReceived;
-    public void TakeMeleeDamage(float damageAmount, DamageType DMGType)
+    public event System.Action<float, DamageType, DamageRange, DamageFromSkill> OnHitDamageReceived;
+    public void TakeMeleeDamage(float damageAmount, DamageType DMGType, DamageFromSkill skill)
     {
-        OnHitDamageReceived?.Invoke(damageAmount, DMGType, DamageRange.Melee);
+        OnHitDamageReceived?.Invoke(damageAmount, DMGType, DamageRange.Melee, skill);
     }
-    public void TakeRangeDamage(float damageAmount, DamageType DMGType)
+    public void TakeRangeDamage(float damageAmount, DamageType DMGType, DamageFromSkill skill)
     {
-        OnHitDamageReceived?.Invoke(damageAmount, DMGType, DamageRange.Range);
+        OnHitDamageReceived?.Invoke(damageAmount, DMGType, DamageRange.Range, skill);
     }
 
     //Destroyable Ojects take Damage
@@ -39,6 +39,11 @@ public enum DamageType
     Fire,
     Ice,
     Lightning
+}
+public enum DamageFromSkill
+{
+    BasicAttack,
+    UltimateSkill
 }
 
 

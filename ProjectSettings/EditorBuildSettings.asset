@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/MainMenu/Welcome.unity
     guid: 8a8f7994753dd67489d0a62c41786d49
@@ -15,19 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu/CG Video.unity
     guid: fe1008817189ec942b9f9237d2173b09
   - enabled: 1
-    path: Assets/Scenes/MainMenu/ChapterSelect.unity
-    guid: 1dee6bf02cb6a834089fd7367854274a
-  - enabled: 1
     path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Darkness Illuminated.unity
     guid: 8132678276ae74a4ba51beb8234e5945
   - enabled: 1
     path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Tutorial.unity
     guid: d85a67c1f5595a84dbc9b18baf5c39b2
-  - enabled: 1
-    path: Assets/Scenes/Stages/AfterTheBloodMoonFades/SelectLevel.unity
-    guid: cf0be436176ef4d45b299de67e7bbb78
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: e69a93576567f7d4588336e196a76ed0,
       type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 2ea68e328b9896345b249167d5c7c22b,
       type: 2}
+  m_UseUCBPForAssetBundles: 0

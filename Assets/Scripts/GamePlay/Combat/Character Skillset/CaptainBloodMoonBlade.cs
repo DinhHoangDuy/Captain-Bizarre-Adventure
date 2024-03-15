@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(DamageOutCalculator))]
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
-[RequireComponent(typeof(TakeDMG))]
 [RequireComponent(typeof(SkillButtonManager))]
 public class CaptainBloodMoonBlade : MonoBehaviour
 {
@@ -18,6 +17,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     - Basic Damage: 100
     - Critical Rate: 20%
     - Critical Damage: 150%
+    - Health: 5 hearts stacks
     - Damage type: Physical
     - Blood Moon Blade: Captain's basic attack is a 2-hit in a single button. Each hit deals 10 + 60%/70%/80% of Captain's basic attack damage as physical damage.
     - About the Ultimate skill "The Vow under the Moon":
@@ -32,7 +32,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active. This Ultimate will be consumed if the wave hits an enemy. 
     - Skill Tree:
         + "Blood for Blood!": When enabled, the Ultimate "The Vow under the Moon" will consume one heart stack to deal 10% more damage. This effect won't trigger if Captain has 1 heart stack left.
-        + "Boiling Blood": When enabled, the more heart stacks Captain lost, the his basic damage will increase by 5% per stack lost (max 5 stacks). 
+        + "The curse of the Rules": When enabled, the Ultimate "The Vow under the Moon" will inflict a curse on the enemy hit, increasing the damage vunerability by 10% for 5 seconds.
     */
     #endregion
 
@@ -40,6 +40,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         [Header("Captain's Skill Set Attributes")]
         [Header("Captain's Basic Attributes")]
             [SerializeField] private float basicDamage = 100;
+            [SerializeField] private float attackRate = 2f;
             [SerializeField] private DamageType damageType = DamageType.Physical;
             [SerializeField] private float criticalRate = 20f;
             [SerializeField] private float criticalDamageMultiplier = 150f;
@@ -63,18 +64,19 @@ public class CaptainBloodMoonBlade : MonoBehaviour
             [SerializeField] private float ultimateCooldown = 10f;
             [SerializeField] private int requiredSP = 30;
 
-            [Tooltip("Captain's Ultimate if Blood for Blood is enabled")]
-            [SerializeField] private int requiredHeartStack = 1; //This is for the "Blood for Blood!" skill
-
         
         //Passive
         [Header("Captain's Passive Attributes")]
             [SerializeField] private float passiveDuration = 5f;
-            [SerializeField] private int passiveDMGBoost = 30;
+        [SerializeField] private int passiveDMGBoost = 30;
+
         [Header("Captain's Skill Tree")]
-            [SerializeField] private bool bloodForBlood = false;
-            [SerializeField] private int bloodForBloodHeartUse = 1;
-            [SerializeField] private int bloodForBloodBonus = 10;
+            [SerializeField] private bool bloodForBlood = false; //Blood for Blood! skill is disabled by default (not upgraded)
+            [SerializeField] private int bloodForBloodHeartUse = 1; //1 heart stack is required to use the blood for blood bonus
+            [SerializeField] private int bloodForBloodBonus = 10; //10% more damage
+            [SerializeField] private bool curseOfTheRules = false;
+            [SerializeField] private int curseVunerability = 10;
+            [SerializeField] private int curseDuration = 5;         
     #endregion
 
     #region Script Dependencies
@@ -92,6 +94,7 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     #region Current Status 
     [SerializeField] private bool isPassiveActive = false;
     private float basicAttackDamage;
+    private float nextAttackTime = 0f;
     private float totalDamageBoost = 0;
     private bool criticalHit = false;
     public float currentSP { get; private set;}
@@ -112,14 +115,8 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         platformerInputaction = new PlatformerInputAction();
         FireInput = platformerInputaction.Player.Fire;
         UltimateInput = platformerInputaction.Player.Ultimate;
-        FireInput.performed += ctx => FirePressed();
         UltimateInput.performed += ctx => UltimatePressed();
         platformerInputaction.Enable();
-    }
-
-    private void FirePressed()
-    {
-        BasicAttack();
     }
     private void UltimatePressed()
     {
@@ -167,6 +164,16 @@ public class CaptainBloodMoonBlade : MonoBehaviour
         if(currentUltimateCooldown > 0)
         {
             currentUltimateCooldown -= Time.deltaTime;
+        }
+
+        //Attack Rate
+        if(Time.time >= nextAttackTime)
+        {
+            if (platformerInputaction.Player.Fire.triggered)
+            {
+                BasicAttack();
+                nextAttackTime = Time.time + 1f / attackRate;
+            }
         }
     }
 
@@ -294,12 +301,12 @@ public class CaptainBloodMoonBlade : MonoBehaviour
             }
             if(!criticalHit)
             {
-                enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackDamage, damageType);
+                enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackDamage, damageType, DamageFromSkill.BasicAttack);
             }
             else
             {
                 float basicAttackCriticalDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
-                enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackCriticalDamage, damageType);
+                enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackCriticalDamage, damageType, DamageFromSkill.BasicAttack);
                 criticalHit = false; //This is to reset the critical hit status
             }            
         }   
@@ -323,6 +330,12 @@ public class CaptainBloodMoonBlade : MonoBehaviour
 
         GameObject waveOfEnergy = Instantiate(waveOfEnergyPrefab, transform.position, waveRotation);
         waveOfEnergy.GetComponent<MoonWaveProjectile>().SetWaveDamage(ultimateDamage, damageType);
+        if(curseOfTheRules)
+        {
+            waveOfEnergy.GetComponent<MoonWaveProjectile>().isCursedByTheRules = true;
+            waveOfEnergy.GetComponent<MoonWaveProjectile>().curseVunerability = curseVunerability;
+            waveOfEnergy.GetComponent<MoonWaveProjectile>().curseDuration = curseDuration;
+        }
     }
     #endregion    
 

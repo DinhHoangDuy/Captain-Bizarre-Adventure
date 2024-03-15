@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TakeDMG))]
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private int _maxHealth = 5;
+    [SerializeField] private int _maxHealth;
     public int maxHealth { get { return _maxHealth; } }
     public int currentHealth { get; private set; }
     private bool isInvincible = false;
