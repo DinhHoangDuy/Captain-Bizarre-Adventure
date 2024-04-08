@@ -95,7 +95,6 @@ public class CaptainBloodMoonBlade : MonoBehaviour
     [SerializeField] private bool isPassiveActive = false;
     private float basicAttackDamage;
     private float nextAttackTime = 0f;
-    private float totalDamageBoost = 0;
     private bool criticalHit = false;
     public float currentSP { get; private set;}
     private float ultimateDamage;

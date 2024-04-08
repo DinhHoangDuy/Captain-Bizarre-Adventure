@@ -142,7 +142,6 @@ public class DialogueManager : MonoBehaviour
         }
 
         if(Input.GetButtonDown("Submit"))
-        //if(InputManager.GetInstance().GetSubmitPressed())
         {
             if(!DialogueHidden)
             {
