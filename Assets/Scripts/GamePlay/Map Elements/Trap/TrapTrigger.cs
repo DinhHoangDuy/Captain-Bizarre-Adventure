@@ -26,4 +26,13 @@ public class TrapTrigger : MonoBehaviour
             }
         }
     }
+
+    private void Update()
+    {
+        // Always check if the trap is not triggered if the trap is not a pernamant trigger, and there's not a player in the trigger area
+        if (!pernamantTrigger && !isTriggered)
+        {
+            isTriggered = false;
+        }
+    }
 }

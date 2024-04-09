@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(SpriteRenderer))]
-//[RequireComponent(typeof(BoxCollider2D))]
-[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(BoxCollider2D))]
+// [RequireComponent(typeof(CapsuleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 public class PlatformerMovement2D : MonoBehaviour
@@ -21,6 +21,7 @@ public class PlatformerMovement2D : MonoBehaviour
         such as directions, etc)*/
     [HideInInspector]public Rigidbody2D rb2d;
     private Animator CharacterAnimator;
+    private BoxCollider2D CharacterCollider;
 
     //Player status (movement blocked, movement slowed, health...)
     public static bool blocked = false;
@@ -43,7 +44,7 @@ public class PlatformerMovement2D : MonoBehaviour
     [Header("Character Controller Dependencies")]
     [SerializeField] private GameObject leftWallCheck;
     [SerializeField] private GameObject rightWallCheck;
-    [SerializeField] private GameObject groundCheck;
+    // [SerializeField] private GameObject groundCheck;
 
     [Header("Character Effects")]
     [SerializeField] private TrailRenderer dashTrailEffect;
@@ -91,6 +92,7 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         CharacterAnimator = GetComponent<Animator>();
+        CharacterCollider = GetComponent<BoxCollider2D>();
         inputActions = new PlatformerInputAction();
     }
 
@@ -288,8 +290,8 @@ public class PlatformerMovement2D : MonoBehaviour
     }
     public bool UpdateIsGrounded()
     {
-        //isGrounded = Physics2D.BoxCast(CharacterCollider.bounds.center, CharacterCollider.bounds.size, 0f, Vector2.down, 0.2f, groundLayer);
-        isGrounded = Physics2D.OverlapCircle(groundCheck.transform.position, 0.2f, groundLayer);
+        isGrounded = Physics2D.BoxCast(CharacterCollider.bounds.center, CharacterCollider.bounds.size, 0f, Vector2.down, 0.2f, groundLayer);
+        // isGrounded = Physics2D.OverlapCircle(groundCheck.transform.position, 0.2f, groundLayer);
         if (isGrounded)
         {
             airJumpCount = 0;
@@ -361,6 +363,6 @@ public class PlatformerMovement2D : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(leftWallCheck.transform.position, 0.2f);
         Gizmos.DrawWireSphere(rightWallCheck.transform.position, 0.2f);
-        Gizmos.DrawWireSphere(groundCheck.transform.position, 0.2f);
+        // Gizmos.DrawWireSphere(groundCheck.transform.position, 0.2f);
     }
 }

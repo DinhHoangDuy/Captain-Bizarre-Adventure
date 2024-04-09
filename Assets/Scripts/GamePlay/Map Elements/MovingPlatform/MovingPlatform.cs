@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    public Transform[] points;
-    public float speed;
+    [SerializeField] private Transform[] points;
+    [SerializeField] private float speed;
+    [SerializeField] private float delayTime;
     private int currentPoint;
+    private bool isMoving = true;
     private Vector3 target;
 
     void Start()
@@ -16,16 +18,27 @@ public class MovingPlatform : MonoBehaviour
 
     void Update()
     {
+        if(!isMoving)
+        {
+            return;
+        }
         if (transform.position == target)
         {
             currentPoint++;
             if (currentPoint >= points.Length)
             {
-                currentPoint = 0;
+                currentPoint = 0;   
             }
             target = points[currentPoint].position;
+            StartCoroutine(DelayMovement(delayTime));
         }
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+    }
+    private IEnumerator DelayMovement(float delayTime)
+    {
+        isMoving = false;
+        yield return new WaitForSeconds(delayTime);
+        isMoving = true;
     }
 
     private void OnDrawGizmos()

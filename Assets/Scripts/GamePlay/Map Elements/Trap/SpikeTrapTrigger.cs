@@ -69,7 +69,8 @@ public class SpikeTrapTrigger : MonoBehaviour
                 Activate();
                 isTriggered = true;
             }
-            else if (!trigger.TriggerStatus() && isTriggered)
+            
+            if (!trigger.TriggerStatus() && isTriggered)
             {
                 Deactivate();
                 isTriggered = false;

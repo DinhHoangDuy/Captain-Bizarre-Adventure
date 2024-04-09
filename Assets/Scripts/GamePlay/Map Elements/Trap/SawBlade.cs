@@ -18,6 +18,7 @@ public class SawBlade : MonoBehaviour
     private void Awake()
     {
         SawDamageArea = GetComponent<CircleCollider2D>();
+        SawDamageArea.isTrigger = true;
     }
 
     [SerializeField] private int sawBladeDamage = 1;
