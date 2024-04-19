@@ -12,15 +12,15 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject pauseMenuPanel;
     public static bool isPaused = false;
     //Adapt new Input System
-    private PlatformerInputAction platformerInputaction;
+    private PlayerInput playerInput;
     private InputAction pauseInput;
     private void Awake()
     {
-        platformerInputaction = new PlatformerInputAction();
+        playerInput = new PlayerInput();
     }
     private void OnEnable()
     {
-        pauseInput = platformerInputaction.Player.Pause;
+        pauseInput = playerInput.Game.Pause;
         pauseInput.performed += PauseMenuPanel;
         pauseInput.Enable();
     }

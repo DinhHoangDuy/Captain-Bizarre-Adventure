@@ -5,28 +5,33 @@ using UnityEngine;
 using UnityEngine.UI;
 public class SPBar : MonoBehaviour
 {
-    private Slider slider;
-    public TextMeshProUGUI SPText;
+    // Use a Slider instead of an Image to represent the SP bar
+    private Slider spBar;
+    [SerializeField] private TextMeshProUGUI spText; // Reference to the text displaying the SP value
+    private void Start()
+    {
+        // This script is attached to the SP bar Game Object containing a Slider and a TextMeshProUGUI
+        // Later on, the game object holding this script will be used and controlled by the PlayerSP script
 
-    private void Awake()
-    {
-        slider = GetComponent<Slider>();
+        spBar = GetComponent<Slider>();
+        // Defensive programming to make sure the SP bar is not null
+        if (spBar == null)
+        {
+            Debug.LogError("SP Bar is null!!");
+            return;
+        }
+        if(spText == null)
+        {
+            Debug.LogError("SP Text is null!!");
+            return;
+        }
     }
 
-    public void SetMaxSP(int sp)
+    public void SetSP(int currentSP, int maxSP)
     {
-        slider.maxValue = sp;
-    }
-    public void SetStartSP(int sp)
-    {
-        slider.value = sp;
-    }
-    public void SetSP(float sp)
-    {
-        slider.value = sp;
-    }
-    public void SetSPText(float sp)
-    {
-        SPText.text = sp + " / " + slider.maxValue;
+        // Set the SP value and the max SP value of the SP bar
+        spBar.value = currentSP;
+        spBar.maxValue = maxSP;
+        spText.text = currentSP + "/" + maxSP;
     }
 }

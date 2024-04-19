@@ -24,7 +24,7 @@ public class HealthBar : MonoBehaviour
             return;
         }
         //Get the player's health script to access the health value, and set the max health value of the health bar
-        totalHealthBar.fillAmount = (float)(playerHealth.maxHealth / 10.0);
+        totalHealthBar.fillAmount = (float)(playerHealth._maxHealth / 10.0);
     }
     private void Update()
     {

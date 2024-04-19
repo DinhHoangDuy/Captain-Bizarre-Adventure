@@ -251,14 +251,17 @@ GameObject:
   - component: {fileID: 7069759243441496267}
   - component: {fileID: 157167080231217789}
   - component: {fileID: 3284716594175782235}
+  - component: {fileID: 6378479614338835769}
   - component: {fileID: 7201850538215919687}
-  - component: {fileID: 5894197361587367112}
-  - component: {fileID: 3817026157998205221}
   - component: {fileID: 8460930798486986441}
   - component: {fileID: 2704698798196703481}
   - component: {fileID: 9161213949794349923}
-  - component: {fileID: 6662194843668956556}
-  - component: {fileID: 6378479614338835769}
+  - component: {fileID: 3961857234049573280}
+  - component: {fileID: 9035116815877175140}
+  - component: {fileID: 2791965336337402899}
+  - component: {fileID: 6975911404759449875}
+  - component: {fileID: 7766288687697898911}
+  - component: {fileID: 4593632438534977704}
   m_Layer: 8
   m_Name: Captain Blood Moon Katana
   m_TagString: Player
@@ -368,155 +371,6 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!95 &7201850538215919687
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dcb7e05c34f76c7498211ddb52a287d3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5894197361587367112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5048f58672c57a84a94d0d082fb5cff8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb2d: {fileID: 0}
-  movementSpeed: 8
-  dashForce: 2.5
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  jumpForce: 18
-  characterGravityScale: 3
-  fallingGravityScale: 4
-  doubleJumpForce: 1
-  leftWallCheck: {fileID: 6617033573333375749}
-  rightWallCheck: {fileID: 5056371752367157563}
-  dashTrailEffect: {fileID: 1691375614550857047}
-  doubleJumpTrailEffect: {fileID: 4722025420248123540}
-  isLookingRight: 1
---- !u!114 &3817026157998205221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41d9b8e3a13e4c24ca16deb0ff8cd97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  basicDamage: 100
-  attackRate: 2
-  damageType: 0
-  criticalRate: 20
-  criticalDamageMultiplier: 150
-  startSP: 20
-  SPRegenRate: 2
-  maxSP: 90
-  basicAttackBaseDMG: 10
-  basicAttackMultiplier: 60
-  passiveTriggerChance: 10
-  waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
-    type: 3}
-  ultimateBaseDamage: 150
-  ultimateDamageMultiplier: 105
-  ultimatePassiveBonus: 10
-  ultimateCooldown: 10
-  requiredSP: 50
-  passiveDuration: 5
-  passiveDMGBoost: 30
-  bloodForBlood: 0
-  bloodForBloodHeartUse: 1
-  bloodForBloodBonus: 10
-  curseOfTheRules: 0
-  curseVunerability: 10
-  curseDuration: 5
-  attackPoint: {fileID: 5593513566568407175}
-  attackRange: 1
-  enemyLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  destroyableLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  SPBar: {fileID: 0}
-  isPassiveActive: 0
---- !u!114 &8460930798486986441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc47257a0416bb94b93b2076a77dfae4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalDMGBoost: 0
---- !u!114 &2704698798196703481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab5fd70a2fb92554792837206e7110a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &9161213949794349923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57e6f208bd4282a4f83424cc9acb8c3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 5
---- !u!114 &6662194843668956556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2419b10f4fd2eb547862754b88875731, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ultButton: {fileID: 0}
-  ultCooldownImage: {fileID: 0}
 --- !u!61 &6378479614338835769
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -563,6 +417,196 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.9030485, y: 1.6822062}
   m_EdgeRadius: 0
+--- !u!95 &7201850538215919687
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dcb7e05c34f76c7498211ddb52a287d3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8460930798486986441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc47257a0416bb94b93b2076a77dfae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalDMGBoost: 0
+--- !u!114 &2704698798196703481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab5fd70a2fb92554792837206e7110a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9161213949794349923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e6f208bd4282a4f83424cc9acb8c3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterHit: 0
+--- !u!114 &3961857234049573280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fca54846b9e438da840f72e124ea02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spBar: {fileID: 0}
+--- !u!114 &9035116815877175140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8a9011df51d9245bd3c531d7d4f65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ultimateIcon: {fileID: 0}
+--- !u!114 &2791965336337402899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d805dbfe5b5fe5087837387b64c8f2c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  speed: 9
+  jumpForce: 15
+  dashForce: 2.5
+--- !u!114 &6975911404759449875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ec65a722dd6b42bf9e275354f9b496e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb2d: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  characterGravityScale: 3
+  fallingGravityScale: 4
+  doubleJumpForce: 1
+  leftWallCheck: {fileID: 6617033573333375749}
+  rightWallCheck: {fileID: 5056371752367157563}
+  dashTrailEffect: {fileID: 1691375614550857047}
+  doubleJumpTrailEffect: {fileID: 4722025420248123540}
+  isLookingRight: 1
+  jumpPressed: 0
+  dashPressed: 0
+--- !u!114 &7766288687697898911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8286d775892cb4a1bcbb84140bfd163, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4593632438534977704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86928302149dfb7f8985e1013663476d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicDamage: 100
+  attackRate: 2
+  damageType: 0
+  criticalRate: 20
+  criticalDamageMultiplier: 150
+  startSP: 15
+  SPRegenRate: 1
+  maxSP: 70
+  basicAttackBaseDMG: 10
+  basicAttackMultiplier: 60
+  passiveTriggerChance: 20
+  waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
+    type: 3}
+  ultimateBaseDamage: 150
+  ultimateDamageMultiplier: 105
+  ultimatePassiveBonus: 10
+  ultimateCooldown: 10
+  requiredSP: 30
+  passiveDuration: 5
+  passiveDMGBoost: 30
+  bloodForBlood: 0
+  bloodForBloodHeartUse: 1
+  bloodForBloodBonus: 10
+  curseOfTheRules: 0
+  curseVunerability: 10
+  curseDuration: 5
+  attackPoint: {fileID: 5593513566568407175}
+  attackRange: 1
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  destroyableLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  isPassiveActive: 0
+  fireTriggered: 0
+  ultimateTriggered: 0
+  isAttacking: 0
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

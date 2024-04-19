@@ -1,18 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(TakeDMG))]
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] private int _maxHealth;
-    public int maxHealth { get { return _maxHealth; } }
+    private int maxHealth;
+    private CharacterStats characterStats;
+    private Rigidbody2D rb2d;
+    public int _maxHealth { get { return maxHealth; } }
     public int currentHealth { get; private set; }
+
+    [HideInInspector] public bool characterHit = false;
+    public bool isDead { get { return currentHealth <= 0; } }
     private bool isInvincible = false;
 
     private void Awake()
     {
+        rb2d = GetComponent<Rigidbody2D>();
+        characterStats = GetComponent<CharacterStats>();
+        maxHealth = characterStats._maxHealth;
         // Defensive programming to make sure the max health is not 0 or less than 0
         if(maxHealth <= 0)
         {
@@ -38,14 +46,16 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Player is Invincible!");
             return;
         }
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
 
+        // Knockback the player
+        float pushForce = 60f;
+        // Clamp the current health to be between 0 and max health
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        characterHit = true;
         if(currentHealth <= 0)
         {
             currentHealth = 0;
             Debug.Log("Player is Dead");
-
-            //Destroy the player when the health is 0
             Destroy(gameObject);
         }
         else
@@ -79,7 +89,7 @@ public class PlayerHealth : MonoBehaviour
 
         // Ensure the sprite is enabled at the end
         spriteRenderer.enabled = true;
-
+        characterHit = false;
         isInvincible = false;
         Debug.Log("Player is no longer Invincible! Be careful!");
     }
