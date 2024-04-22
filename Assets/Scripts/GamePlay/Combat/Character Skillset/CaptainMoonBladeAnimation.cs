@@ -26,7 +26,7 @@ public class CaptainMoonBladeAnimation : AnimatorCoder
         }
         if(skillset.ultimateTriggered)
         {
-            platformerMovement2D.rb2d.velocity = Vector2.zero;
+            PlatformerMovement2D.rb2d.velocity = Vector2.zero;
             Play(new(Animations.SheatheATK, true, new()));
             skillset.ultimateTriggered = false;
         }

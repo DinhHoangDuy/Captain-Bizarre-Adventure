@@ -19,7 +19,7 @@ public class PlatformerMovement2D : MonoBehaviour
 
     /*Player components (Some of them will be taken from the character, others will be used for other stuff
         such as directions, etc)*/
-    [HideInInspector]public Rigidbody2D rb2d;
+    [HideInInspector]public static Rigidbody2D rb2d;
     public Rigidbody2D _rigidbody2D { get { return rb2d; } }
     private BoxCollider2D CharacterCollider;
     private CharacterStats characterStats;

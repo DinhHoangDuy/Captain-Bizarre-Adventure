@@ -23,7 +23,7 @@ Tôi hiểu, nơi đây chính là điểm cuối của hành trình, thời gia
 Sau nhiều năm trôi qua, cơ thể tôi đã hòa làm một với dấu vết của cô ấy, quần áo trên người cũng biến thành hình dáng búp bê Hoeru trong kí ức của cô ấy.
 Gặp lại nhau như thế này có phải rất trẻ con không nhỉ? Nhưng... em rất thích búp bê Hoeru mà, phải không. #speaker:Captain
 Bất luận cần bao nhiêu thời gian, bất luận em đang ở nơi đâu, anh đều sẽ mang em quay về, anh đã trải qua vạn năm rồi, lần này anh nhất định phải...
-Ôm chặt lấy em!#video:Luna Happy End VN
+Ôm chặt lấy em! #video:Luna_HappyEnding_VN
 ->KhoangKhacTrungPhung
 ===KhoangKhacTrungPhung===
 Đoạn này cần bổ sung thêm
