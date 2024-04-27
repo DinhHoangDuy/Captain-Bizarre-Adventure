@@ -41,7 +41,6 @@ public class CaptainMoonBladeAnimation : AnimatorCoder
     {
         SetBool(Parameters.JUMPING, platformerMovement2D._isGoingUp);
         SetBool(Parameters.GROUNDED, platformerMovement2D.UpdateIsGrounded());
-        SetBool(Parameters.MIDAIR, platformerMovement2D._isOnAir);
         SetBool(Parameters.FALLING, platformerMovement2D._isFalling);
         SetBool(Parameters.DASHING, platformerMovement2D._isDashing);
     }

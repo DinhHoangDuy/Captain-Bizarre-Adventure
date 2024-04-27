@@ -13,6 +13,9 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth { get; private set; }
 
     [HideInInspector] public bool characterHit = false;
+    [SerializeField] private float pushForce = 60f;
+    private float pushTimer = 1f;
+    private float pushTimerRemaining = 0;
     public bool isDead { get { return currentHealth <= 0; } }
     private bool isInvincible = false;
 
@@ -46,9 +49,6 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Player is Invincible!");
             return;
         }
-
-        // Knockback the player
-        float pushForce = 60f;
         // Clamp the current health to be between 0 and max health
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
         characterHit = true;

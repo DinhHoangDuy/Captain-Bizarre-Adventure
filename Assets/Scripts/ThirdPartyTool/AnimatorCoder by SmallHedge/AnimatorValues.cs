@@ -12,7 +12,6 @@ namespace SHG.AnimatorCoder
         SheatheATK,
         Jump,
         Falling,
-        MidAir,
         Hit,
         Death,
         RESET
@@ -23,8 +22,8 @@ namespace SHG.AnimatorCoder
     {
         GROUNDED,
         JUMPING,
+        
         FALLING,
-        MIDAIR,
         DASHING
     }
 }

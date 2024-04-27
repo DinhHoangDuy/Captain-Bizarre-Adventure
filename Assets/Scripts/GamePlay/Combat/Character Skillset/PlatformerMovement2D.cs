@@ -72,8 +72,6 @@ public class PlatformerMovement2D : MonoBehaviour
     public bool _isFalling { get { return isFalling; } }
     private bool isGoingUp = false;
     public bool _isGoingUp { get { return isGoingUp; } }
-    private bool isOnAir = false;
-    public bool _isOnAir { get { return isOnAir; } }
 
     #endregion
 
@@ -180,11 +178,7 @@ public class PlatformerMovement2D : MonoBehaviour
         }
         #endregion
         #region Falling Speed
-        //Change the gravity scale based on the character status
-        if (isOnAir)
-        {
-            rb2d.gravityScale = characterGravityScale * 0.5f;
-        }
+
         if(isFalling)
         {
             rb2d.gravityScale = fallingGravityScale;
@@ -375,9 +369,7 @@ public class PlatformerMovement2D : MonoBehaviour
         isRunning = horizontalMovementValue != 0;
         isGoingUp = !isGrounded && rb2d.velocity.y > 0.1;
         isFalling = !isGrounded && rb2d.velocity.y < -0.1;
-        //isOnAir returns true if the character is not grounded and velocity.y is in between -0.1 and 0.1
-        isOnAir = !isGrounded && (rb2d.velocity.y >= -0.1 && rb2d.velocity.y <= 0.1);
-        if (isOnAir || isFalling) doubleJumpTrailEffect.emitting = false;
+        if (isFalling) doubleJumpTrailEffect.emitting = false;
 
     }
 

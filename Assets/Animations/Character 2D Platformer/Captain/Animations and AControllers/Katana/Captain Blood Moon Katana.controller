@@ -26,6 +26,24 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-6598984231239312698
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d702b7527d74c224bbd66b192fc7b5a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameter: 1
+  target: 1
+  nextAnimations:
+  - animation: 4
+    lockLayer: 0
+    crossfade: 0
 --- !u!1102 &-5045570726659334613
 AnimatorState:
   serializedVersion: 6
@@ -69,7 +87,7 @@ MonoBehaviour:
   target: 1
   nextAnimations:
   - animation: 5
-    lockLayer: 1
+    lockLayer: 0
     crossfade: 0
 --- !u!1107 &-1972698257240491621
 AnimatorStateMachine:
@@ -88,16 +106,13 @@ AnimatorStateMachine:
     m_Position: {x: 610, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5045570726659334613}
-    m_Position: {x: 820, y: -30, z: 0}
+    m_Position: {x: 820, y: -20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4414196324446067492}
-    m_Position: {x: 820, y: 70, z: 0}
+    m_Position: {x: 820, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 677922376883459331}
     m_Position: {x: 1030, y: 60, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 4534203924561644159}
-    m_Position: {x: 820, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1134214233170423049}
     m_Position: {x: 1030, y: -20, z: 0}
@@ -324,6 +339,7 @@ AnimatorState:
   m_Transitions: []
   m_StateMachineBehaviours:
   - {fileID: 9087636776954280620}
+  - {fileID: -6598984231239312698}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -333,32 +349,6 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: f7abcfd22413958418751a8528d3c96c, type: 2}
-  m_Tag: 
-  m_SpeedParameter: 
-  m_MirrorParameter: 
-  m_CycleOffsetParameter: 
-  m_TimeParameter: 
---- !u!1102 &4534203924561644159
-AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: MidAir
-  m_Speed: 1
-  m_CycleOffset: 0
-  m_Transitions: []
-  m_StateMachineBehaviours: []
-  m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
-  m_Mirror: 0
-  m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
-  m_CycleOffsetParameterActive: 0
-  m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: f5a781372a95a0644a24c19b541c91ec, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -379,6 +369,6 @@ MonoBehaviour:
   parameter: 0
   target: 1
   nextAnimations:
-  - animation: 9
+  - animation: 8
     lockLayer: 0
     crossfade: 0
