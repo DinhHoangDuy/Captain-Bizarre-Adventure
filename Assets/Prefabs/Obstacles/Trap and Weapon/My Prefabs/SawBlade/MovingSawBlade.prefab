@@ -173,5 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c22346b4c9b87716d9670c3eee445fb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points: []
+  points:
+  - {fileID: 0}
+  - {fileID: 0}
   speed: 3
+  delayTime: 0

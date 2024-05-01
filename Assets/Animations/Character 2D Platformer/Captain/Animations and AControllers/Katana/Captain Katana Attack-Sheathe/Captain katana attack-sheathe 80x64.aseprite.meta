@@ -332,6 +332,7 @@ ScriptedImporter:
     cells:
     - name: Captain katana attack-sheathe 80x64_Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 26
         y: 16
@@ -340,6 +341,7 @@ ScriptedImporter:
       spriteId: 400f3fe99af00c34dbc0009ddc5efb05
     - name: Captain katana attack-sheathe 80x64_Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 23
         y: 16
@@ -348,6 +350,7 @@ ScriptedImporter:
       spriteId: 14271e61171a88942b157d117c05e9d6
     - name: Captain katana attack-sheathe 80x64_Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 16
@@ -356,6 +359,7 @@ ScriptedImporter:
       spriteId: cb6c776c6bccebd479e5eaadd51fba10
     - name: Captain katana attack-sheathe 80x64_Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 16
@@ -364,6 +368,7 @@ ScriptedImporter:
       spriteId: d91827ce97ce6e747940231c4b015048
     - name: Captain katana attack-sheathe 80x64_Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 16
@@ -372,6 +377,7 @@ ScriptedImporter:
       spriteId: 33a4d6683023d64418071e9df10b02b4
     - name: Captain katana attack-sheathe 80x64_Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 16
@@ -380,6 +386,7 @@ ScriptedImporter:
       spriteId: 32c3f16dbd49cce4eaa385de0b403d19
     - name: Captain katana attack-sheathe 80x64_Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 27
         y: 16
@@ -388,6 +395,7 @@ ScriptedImporter:
       spriteId: ac2ae31481e76ca428e3c0b0d815436c
     - name: Captain katana attack-sheathe 80x64_Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 26
         y: 16
@@ -396,6 +404,7 @@ ScriptedImporter:
       spriteId: 9e2ee5fa2e1ef8247b2348c7c702c8d6
     - name: Captain katana attack-sheathe 80x64_Frame_8
       frameIndex: 8
+      additiveSortOrder: 0
       cellRect:
         x: 26
         y: 16
@@ -404,6 +413,7 @@ ScriptedImporter:
       spriteId: 74e3e4145492ee54aadc8d38539607ea
     - name: Captain katana attack-sheathe 80x64_Frame_9
       frameIndex: 9
+      additiveSortOrder: 0
       cellRect:
         x: 26
         y: 16

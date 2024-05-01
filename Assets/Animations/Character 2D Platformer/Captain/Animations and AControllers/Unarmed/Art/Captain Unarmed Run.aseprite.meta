@@ -292,6 +292,7 @@ ScriptedImporter:
     cells:
     - name: Captain Unarmed Run_Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 20
@@ -300,6 +301,7 @@ ScriptedImporter:
       spriteId: d439bc06ebbabb64abd28b89a3c6c6b4
     - name: Captain Unarmed Run_Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 20
         y: 21
@@ -308,6 +310,7 @@ ScriptedImporter:
       spriteId: 01c2263b4a4e10e4ea380efab7aafafe
     - name: Captain Unarmed Run_Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 18
@@ -316,6 +319,7 @@ ScriptedImporter:
       spriteId: 0d57e303345b8a241a20722c894afd68
     - name: Captain Unarmed Run_Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 20
         y: 20
@@ -324,6 +328,7 @@ ScriptedImporter:
       spriteId: f77a137dc23d7de45ae790a47ce9ecb6
     - name: Captain Unarmed Run_Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 20
@@ -332,6 +337,7 @@ ScriptedImporter:
       spriteId: 6ac9f44653420734d9bcaeabdd8cf58b
     - name: Captain Unarmed Run_Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 21
@@ -340,6 +346,7 @@ ScriptedImporter:
       spriteId: abe10e840ec120c4da5cb3d9ef1890bc
     - name: Captain Unarmed Run_Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 20
@@ -348,6 +355,7 @@ ScriptedImporter:
       spriteId: 846630da052f64946b17b1a9e98be26f
     - name: Captain Unarmed Run_Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 18

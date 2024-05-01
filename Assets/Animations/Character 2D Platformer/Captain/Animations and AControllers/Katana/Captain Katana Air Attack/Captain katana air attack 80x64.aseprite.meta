@@ -312,6 +312,7 @@ ScriptedImporter:
     cells:
     - name: Captain katana air attack 80x64_Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 23
         y: 10
@@ -320,6 +321,7 @@ ScriptedImporter:
       spriteId: 27e9595219c714342b0409cfd6e4f7fb
     - name: Captain katana air attack 80x64_Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 20
         y: 10
@@ -328,6 +330,7 @@ ScriptedImporter:
       spriteId: 2ecc04c0a4e0c914f914a188176cf525
     - name: Captain katana air attack 80x64_Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 10
@@ -336,6 +339,7 @@ ScriptedImporter:
       spriteId: 03b2d4dbcf8caf5449adba03258ff144
     - name: Captain katana air attack 80x64_Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 19
         y: 10
@@ -344,6 +348,7 @@ ScriptedImporter:
       spriteId: 41dcb2fd8f4f505489064bf0dc23e7bd
     - name: Captain katana air attack 80x64_Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 10
@@ -352,6 +357,7 @@ ScriptedImporter:
       spriteId: 21883c845d99af3428257cea0e969630
     - name: Captain katana air attack 80x64_Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 21
         y: 10
@@ -360,6 +366,7 @@ ScriptedImporter:
       spriteId: 16f19dbdd36c9ae44be60bd8b0b12c2c
     - name: Captain katana air attack 80x64_Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 33
         y: 10
@@ -368,6 +375,7 @@ ScriptedImporter:
       spriteId: 21831c1d88fe1184ba99f5175e17f0f2
     - name: Captain katana air attack 80x64_Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 33
         y: 10
@@ -376,6 +384,7 @@ ScriptedImporter:
       spriteId: 2ddb0f79c5d711f469fdacbabb5edd87
     - name: Captain katana air attack 80x64_Frame_8
       frameIndex: 8
+      additiveSortOrder: 0
       cellRect:
         x: 33
         y: 10

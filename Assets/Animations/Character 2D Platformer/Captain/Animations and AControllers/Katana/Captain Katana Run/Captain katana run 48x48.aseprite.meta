@@ -292,6 +292,7 @@ ScriptedImporter:
     cells:
     - name: Captain katana run 48x48_Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -300,6 +301,7 @@ ScriptedImporter:
       spriteId: dbd0ef0f68f416940b66f4479b317b90
     - name: Captain katana run 48x48_Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -308,6 +310,7 @@ ScriptedImporter:
       spriteId: 885c513d1a6b832478c49c128c146ad1
     - name: Captain katana run 48x48_Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -316,6 +319,7 @@ ScriptedImporter:
       spriteId: 8d715ba203a15e34abe50aabbb91cae9
     - name: Captain katana run 48x48_Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -324,6 +328,7 @@ ScriptedImporter:
       spriteId: 09518cf8e281506429817f401eae9ac4
     - name: Captain katana run 48x48_Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -332,6 +337,7 @@ ScriptedImporter:
       spriteId: 6f572a0993c2ee64b9bdfc1af966229e
     - name: Captain katana run 48x48_Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -340,6 +346,7 @@ ScriptedImporter:
       spriteId: 667c7c5574be6d54cb9fa8dc3cb01968
     - name: Captain katana run 48x48_Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
@@ -348,6 +355,7 @@ ScriptedImporter:
       spriteId: be04f291c57b89a4d82c4bff24d1c1cf
     - name: Captain katana run 48x48_Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
