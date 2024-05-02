@@ -6,7 +6,7 @@ using UnityEngine;
 public class DamageOutCalculator : MonoBehaviour
 {
     //The total amount of damage boost (uses %)
-    [SerializeField] private int totalDMGBoost = 0;
+    private int totalDMGBoost = 0;
     public int _totalDMGBoost { get { return totalDMGBoost; } }
     
     //Increase the totalDMGBoost by the amount of the boost

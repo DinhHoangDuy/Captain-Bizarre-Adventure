@@ -13,17 +13,21 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth { get; private set; }
 
     [HideInInspector] public bool characterHit = false;
-    [SerializeField] private float pushForce = 60f;
-    private float pushTimer = 1f;
-    private float pushTimerRemaining = 0;
     public bool isDead { get { return currentHealth <= 0; } }
     private bool isInvincible = false;
+
+    // Respawn the player at the last checkpoint
+    private Transform lastCheckpoint;
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
         characterStats = GetComponent<CharacterStats>();
         maxHealth = characterStats._maxHealth;
+    }
+
+    private void Start()
+    {
         // Defensive programming to make sure the max health is not 0 or less than 0
         if(maxHealth <= 0)
         {
@@ -39,6 +43,9 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDMGScript.OnHitPlayerReceived += TakeDamage;
         }
+
+        // Set the last checkpoint to the current position of the player
+        lastCheckpoint = this.transform;
     }
 
 
@@ -56,7 +63,7 @@ public class PlayerHealth : MonoBehaviour
         {
             currentHealth = 0;
             Debug.Log("Player is Dead");
-            Destroy(gameObject);
+            Respawn();
         }
         else
         {
@@ -92,5 +99,28 @@ public class PlayerHealth : MonoBehaviour
         characterHit = false;
         isInvincible = false;
         Debug.Log("Player is no longer Invincible! Be careful!");
+    }
+
+    // Check if the character hit the FallingZone
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("FallingZone"))
+        {
+            isInvincible = false;
+            TakeDamage(maxHealth);
+        }
+
+        if (collision.CompareTag("Checkpoint"))
+        {
+            lastCheckpoint = collision.transform;
+            Debug.Log("Checkpoint Reached!: " + lastCheckpoint.position);
+        }
+    }
+    private void Respawn()
+    {
+        // Respawn the player at the last checkpoint
+        this.transform.position = lastCheckpoint.position;
+        currentHealth = maxHealth;
+        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

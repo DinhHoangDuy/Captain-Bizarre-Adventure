@@ -39,7 +39,6 @@ public class CaptainMoonBlade : MonoBehaviour
         [Header("Captain's Skill Set Attributes")]
         [Header("Captain's Basic Attributes")]
             [SerializeField] private float basicDamage = 100;
-            [SerializeField] private float attackRate = 2f;
             [SerializeField] private DamageType damageType = DamageType.Physical;
             [SerializeField] private float criticalRate = 20f;
             [SerializeField] private float criticalDamageMultiplier = 150f;
