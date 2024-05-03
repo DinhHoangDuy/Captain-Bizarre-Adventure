@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
     [HideInInspector] public bool characterHit = false;
     public bool isDead { get { return currentHealth <= 0; } }
     private bool isInvincible = false;
+    private int defaultInvincibilityTime = 1;
 
     // Respawn the player at the last checkpoint
     private Transform lastCheckpoint;
@@ -67,18 +68,26 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            StartCoroutine(IFrame());
+            StartCoroutine(IFrame(defaultInvincibilityTime));
         }
     }
     public void SacrificiceHealth(int healthToSacrifice)
     {
         currentHealth = Mathf.Clamp(currentHealth - healthToSacrifice, 0, maxHealth);
     }
+    public void GainHealth(int healthToAdd)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + healthToAdd, 0, maxHealth);
+    }
+    public void Invincible(int time)
+    {
+        StartCoroutine(IFrame(time));
+    }
 
-    private IEnumerator IFrame()
+    private IEnumerator IFrame(int time)
     {
         isInvincible = true;
-        Debug.Log("Player is Invincible for 1 second");
+        Debug.Log("Player is Invincible for " + time + " second");
 
         // Assuming you have a reference to the SpriteRenderer
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();

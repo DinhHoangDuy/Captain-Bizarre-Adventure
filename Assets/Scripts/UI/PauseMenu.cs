@@ -5,18 +5,23 @@ using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenuPanel;
     public static bool isPaused = false;
+    [Header("Pause Menu Buttons")]
+    [SerializeField] private Button resumeButton;
     //Adapt new Input System
     private PlayerInput playerInput;
     private InputAction pauseInput;
     private void Awake()
     {
         playerInput = new PlayerInput();
+        //Pause Menu Button
+        resumeButton.onClick.AddListener(ResumeGame);
     }
     private void OnEnable()
     {
@@ -34,7 +39,7 @@ public class PauseMenu : MonoBehaviour
         //=====Pause Menu=====
         //Preventing the game automatically paused when started
         Time.timeScale = 1f;
-        pauseMenuPanel.SetActive(false);        
+        // pauseMenuPanel.SetActive(false);     
     }
 
     // Update is called once per frame
@@ -67,11 +72,13 @@ public class PauseMenu : MonoBehaviour
     public void PauseGame()
     {
         isPaused = true;
-        Time.timeScale = 0f;        
+        Time.timeScale = 0f;
+        PlatformerMovement2D.blocked = true;       
     }
     public void ResumeGame()
     {
         isPaused = false;
         Time.timeScale = 1f;
+        PlatformerMovement2D.blocked = false;
     }
 }

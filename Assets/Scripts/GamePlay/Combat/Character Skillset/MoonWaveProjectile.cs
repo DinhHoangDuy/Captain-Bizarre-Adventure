@@ -14,11 +14,6 @@ public class MoonWaveProjectile : MonoBehaviour
     [SerializeField] private  LayerMask wallLayer;
     [SerializeField] private  LayerMask enemyLayer;
 
-    #region Cursed By The Rules (a unique negative effect from Captain's Ultimate Skill)
-    public bool isCursedByTheRules = false;
-    public int curseVunerability = 0;
-    public int curseDuration = 0;
-    #endregion
 
     #region Wave Damage
         //Wave Damage
@@ -31,6 +26,7 @@ public class MoonWaveProjectile : MonoBehaviour
             damageType = DMGType;
         }
     #endregion
+
     private void Awake()
     {
         //Get the components
@@ -56,10 +52,6 @@ public class MoonWaveProjectile : MonoBehaviour
         if (hitEnemy)
         {
             hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType, DamageFromSkill.UltimateSkill);
-            if(isCursedByTheRules)
-            {
-                hitEnemy.GetComponent<EnemyNegativeStatus>().ApplyCursedByTheRules(curseVunerability, curseDuration);
-            }
             Destroy(gameObject);
             return;
         }

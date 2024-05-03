@@ -38,7 +38,6 @@ public class SpearTrap : MonoBehaviour
     {
         if (player.CompareTag("Player"))
         {
-            Debug.Log("Player hit the spear trap!");
             player.GetComponent<TakeDMG>().HitPlayer(spearTrapDamage);
         }
     }
@@ -46,10 +45,8 @@ public class SpearTrap : MonoBehaviour
     private IEnumerator SpearTrapController()
     {
         animator.SetTrigger("Activate");
-        Debug.Log("Spear trap extended!");
         yield return new WaitForSeconds(activeDuration);
         animator.SetTrigger("Deactivate");
-        Debug.Log("Spear trap retracted!");
         yield return new WaitForSeconds(inActiveDuration);
         spearTrapAnimationCoroutine = null;
     }

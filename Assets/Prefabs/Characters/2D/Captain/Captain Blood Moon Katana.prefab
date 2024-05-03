@@ -262,6 +262,7 @@ GameObject:
   - component: {fileID: 6975911404759449875}
   - component: {fileID: 7766288687697898911}
   - component: {fileID: 4593632438534977704}
+  - component: {fileID: 3844423867350078264}
   m_Layer: 8
   m_Name: Captain Blood Moon Katana
   m_TagString: Player
@@ -451,7 +452,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc47257a0416bb94b93b2076a77dfae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalDMGBoost: 0
 --- !u!114 &2704698798196703481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,7 +531,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec65a722dd6b42bf9e275354f9b496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb2d: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -570,31 +569,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basicDamage: 100
-  attackRate: 2
   damageType: 0
   criticalRate: 20
   criticalDamageMultiplier: 150
   startSP: 15
   SPRegenRate: 1
+  SPRegenEfficiency: 100
   maxSP: 70
   basicAttackBaseDMG: 10
   basicAttackMultiplier: 60
-  passiveTriggerChance: 20
+  basicAttackUWTriggerChance: 20
   waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
     type: 3}
   ultimateBaseDamage: 150
   ultimateDamageMultiplier: 105
-  ultimatePassiveBonus: 10
+  ultimateUWPassiveBonus: 10
   ultimateCooldown: 10
   requiredSP: 30
   passiveDuration: 5
   passiveDMGBoost: 30
-  bloodForBlood: 0
-  bloodForBloodHeartUse: 1
-  bloodForBloodBonus: 10
-  curseOfTheRules: 0
-  curseVunerability: 10
-  curseDuration: 5
   attackPoint: {fileID: 5593513566568407175}
   attackRange: 1
   enemyLayers:
@@ -607,6 +600,27 @@ MonoBehaviour:
   fireTriggered: 0
   ultimateTriggered: 0
   isAttacking: 0
+--- !u!114 &3844423867350078264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaaf070a4bf0c5600b0a4b1fe00b0ee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SweetSnacks: 0
+  SweetSnacksSPRegenRate: 4
+  SweetSnacksSPRegenAmount: 1
+  SharpBlade: 0
+  SharpBladeDMGBoost: 5
+  Bloodlust: 0
+  BloodlustTriggerChance: 10
+  Blink: 0
+  WeakBody: 0
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

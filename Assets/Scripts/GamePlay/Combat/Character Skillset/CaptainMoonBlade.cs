@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
 [RequireComponent(typeof(CaptainMoonBladeAnimation))]
+[RequireComponent(typeof(ExpansionChips))]
 public class CaptainMoonBlade : MonoBehaviour
 {
     #region Captain's Skill Set Description
@@ -29,9 +30,6 @@ public class CaptainMoonBlade : MonoBehaviour
         + Each Basic Attack has a 20%/30%/40% chance to grant "Unbreakable Will" for 5 seconds. This effect will be refreshed if the effect is triggered again during the duration.
         + When "Unbreakable Will" is active, Captain will gain 30% total Damage Boost.
         + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active. This Ultimate will be consumed if the wave hits an enemy. 
-    - Skill Tree:
-        + "Blood for Blood!": When enabled, the Ultimate "The Vow under the Moon" will consume one heart stack to deal 10% more damage. This effect won't trigger if Captain has 1 heart stack left.
-        + "The curse of the Rules": When enabled, the Ultimate "The Vow under the Moon" will inflict a curse on the enemy hit, increasing the damage vunerability by 10% for 5 seconds.
     */
     #endregion
 
@@ -45,13 +43,14 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private int startSP = 15;
             public int _startSP { get { return startSP; } }
             [SerializeField] private int SPRegenRate = 1;
+            [SerializeField] private int SPRegenEfficiency = 100;
             [SerializeField] private int maxSP = 70;
             public int _maxSP { get { return maxSP; } }
 
         [Header("Captain's Basic Attack Attributes")]
             [SerializeField] private int basicAttackBaseDMG = 10;
             [SerializeField] private float basicAttackMultiplier = 60f;
-            [SerializeField] private float passiveTriggerChance = 20f;
+            [SerializeField] private float basicAttackUWTriggerChance = 20f;
 
         [Header("Captain's Ultimate Attributes")]
             [SerializeField] private GameObject waveOfEnergyPrefab;
@@ -59,7 +58,7 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private float ultimateDamageMultiplier = 105f;
 
             [Tooltip("Ultimate Boost when passive is available")]
-            [SerializeField] private float ultimatePassiveBonus = 10f;
+            [SerializeField] private float ultimateUWPassiveBonus = 10f;
 
             [SerializeField] private float ultimateCooldown = 10f;
             [SerializeField] private int requiredSP = 30;
@@ -69,14 +68,7 @@ public class CaptainMoonBlade : MonoBehaviour
         [Header("Captain's Passive Attributes")]
             [SerializeField] private float passiveDuration = 5f;
         [SerializeField] private int passiveDMGBoost = 30;
-
-        [Header("Captain's Skill Tree")]
-            [SerializeField] private bool bloodForBlood = false; //Blood for Blood! skill is disabled by default (not upgraded)
-            [SerializeField] private int bloodForBloodHeartUse = 1; //1 heart stack is required to use the blood for blood bonus
-            [SerializeField] private int bloodForBloodBonus = 10; //10% more damage
-            [SerializeField] private bool curseOfTheRules = false;
-            [SerializeField] private int curseVunerability = 10;
-            [SerializeField] private int curseDuration = 5;         
+       
     #endregion
 
     #region Script Dependencies
@@ -87,6 +79,7 @@ public class CaptainMoonBlade : MonoBehaviour
         [SerializeField] private LayerMask enemyLayers;
         [SerializeField] private LayerMask destroyableLayers;
         private DamageOutCalculator dmgCalulator;
+        private ExpansionChips expansionChips;
     #endregion
 
     #region Current Status 
@@ -129,6 +122,7 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         platformerMovement2D = GetComponent<PlatformerMovement2D>();
         dmgCalulator = GetComponent<DamageOutCalculator>();
+        expansionChips = GetComponent<ExpansionChips>();
     }
     private void Start()    
     {
@@ -140,21 +134,41 @@ public class CaptainMoonBlade : MonoBehaviour
         {
             Debug.LogWarning("Wave of Energy Prefab is not assigned to the Captain's Skill Set");
         }
+
+        // Implement the Expansion Chips
+        if(expansionChips._SharpBlade)
+        {
+            dmgCalulator.IncreaseDMGBoost(expansionChips._SharpBladeDMGBoost);
+        }
+        if(expansionChips._WeakBody)
+        {
+            dmgCalulator.DecreaseDMGBoost(50);
+        }
     }
     private void Update()
     {
-        //Limit the SP to the maxSP
-        if (currentSP > maxSP)
+        // Increase SP per 4 seconds if the Sweet Snacks is equiped
+        if(expansionChips._SweetSnacks)
         {
-            currentSP = maxSP;
+            if(sweetSnacksCoroutine == null)
+            {
+                sweetSnacksCoroutine = StartCoroutine(SweetSnacksSPRegen(expansionChips._SweetSnacksSPRegenRate, expansionChips._SweetSnacksSPRegenAmount));
+            }
         }
+
+        // Limit the SP to the maxSP
+        currentSP = Mathf.Clamp(currentSP, 0, maxSP);
+
+        // Limite the SP regen efficiency as low as 0
+        SPRegenEfficiency = Mathf.Clamp(SPRegenEfficiency, 100, int.MaxValue);
+        
         //Update the Ultimate Cooldown
         if(currentUltimateCooldown > 0)
         {
             currentUltimateCooldown -= Time.deltaTime;
         }
 
-        //Attack Rate
+        // Check if the player is attacking
         if(!isAttacking)
         {
             if (playerInput.Game.Fire.triggered)
@@ -163,6 +177,7 @@ public class CaptainMoonBlade : MonoBehaviour
             }
         }
     }
+
 
     #region Captain Skill Set Methods
     public void BasicAttack()
@@ -181,16 +196,7 @@ public class CaptainMoonBlade : MonoBehaviour
         ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
         if(isPassiveActive)
         {
-            ultimateDamage += ultimateDamage * ultimatePassiveBonus / 100;
-        }
-        if(bloodForBlood)
-        {
-            PlayerHealth playerHealth = GetComponent<PlayerHealth>();
-            bool hasMoreThanOneHeart = playerHealth.currentHealth > 1;
-            if(hasMoreThanOneHeart)
-            {
-                ultimateDamage += ultimateDamage * bloodForBloodBonus / 100;
-            }
+            ultimateDamage += ultimateDamage * ultimateUWPassiveBonus / 100;
         }
         //Check if Captain has enough SP and one stack to cast the ultimate
         if(CanCastUltimate() && !isAttacking)
@@ -198,12 +204,6 @@ public class CaptainMoonBlade : MonoBehaviour
             //Sent the trigger to the animator coder
             ultimateTriggered = true;
             currentSP -= requiredSP;
-            
-            PlayerHealth playerHealth = GetComponent<PlayerHealth>();
-            if(bloodForBlood && playerHealth.currentHealth > 1)
-            {
-                playerHealth.SacrificiceHealth(bloodForBloodHeartUse);
-            }
             //Set the Ultimate Cooldown
             currentUltimateCooldown = ultimateCooldown;
 
@@ -230,10 +230,11 @@ public class CaptainMoonBlade : MonoBehaviour
     //Passive
     private Coroutine passiveCoroutine;
     public bool isAttacking = false;
+    private Coroutine sweetSnacksCoroutine;
 
     private void TriggerPassive() //Implement this method to the Basic Attack damage method
     {
-        if(UnityEngine.Random.Range(0, 100) <= passiveTriggerChance)
+        if(UnityEngine.Random.Range(0, 100) <= basicAttackUWTriggerChance)
         {
             if (passiveCoroutine != null)
             {
@@ -262,22 +263,49 @@ public class CaptainMoonBlade : MonoBehaviour
     }
     #endregion
 
+    #region Expansion Chips
+
+    #region Sweet Snacks
+    private IEnumerator SweetSnacksSPRegen(int time, int amount)
+    {
+        Debug.Log("Sweet Snacks: Captain is regenerating SP");
+        if(currentSP < maxSP)
+        {
+            currentSP += amount * (SPRegenEfficiency / 100);
+        }
+        yield return new WaitForSeconds(time);
+        sweetSnacksCoroutine = null;
+    }
+    #endregion
+    #endregion
+
     #region Animation Events
     public void DealDMG()
     {
         //Detect enemies in range of attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         Collider2D[] hitDestroyables = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, destroyableLayers);
+        
         if(hitEnemies.Length > 0 || hitDestroyables.Length > 0)
         {
             //SP Regen
             if(currentSP < maxSP)
             {
-                currentSP += SPRegenRate;
+                currentSP += SPRegenRate * (SPRegenEfficiency / 100);
             }
             TriggerPassive();
             // Debug.Log("Captain's Basic Attack Hit hit enemies or destroyables!");
         }
+
+        // Expansions Chips: Bloodlust
+        if(expansionChips._Bloodlust && hitEnemies.Length > 0)
+        {
+            if(UnityEngine.Random.Range(0, 100) <= expansionChips._BloodlustTriggerChance)
+            {
+                GetComponent<PlayerHealth>().GainHealth(1);
+            }
+        }
+
         //Damage them
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -321,12 +349,6 @@ public class CaptainMoonBlade : MonoBehaviour
 
         GameObject waveOfEnergy = Instantiate(waveOfEnergyPrefab, transform.position, waveRotation);
         waveOfEnergy.GetComponent<MoonWaveProjectile>().SetWaveDamage(ultimateDamage, damageType);
-        if(curseOfTheRules)
-        {
-            waveOfEnergy.GetComponent<MoonWaveProjectile>().isCursedByTheRules = true;
-            waveOfEnergy.GetComponent<MoonWaveProjectile>().curseVunerability = curseVunerability;
-            waveOfEnergy.GetComponent<MoonWaveProjectile>().curseDuration = curseDuration;
-        }
     }
     #endregion    
 

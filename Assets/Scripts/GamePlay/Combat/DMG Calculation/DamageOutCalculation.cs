@@ -27,13 +27,7 @@ public class DamageOutCalculator : MonoBehaviour
 
     private void Update()
     {
-        if(totalDMGBoost < 0)
-        {
-            totalDMGBoost = 0;
-        }
-
-        //Limit the totalDMGBoost as low as 0% and high as MaxValue
-        Mathf.Clamp(totalDMGBoost, 0, int.MaxValue);
+        Mathf.Clamp(totalDMGBoost, int.MinValue, int.MaxValue);
     }
 }
 
