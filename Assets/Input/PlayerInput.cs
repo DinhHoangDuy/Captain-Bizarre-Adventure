@@ -98,6 +98,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""39056b6b-d723-4608-b6a3-7e6fb023c197"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -243,6 +252,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34800f2c-fa8c-4e81-a8a8-70c69725cee5"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -259,6 +279,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Game_Cancel = m_Game.FindAction("Cancel", throwIfNotFound: true);
         m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
         m_Game_Submit = m_Game.FindAction("Submit", throwIfNotFound: true);
+        m_Game_Inventory = m_Game.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,6 +349,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Cancel;
     private readonly InputAction m_Game_Pause;
     private readonly InputAction m_Game_Submit;
+    private readonly InputAction m_Game_Inventory;
     public struct GameActions
     {
         private @PlayerInput m_Wrapper;
@@ -340,6 +362,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Cancel => m_Wrapper.m_Game_Cancel;
         public InputAction @Pause => m_Wrapper.m_Game_Pause;
         public InputAction @Submit => m_Wrapper.m_Game_Submit;
+        public InputAction @Inventory => m_Wrapper.m_Game_Inventory;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -373,6 +396,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Submit.started += instance.OnSubmit;
             @Submit.performed += instance.OnSubmit;
             @Submit.canceled += instance.OnSubmit;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -401,6 +427,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Submit.started -= instance.OnSubmit;
             @Submit.performed -= instance.OnSubmit;
             @Submit.canceled -= instance.OnSubmit;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -428,5 +457,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnCancel(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
 }
