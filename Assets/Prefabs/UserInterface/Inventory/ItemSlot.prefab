@@ -243,6 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee6828c74301c8e4fbebd839018f0c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: 
+  itemAmount: 0
   isFull: 0
   emptySlotIcon: {fileID: 21300000, guid: d7e95050db448f2a3b676b232394769d, type: 3}
   quantityText: {fileID: 3629942891007086668}

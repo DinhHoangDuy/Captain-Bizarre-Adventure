@@ -75,9 +75,10 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth - healthToSacrifice, 0, maxHealth);
     }
-    public void GainHealth(int healthToAdd)
+    public void IncreaseHealth(int healthToAdd)
     {
         currentHealth = Mathf.Clamp(currentHealth + healthToAdd, 0, maxHealth);
+        Debug.Log("Player's Health increased by " + healthToAdd);
     }
     public void Invincible(int time)
     {

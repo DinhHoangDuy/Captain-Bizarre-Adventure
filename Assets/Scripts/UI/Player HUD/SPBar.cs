@@ -27,7 +27,7 @@ public class SPBar : MonoBehaviour
         }
     }
 
-    public void SetSP(int currentSP, int maxSP)
+    public void SetSP(float currentSP, int maxSP)
     {
         // Set the SP value and the max SP value of the SP bar
         spBar.value = currentSP;

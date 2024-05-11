@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 4593632438534977704}
   - component: {fileID: 3844423867350078264}
   m_Layer: 8
-  m_Name: Captain Blood Moon Katana
+  m_Name: CaptainMoonBlade
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

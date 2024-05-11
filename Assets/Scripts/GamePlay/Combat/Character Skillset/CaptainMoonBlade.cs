@@ -42,7 +42,7 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private float criticalDamageMultiplier = 150f;
             [SerializeField] private int startSP = 15;
             public int _startSP { get { return startSP; } }
-            [SerializeField] private int SPRegenRate = 1;
+            [SerializeField] private float SPRegenRate = 1;
             [SerializeField] private int SPRegenEfficiency = 100;
             [SerializeField] private int maxSP = 70;
             public int _maxSP { get { return maxSP; } }
@@ -87,8 +87,7 @@ public class CaptainMoonBlade : MonoBehaviour
     private float basicAttackDamage;
     public bool fireTriggered;
     private bool criticalHit = false;
-    private int currentSP;
-    public int _currentSP { get { return currentSP; } }
+    public float currentSP;
 
     public bool ultimateTriggered;
     private float ultimateDamage;
@@ -302,7 +301,7 @@ public class CaptainMoonBlade : MonoBehaviour
         {
             if(UnityEngine.Random.Range(0, 100) <= expansionChips._BloodlustTriggerChance)
             {
-                GetComponent<PlayerHealth>().GainHealth(1);
+                GetComponent<PlayerHealth>().IncreaseHealth(1);
             }
         }
 

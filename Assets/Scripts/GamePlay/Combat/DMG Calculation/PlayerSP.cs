@@ -4,19 +4,31 @@ public class PlayerSP : MonoBehaviour
 {
     [SerializeField] private SPBar spBar;
     private CaptainMoonBlade skillset;
-    private int currentSP;
+    private float currentSP;
+    public float _currentSP => currentSP;
     private int maxSP;
+    public int _maxSP => maxSP;
 
     private void Start()
     {
         skillset = GetComponent<CaptainMoonBlade>();
         
-        currentSP = skillset._currentSP;
+        currentSP = (int)skillset.currentSP;
         maxSP = skillset._maxSP;
     }
     private void Update()
     {
-        currentSP = skillset._currentSP;
+        currentSP = skillset.currentSP;
+
+        if(currentSP >= maxSP)
+            currentSP = maxSP;
+
         spBar.SetSP(currentSP, maxSP);
+    }
+
+    public void IncreaseSP(int percent)
+    {
+        skillset.currentSP += maxSP * (percent / 100.0f);
+        Debug.Log("SP increased by " + maxSP * (percent / 100.0f));
     }
 }

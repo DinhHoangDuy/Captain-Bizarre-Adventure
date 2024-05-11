@@ -5,16 +5,16 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
+using System;
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
     // Item Data
-    private string itemName;
-    public string _itemName { get { return itemName; } }
+    public string itemName;
     private string itemDescription;
     private Sprite itemIcon;
-    private int itemAmount;
-    public int _itemAmount { get { return itemAmount; } }
+    public int itemAmount;
     public bool isFull = false;
     public Sprite emptySlotIcon;
     // Item Slot
@@ -35,20 +35,71 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         inventoryManager = GameObject.Find("/GameManagers/PlayerConsoleManager").GetComponent<InventoryManager>();
     }
-
-    public void AddItem(string itemName, string itemDescription, Sprite itemIcon, int itemAmount)
+    private void Update()
     {
+        if(itemAmount <= 0)
+        {
+            quantityText.text = "";
+        }
+        else
+            quantityText.text = itemAmount.ToString();
+    }
+    public void CheckSlot()
+    {
+        if(itemAmount <= 0)
+        {
+            EmptySlot();
+        }
+    }
+
+    private void EmptySlot()
+    {
+        itemName = "";
+        itemDescription = "";
+        itemIcon = null;
+        itemAmount = 0;
+        isFull = false;
+        iconImage.sprite = emptySlotIcon;
+        quantityText.text = "";
+        itemImage.sprite = emptySlotIcon;
+        itemNameText.text = "";
+        itemDescriptionText.text = "";
+    }
+
+    public int AddItem(string itemName,string itemBackStory, string itemDescription, Sprite itemIcon, int itemAmount)
+    {
+        if(isFull)
+        {
+            return itemAmount;
+        }
+
+        // Update the Item Details
         // Add Item Name
         this.itemName = itemName;
+
         // Add Item Description
-        this.itemDescription = itemDescription;
+        this.itemDescription = itemBackStory + "\n" + itemDescription;
+
         // Add Item Icon
         this.itemIcon = itemIcon;        
         iconImage.sprite = itemIcon;
-        // Add Item Amount
-        this.quantityText.text = itemAmount.ToString();
-        isFull = true;
 
+
+        // Add Item Amount
+        this.itemAmount += itemAmount;
+        if(this.itemAmount >= maxQuantity)
+        {
+            quantityText.text = maxQuantity.ToString();
+            isFull = true;
+            int extraItems = this.itemAmount - maxQuantity;
+            this.itemAmount = maxQuantity;
+            return extraItems;
+        }
+        else
+        {
+            quantityText.text = this.itemAmount.ToString();
+            return 0;
+        }       
     }
 
     public void OnPointerClick(PointerEventData eventData)
