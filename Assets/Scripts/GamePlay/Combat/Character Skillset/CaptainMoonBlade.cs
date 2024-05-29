@@ -56,6 +56,8 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private GameObject waveOfEnergyPrefab;
             [SerializeField] private float ultimateBaseDamage = 150;
             [SerializeField] private float ultimateDamageMultiplier = 105f;
+            [SerializeField] private float waveSpeed = 30f;
+            [SerializeField] private float waveLifeTime = 0.2f;
 
             [Tooltip("Ultimate Boost when passive is available")]
             [SerializeField] private float ultimateUWPassiveBonus = 10f;
@@ -347,7 +349,10 @@ public class CaptainMoonBlade : MonoBehaviour
         }
 
         GameObject waveOfEnergy = Instantiate(waveOfEnergyPrefab, transform.position, waveRotation);
-        waveOfEnergy.GetComponent<MoonWaveProjectile>().SetWaveDamage(ultimateDamage, damageType);
+        MoonWaveProjectile waveProjectile = waveOfEnergy.GetComponent<MoonWaveProjectile>();
+        waveProjectile.SetWaveDamage(ultimateDamage, damageType);
+        waveProjectile.SetSpeed(waveSpeed);
+        waveProjectile.SetDuration(waveLifeTime);
     }
     #endregion    
 

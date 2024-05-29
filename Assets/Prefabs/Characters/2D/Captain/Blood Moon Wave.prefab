@@ -53,6 +53,8 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -100,13 +102,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a22255c6491e7458867c9de017e78d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
   wallLayer:
     serializedVersion: 2
     m_Bits: 8
   enemyLayer:
     serializedVersion: 2
     m_Bits: 192
+  speed: 40
+  lifeTime: 0.3
 --- !u!50 &5532291930330048901
 Rigidbody2D:
   serializedVersion: 4
@@ -136,7 +139,7 @@ Rigidbody2D:
   m_Constraints: 0
 --- !u!95 &8495179421253950418
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -150,6 +153,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
