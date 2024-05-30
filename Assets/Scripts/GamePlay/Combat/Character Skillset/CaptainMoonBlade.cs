@@ -85,6 +85,7 @@ public class CaptainMoonBlade : MonoBehaviour
     #endregion
 
     #region Current Status 
+    public static bool blocked = false;
     [SerializeField] private bool isPassiveActive = false;
     private float basicAttackDamage;
     public bool fireTriggered;

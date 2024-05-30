@@ -18,7 +18,6 @@ public class ItemSO : ScriptableObject
 
     public bool UseItem()
     {
-        Debug.Log($"statsToChange: {statsToChange}");
         if (statsToChange == StatsToChange.Health)
         {
             var playerHealth = GameObject.Find("CaptainMoonBlade").GetComponent<PlayerHealth>();

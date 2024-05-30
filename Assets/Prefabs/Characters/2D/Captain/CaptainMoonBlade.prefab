@@ -583,6 +583,8 @@ MonoBehaviour:
     type: 3}
   ultimateBaseDamage: 150
   ultimateDamageMultiplier: 105
+  waveSpeed: 30
+  waveLifeTime: 0.2
   ultimateUWPassiveBonus: 10
   ultimateCooldown: 10
   requiredSP: 30
@@ -598,6 +600,7 @@ MonoBehaviour:
     m_Bits: 128
   isPassiveActive: 0
   fireTriggered: 0
+  currentSP: 0
   ultimateTriggered: 0
   isAttacking: 0
 --- !u!114 &3844423867350078264

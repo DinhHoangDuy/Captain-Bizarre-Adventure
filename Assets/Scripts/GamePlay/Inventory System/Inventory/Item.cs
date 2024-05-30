@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
 
     private void Start()
     {
-        inventoryManager = GameObject.Find("/GameManagers/PlayerConsoleManager").GetComponent<InventoryManager>();
+        inventoryManager = GameObject.Find("/Player UI").GetComponent<InventoryManager>();
         itemName = itemSO.itemName;
         itemBackStory = itemSO.itemBackStory;
         itemDescription = itemSO.itemDescription;

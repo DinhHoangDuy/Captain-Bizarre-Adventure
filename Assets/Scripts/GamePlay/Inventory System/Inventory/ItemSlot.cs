@@ -33,7 +33,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
-        inventoryManager = GameObject.Find("/GameManagers/PlayerConsoleManager").GetComponent<InventoryManager>();
+        inventoryManager = GameObject.Find("/Player UI").GetComponent<InventoryManager>();
     }
     private void Update()
     {
