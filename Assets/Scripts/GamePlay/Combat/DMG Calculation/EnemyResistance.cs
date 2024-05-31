@@ -27,7 +27,8 @@ public class EnemyResistance : MonoBehaviour
 
     #region Current Defensive Stats
     private float VunerableValue = 0; 
-    //VunerableValue variable will be used to calculate the vunerability of the enemy, the higher the value, the more damage the enemy will take (1 point of vunerability = 1% more damage taken)
+    //VunerableValue variable will be used to calculate the vunerability of the enemy, the higher the value, the more damage the enemy will take
+    // (1 point of vunerability = 1% more damage taken)
     #endregion
     
     private void Awake()
@@ -54,12 +55,16 @@ public class EnemyResistance : MonoBehaviour
         if(gameObject.GetComponent<EnemyHealth>() != null)
         {
             gameObject.GetComponent<EnemyHealth>().TakeDamage(damageTaken);
+            Debug.Log("Enemy took " + damageTaken + " damage!");
         }
         else if(gameObject.GetComponent<Dummy>() != null)
         {
             gameObject.GetComponent<Dummy>().TakeDamage(damageTaken);
+            Debug.Log("Dummy took " + damageTaken + " damage!");
         }
     }
+
+    #region Resistance Calculator
     private float TypeResistanceCalculator(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)
     {
         //This part will calculate the damage taken based on the Elemental and Damage Range Resistance of the enemy
@@ -98,6 +103,7 @@ public class EnemyResistance : MonoBehaviour
         }
         return damageTaken;
     }
+    #endregion
 
     #region Vunerability Calculator
     private float VunerabilityCalculator(float damageTaken, float vunerableValue)

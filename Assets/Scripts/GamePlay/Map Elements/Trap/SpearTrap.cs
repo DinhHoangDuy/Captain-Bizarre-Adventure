@@ -38,7 +38,7 @@ public class SpearTrap : MonoBehaviour
     {
         if (player.CompareTag("Player"))
         {
-            player.GetComponent<TakeDMG>().HitPlayer(spearTrapDamage);
+            player.GetComponent<TakeDMG>().HitPlayer(spearTrapDamage, transform.position);
         }
     }
 

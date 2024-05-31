@@ -15,7 +15,10 @@ public class PlayerHealth : MonoBehaviour
     [HideInInspector] public bool characterHit = false;
     public bool isDead { get { return currentHealth <= 0; } }
     private bool isInvincible = false;
-    private int defaultInvincibilityTime = 1;
+    private int invincibilityTime = 1;
+    
+    [Header("Player Health Settings")]
+    [SerializeField] private float knockbackForce = 5.0f;
 
     // Respawn the player at the last checkpoint
     private Transform lastCheckpoint;
@@ -46,11 +49,12 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Set the last checkpoint to the current position of the player
-        lastCheckpoint = this.transform;
+        lastCheckpoint = transform;
     }
 
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(int damage, Vector2 damageSourcePosition)
+    // private void TakeDamage(int damage)
     {
         if(isInvincible)
         {
@@ -68,7 +72,14 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
-            StartCoroutine(IFrame(defaultInvincibilityTime));
+            // Calculate the direction from the damage source to the player
+            Vector2 knockbackDirection = (Vector2)transform.position - damageSourcePosition;
+            knockbackDirection.Normalize();
+
+            // Apply a force to the player's Rigidbody2D component in the opposite direction of the damage source
+            GetComponent<Rigidbody2D>().AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+            StartCoroutine(IFrame(invincibilityTime));
         }
     }
     public void SacrificiceHealth(int healthToSacrifice)
@@ -117,7 +128,7 @@ public class PlayerHealth : MonoBehaviour
         if(collision.CompareTag("FallingZone"))
         {
             isInvincible = false;
-            TakeDamage(maxHealth);
+            TakeDamage(maxHealth, collision.transform.position);
         }
 
         if (collision.CompareTag("Checkpoint"))

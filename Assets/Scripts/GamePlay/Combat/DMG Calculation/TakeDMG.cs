@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TakeDMG : MonoBehaviour
 {
-    //Enemy Take Damage
+    #region Enemy Take Damage
     public event System.Action<float, DamageType, DamageRange, DamageFromSkill> OnHitDamageReceived;
     public void TakeMeleeDamage(float damageAmount, DamageType DMGType, DamageFromSkill skill)
     {
@@ -12,6 +12,7 @@ public class TakeDMG : MonoBehaviour
     {
         OnHitDamageReceived?.Invoke(damageAmount, DMGType, DamageRange.Range, skill);
     }
+    #endregion
 
     //Destroyable Ojects take Damage
     public event System.Action<int> OnHitDestroyableReceived;
@@ -20,12 +21,13 @@ public class TakeDMG : MonoBehaviour
         OnHitDestroyableReceived?.Invoke(damageAmount);
     }
 
-    //Player Take Damage
-    public event System.Action<int> OnHitPlayerReceived;
-    public void HitPlayer(int damageAmount)
+    #region Player Take Damage
+    public event System.Action<int, Vector2> OnHitPlayerReceived;
+    public void HitPlayer(int damageAmount, Vector2 damageSourcePosition)        
     {
-        OnHitPlayerReceived?.Invoke(damageAmount);
+        OnHitPlayerReceived?.Invoke(damageAmount, damageSourcePosition);
     }
+    #endregion
 }
 
 public enum DamageRange
@@ -45,7 +47,6 @@ public enum DamageFromSkill
     BasicAttack,
     UltimateSkill
 }
-
 
 public enum DamageOverTime
 {

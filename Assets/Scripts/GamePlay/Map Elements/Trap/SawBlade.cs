@@ -26,7 +26,7 @@ public class SawBlade : MonoBehaviour
     {
         if(player.CompareTag("Player"))
         {
-            player.GetComponent<TakeDMG>().HitPlayer(sawBladeDamage);
+            player.GetComponent<TakeDMG>().HitPlayer(sawBladeDamage, transform.position);
         }
     }
 }

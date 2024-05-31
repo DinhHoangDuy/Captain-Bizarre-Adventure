@@ -477,6 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterHit: 0
+  knockbackForce: 5
 --- !u!114 &3961857234049573280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,7 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86928302149dfb7f8985e1013663476d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicDamage: 100
+  basicDamage: 30
   damageType: 0
   criticalRate: 20
   criticalDamageMultiplier: 150
@@ -581,8 +582,8 @@ MonoBehaviour:
   basicAttackUWTriggerChance: 20
   waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
     type: 3}
-  ultimateBaseDamage: 150
-  ultimateDamageMultiplier: 105
+  ultimateBaseDamage: 50
+  ultimateDamageMultiplier: 30
   waveSpeed: 30
   waveLifeTime: 0.2
   ultimateUWPassiveBonus: 10
