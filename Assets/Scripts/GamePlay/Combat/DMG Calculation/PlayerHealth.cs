@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float knockbackForce = 5.0f;
 
     // Respawn the player at the last checkpoint
-    private Transform lastCheckpoint;
+    private Vector2 lastCheckpoint;
 
     private void Awake()
     {
@@ -32,14 +32,23 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
+        // Set the current health to the max health
+        currentHealth = maxHealth;
         // Defensive programming to make sure the max health is not 0 or less than 0
         if(maxHealth <= 0)
         {
             Debug.LogError("Max Health cannot be 0 or less than 0!!");
             return;
         }
-        // Set the current health to the max health
-        currentHealth = maxHealth;
+        lastCheckpoint = transform.position;
+        if(lastCheckpoint != null)
+        {
+            Debug.Log("Last Checkpoint is created when loading Level.: " + lastCheckpoint);
+        }
+        else
+        {
+            Debug.LogError("Failed to set the last checkpoint upon spawning!");
+        }
 
         // Get the TakeDMG script attached to the same GameObject
         TakeDMG TakeDMGScript = GetComponent<TakeDMG>();
@@ -47,9 +56,6 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDMGScript.OnHitPlayerReceived += TakeDamage;
         }
-
-        // Set the last checkpoint to the current position of the player
-        lastCheckpoint = transform;
     }
 
 
@@ -73,12 +79,17 @@ public class PlayerHealth : MonoBehaviour
         else
         {
             // Calculate the direction from the damage source to the player
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
             Vector2 knockbackDirection = (Vector2)transform.position - damageSourcePosition;
             knockbackDirection.Normalize();
 
             // Apply a force to the player's Rigidbody2D component in the opposite direction of the damage source
-            GetComponent<Rigidbody2D>().AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-
+            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+            // Add a constant force that always pulls the player behind when the vector x is less than 0.5 and greater than -0.5
+            if(knockbackDirection.x < 0.5 && knockbackDirection.x > -0.5)
+            {
+                rb.AddForce(Vector2.left * knockbackForce, ForceMode2D.Impulse);
+            }
             StartCoroutine(IFrame(invincibilityTime));
         }
     }
@@ -133,15 +144,15 @@ public class PlayerHealth : MonoBehaviour
 
         if (collision.CompareTag("Checkpoint"))
         {
-            lastCheckpoint = collision.transform;
-            Debug.Log("Checkpoint Reached!: " + lastCheckpoint.position);
+            lastCheckpoint = collision.transform.position;
+            Debug.Log("Checkpoint Reached!: " + lastCheckpoint);
         }
     }
     private void Respawn()
     {
         // Respawn the player at the last checkpoint
-        this.transform.position = lastCheckpoint.position;
+        transform.position = lastCheckpoint;
         currentHealth = maxHealth;
-        this.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

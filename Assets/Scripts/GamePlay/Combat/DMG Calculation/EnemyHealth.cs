@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(BoxCollider2D))]
+// [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(EnemyResistance))]
 public class EnemyHealth : MonoBehaviour
@@ -24,11 +24,15 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            GetComponent<Animator>().Play("Death");
+        }
+        else
+        {
+            GetComponent<Animator>().Play("Take Hit");
         }
     }
 
-    private void Die()
+    public void Die()
     {
         // Add death logic here
         Destroy(gameObject);

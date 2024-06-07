@@ -62,7 +62,7 @@ public class PlatformerMovement2D : MonoBehaviour
     #region Jump
     private bool isGrounded = false;
     public bool _isGrounded { get { return isGrounded; } }
-    public bool jumpPressed;
+    [HideInInspector] public bool jumpPressed;
     private int maxAirJumpCount = 1;
     private int airJumpCount = 0;
     #endregion
@@ -91,7 +91,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private bool dashedOnAir = false;
     private float dashingTime = 0.17f;
     private float dashingCooldown = 0.5f;
-    public bool dashPressed = false;
+    [HideInInspector] public bool dashPressed = false;
     private bool dashBackward = false;
 
     #endregion

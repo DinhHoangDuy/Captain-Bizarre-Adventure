@@ -40,6 +40,8 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private DamageType damageType = DamageType.Physical;
             [SerializeField] private float criticalRate = 20f;
             [SerializeField] private float criticalDamageMultiplier = 150f;
+            [SerializeField] private float attackRate = 2f;
+            float nextAttackTime = 0f;
             [SerializeField] private int startSP = 15;
             public int _startSP { get { return startSP; } }
             [SerializeField] private float SPRegenRate = 1;
@@ -149,6 +151,7 @@ public class CaptainMoonBlade : MonoBehaviour
     }
     private void Update()
     {
+        #region Expansions Chips
         // Increase SP per 4 seconds if the Sweet Snacks is equiped
         if(expansionChips._SweetSnacks)
         {
@@ -157,6 +160,7 @@ public class CaptainMoonBlade : MonoBehaviour
                 sweetSnacksCoroutine = StartCoroutine(SweetSnacksSPRegen(expansionChips._SweetSnacksSPRegenRate, expansionChips._SweetSnacksSPRegenAmount));
             }
         }
+        #endregion
 
         // Limit the SP to the maxSP
         currentSP = Mathf.Clamp(currentSP, 0, maxSP);
@@ -189,7 +193,11 @@ public class CaptainMoonBlade : MonoBehaviour
         basicAttackDamage = dmgCalulator.BoostDamage(basicAttackDamage);
 
         // Sent the trigger to the animator coder
-        fireTriggered = true;
+        if(Time.time >= nextAttackTime)
+        {
+            fireTriggered = true;  
+            nextAttackTime = Time.time + 1f / attackRate;          
+        }
     }
     public void UltimateAttack()
     {

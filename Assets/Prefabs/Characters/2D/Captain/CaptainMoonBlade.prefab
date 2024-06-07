@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterHit: 0
-  knockbackForce: 5
+  knockbackForce: 10
 --- !u!114 &3961857234049573280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +573,7 @@ MonoBehaviour:
   damageType: 0
   criticalRate: 20
   criticalDamageMultiplier: 150
+  attackRate: 2
   startSP: 15
   SPRegenRate: 1
   SPRegenEfficiency: 100
