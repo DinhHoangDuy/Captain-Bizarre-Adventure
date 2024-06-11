@@ -10,374 +10,262 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterStats))]
 public class PlatformerMovement2D : MonoBehaviour
 {
-    //Adapt the new Input system
-    private PlayerInput playerInput;
-    private InputAction horizontalInput;
-    private float horizontalMovementValue;
-    private InputAction jumpInput;
-    private InputAction dashInput;
-
-    /*Player components (Some of them will be taken from the character, others will be used for other stuff
-        such as directions, etc)*/
-    [HideInInspector]public static Rigidbody2D rb2d;
-    public Rigidbody2D _rigidbody2D { get { return rb2d; } }
-    private BoxCollider2D CharacterCollider;
-    private CharacterStats characterStats;
-    private CaptainMoonBlade skillset;
-    //Player status (movement blocked, movement slowed, health...)
-    public static bool blocked = false;
-    private bool trapped = false;
-    private const float coyoteTime = 0.2f;
-    private float coyoteTimeCounter;
-
-
-    // Character Movement Variables
-    private float movementSpeed;
-    private float dashForce;
-    [Header("Jumping")]
+    //Components
     [SerializeField] private LayerMask groundLayer;
-    private float jumpForce;
-    [Tooltip("How heavy is the character?")]
-    [SerializeField] private float characterGravityScale = 3f;
-    [SerializeField] private float fallingGravityScale = 4f;
-    [Tooltip("How strong is the second jump? (Apply to the second jump only)")][SerializeField] private float doubleJumpForce = 1.5f;
-
-    [Header("Character Controller Dependencies")]
-    [SerializeField] private GameObject leftWallCheck;
     [SerializeField] private GameObject rightWallCheck;
-    // [SerializeField] private GameObject groundCheck;
+    private PlayerInput playerInput;
+    private InputAction wasd;
+    public static Rigidbody2D rb;
+    public static Animator anim;
 
-    [Header("Character Effects")]
-    [SerializeField] private TrailRenderer dashTrailEffect;
-    [SerializeField] private TrailRenderer doubleJumpTrailEffect;
+    #region Current State
+    private CharacterStats characterStats;
+    private float moveSpeed;
+    private float jumpForce;
+    private float gravityScale;
+    private int extraJumps;
+    private int currentExtraJumps;
 
-    #region Speed
-    private bool isRunning = false;
-    public bool _isRunning { get { return isRunning; } }
-    [HideInInspector] public bool isLookingRight = true;
-    private float normalMovementSpeed;
-    private float horizontalMovement;
-    #endregion
+    // Wall Jump
+    [Header("Wall Jump Settings")]
+    private bool isWallSliding = false;
+    private float wallSlidingSpeed = 2f;
+    private float wallJumpDuration = 0.2f;
+    [SerializeField] private Vector2 wallJumpingPower;
+    private bool isWallJumping = false;
+    private float wallJumpingDirection;
 
-    #region Jump
-    private bool isGrounded = false;
-    public bool _isGrounded { get { return isGrounded; } }
-    [HideInInspector] public bool jumpPressed;
-    private int maxAirJumpCount = 1;
-    private int airJumpCount = 0;
-    #endregion
-
-    #region Falling
-    private bool isFalling = false;
-    public bool _isFalling { get { return isFalling; } }
-    private bool isGoingUp = false;
-    public bool _isGoingUp { get { return isGoingUp; } }
-
-    #endregion
-
-    #region Wall and Ground
-    private float normaljumpForce;
-    private bool isOnWall;
-    //Debugging
-    private float currentGravityScale;
-    private float currentVelocityY;
-    #endregion
-
-    #region Dash
+    // Dash
+    [Header ("Dash Settings")]
     private bool canDash = true;
-    public bool _canDash { get { return canDash; } }
     private bool isDashing = false;
-    public bool _isDashing { get { return isDashing; } }
-    private bool dashedOnAir = false;
-    private float dashingTime = 0.17f;
-    private float dashingCooldown = 0.5f;
-    [HideInInspector] public bool dashPressed = false;
-    private bool dashBackward = false;
-
+    private float dashingPower;
+    private float dashingDuration = 0.2f;
+    private float dashingCooldown = 1f;
+    [SerializeField] private TrailRenderer dashTrail;
+    
     #endregion
 
+    // State
+    private bool isLookingRight = true;
+    public bool IsLookingRight { get { return isLookingRight; } }
+    public static bool blocked = false;
+    private float coyoteTime = 0.2f;
 
-    private void Awake()
+
+    void OnEnable()
     {
-        rb2d = GetComponent<Rigidbody2D>();
-        CharacterCollider = GetComponent<BoxCollider2D>();
+        playerInput.Enable();
+    }
+    void OnDisable()
+    {
+        playerInput.Disable();
+    }
+
+    void Awake()
+    {
         playerInput = new PlayerInput();
+        wasd = playerInput.Game.WASD;
+
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
-
-    // This method is called when the object becomes enabled and active.
-    // It sets up the input actions for movement, jump, and dash
-    private void OnEnable()
-    {
-        horizontalInput = playerInput.Game.WASD;
-        horizontalInput.Enable();
-
-        jumpInput = playerInput.Game.Jump;
-        jumpInput.performed += JumpPresed;
-        jumpInput.canceled += ResetCoyoteTime;
-        jumpInput.Enable();
-
-        dashInput = playerInput.Game.Dash;
-        dashInput.performed += DashPressed;
-        dashInput.Enable();
-    }    
-
-    //This method is called when the behaviour becomes disabled or inactive.
-    //It disables the input actions for movement, jump, and dash.
-    private void OnDisable()
-    {
-        horizontalInput.Disable();
-        jumpInput.Disable();
-        dashInput.Disable();
-    }
-    // Start is called before the first frame update
-    private void Start()
+    
+    void Start()
     {
         characterStats = GetComponent<CharacterStats>();
-        skillset = GetComponent<CaptainMoonBlade>();
-
-        //Change rb2d Gravity Scale
-        rb2d.gravityScale = characterGravityScale;
-        //Assign default, normal speed and jump force
-        movementSpeed = characterStats.Speed;
-        normalMovementSpeed = movementSpeed;
+        moveSpeed = characterStats.MoveSpeed;
         jumpForce = characterStats.JumpForce;
-        normaljumpForce = jumpForce;
-        dashForce = characterStats.DashForce;
+        gravityScale = characterStats.GravityScale;
+        extraJumps = characterStats.ExtraJumps;
 
-        //Reset Jump Count
-        airJumpCount = 0;
+        currentExtraJumps = extraJumps;
 
-        //Disable trail effect
-        dashTrailEffect.emitting = false;
-        doubleJumpTrailEffect.emitting = false;
+        dashingPower = characterStats.DashForce;
     }
 
-    private void Update()
+    void Update()
     {
-        //No Update if the character is not allowed to move in specific scenario (Dialogue system, intro, etc...)
-        if (blocked) return;
-
-        #region Trapped
-        if (trapped || skillset.isAttacking)
+        if(blocked)
         {
-            //Not allow Character to move if movementArrested == true
-            if(skillset.isAttacking) rb2d.velocity = Vector2.zero;
-            Move(0);
-        }
-        else Move(movementSpeed); //Allow character to move normally
-        #endregion
-
-        #region Coyote Time        
-        if(UpdateIsGrounded())
-        {
-            coyoteTimeCounter = coyoteTime;
-        }
-        else
-        {
-            coyoteTimeCounter -= Time.deltaTime;
-        }
-        #endregion
-        #region Falling Speed
-
-        if(isFalling)
-        {
-            rb2d.gravityScale = fallingGravityScale;
-        }
-        if(isGrounded || isGoingUp)
-        {
-            rb2d.gravityScale = characterGravityScale;
-        }
-        //Limit the falling speed
-        if (rb2d.velocity.y < -40f)
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, -40f);
-        }
-        #endregion
-    }
-    private void FixedUpdate()
-    {
-        UpdateIsGrounded();
-        UpdateIsOnWall();
-        AutoUpdateAnimationState();
-
-        //For Debugging purposes
-        currentGravityScale = rb2d.gravityScale;
-        currentVelocityY = rb2d.velocity.y;
-    }
-
-    //Movement Handling
-    //private void Move(float movementSpeed)
-    private void Move(float movementSpeed)
-    {
-        if (movementSpeed == 0)
-        {
-            isRunning = false;
+            rb.velocity = new Vector2(0, rb.velocity.y);
             return;
         }
 
-        //Read the Movement button values
-        horizontalMovementValue = horizontalInput.ReadValue<Vector2>().x;
-        if (horizontalMovementValue == 0)
+        if(isDashing)
         {
-            isRunning = false;
-            rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+            return;
+        }
+
+        #region Horizontal Movement
+        if(playerInput.Game.WASD.ReadValue<Vector2>().x != 0)
+        {
+            float horizontalInput = wasd.ReadValue<Vector2>().x;
+            rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
         }
         else
         {
-            isRunning = true;
-            //Check player status (slowed, trapped, etc...) 
-            BadStatusCheck();
-
-            //Move the Character Left or Right
-            horizontalMovement = horizontalMovementValue * movementSpeed;
-            rb2d.velocity = new Vector2(horizontalMovement, rb2d.velocity.y);
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
 
-    }
-
-    private void JumpPresed(InputAction.CallbackContext context)
-    {
-        if(blocked) return;
-        // Check if the character is grounded or coyote time is still active. If yes, do the first jump
-        if (coyoteTimeCounter > 0f)
-        { 
-            jumpPressed = true;
-            doubleJumpTrailEffect.emitting = false;
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
-            coyoteTimeCounter = 0;       
-        }
-
-        // Check if the character's coyote time is out and the air jump count is less than the max air jump count. If yes, do the second jump
-        if (coyoteTimeCounter <= 0 && airJumpCount < maxAirJumpCount)
+        if(rb.velocity.x > 0 && !isLookingRight)
         {
-            jumpPressed = true;
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce * doubleJumpForce);
-            doubleJumpTrailEffect.emitting = true;
-            airJumpCount++;
+            Flip();
         }
-    }
-    private void ResetCoyoteTime(InputAction.CallbackContext context)
-    {
-        coyoteTimeCounter = 0;
-    }
-    private void DashPressed(InputAction.CallbackContext context)
-    {
-        if(skillset.isAttacking == true) return;
-        if (canDash && !isDashing)
+        else if(rb.velocity.x < 0 && isLookingRight)
         {
-            if (isGrounded || !dashedOnAir)
+            Flip();
+        }
+        #endregion
+
+        #region Jumping
+        rb.gravityScale = gravityScale;
+        if(playerInput.Game.Jump.triggered)
+        {
+            if(coyoteTime > 0 || currentExtraJumps > 0 && !isWallSliding)
             {
-                dashPressed = true;
-                rb2d.velocity = Vector2.zero;
-                if (!isGrounded) dashedOnAir = true; //dashedOnAir is used to prevent the character from dashing again while on air
-                StartCoroutine(Dash());
-                dashPressed = false;
+                if(!IsGrounded())
+                {
+                    currentExtraJumps--;
+                }
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+            else if(isWallSliding)
+            {
+                isWallJumping = true;
+                if(isLookingRight)
+                {
+                    rb.velocity = new Vector2(-wallJumpingPower.x, wallJumpingPower.y);
+                }
+                else
+                {
+                    rb.velocity = new Vector2(wallJumpingPower.x, wallJumpingPower.y);
+                }
+                Invoke(nameof(StopWallJumping), wallJumpDuration);
             }
         }
-    }
-    private IEnumerator Dash()
-    {
-        //Calculate the dash velocity
-        float dashVelocity = movementSpeed * dashForce;
-
-        //Prevent from dashing again while dashing
-        canDash = false;
-        isDashing = true;
-        blocked = true;
-        float originalGravity = rb2d.gravityScale;
-        rb2d.gravityScale = 0f;
-
-        //Flip the dash velocity if the character is facing left
-        if (!isLookingRight) dashVelocity *= -1;
-        /*Flip the dash velocity if the character is on the ground and not running
-            (this meant for auto dash backward)*/
-        if (isGrounded && !isRunning)
+        #endregion
+        #region Falling
+        if(rb.velocity.y < -30)
         {
-            transform.Rotate(0f, 180f, 0f);
-            dashVelocity *= -1;
-            dashBackward = true;
+            rb.velocity = new Vector2(rb.velocity.x, -30);
         }
+        else if(rb.velocity.y < 0)
+        {
+            rb.gravityScale = gravityScale * 1.5f;
+        }
+        else rb.gravityScale = gravityScale;
+        #endregion
 
-        //Apply the dash velocity and start the dash trail effect        
-        rb2d.velocity = new Vector2(dashVelocity, 0f);
-        dashTrailEffect.emitting = true;
+        #region Dash
+        if(playerInput.Game.Dash.triggered && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+        #endregion
 
-        yield return new WaitForSeconds(dashingTime);
-        //Reset the velocity and movement status
-        if(dashBackward)
+        #region Grounded Logic
+        // Coyote Time
+        if(!IsGrounded())
         {
-            transform.Rotate(0f, 180f, 0f);
-            dashBackward = false;
+            coyoteTime -= Time.deltaTime;
         }
-        rb2d.gravityScale = originalGravity;
-        blocked = false;
-        isDashing = false;
-        dashTrailEffect.emitting = false;
-        //Start the cooldown
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
-    }
-    public bool UpdateIsGrounded()
-    {
-        isGrounded = Physics2D.BoxCast(CharacterCollider.bounds.center, CharacterCollider.bounds.size, 0f, Vector2.down, 0.2f, groundLayer);
-        if (isGrounded)
-        {
-            airJumpCount = 0;
-            dashedOnAir = false;
-        }
-        return isGrounded;
-    }
-    public bool UpdateIsOnWall()
-    {
-        isOnWall = Physics2D.OverlapCircle(leftWallCheck.transform.position, 0.2f, groundLayer)
-                   || Physics2D.OverlapCircle(rightWallCheck.transform.position, 0.2f, groundLayer);
-        if (isOnWall)
-        {
-            dashedOnAir = false;
-        }
-        return isOnWall;
-    }
-
-    //Status Check
-    private void BadStatusCheck()
-    {
-        //Check if the character is trapped
-        if (trapped)
-        {
-            movementSpeed = 0;
-            jumpForce = 0;
-        }
-        //Reset the character speed if the character is not trapped
         else
         {
-            movementSpeed = normalMovementSpeed;
-            jumpForce = normaljumpForce;
+            coyoteTime = 0.2f;
+            currentExtraJumps = extraJumps;
         }
-    }
+        #endregion
 
-    //Animation Handling
-    private void AutoUpdateAnimationState()
+        IsOnWall();
+        WallSlide();
+    }
+    void FixedUpdate()
     {
-        //Flip Character while moving left or right
-        if ((horizontalMovementValue < 0 && isLookingRight) || (horizontalMovementValue > 0 && !isLookingRight))
-        {
-            transform.Rotate(0f, 180f, 0f);
-            isLookingRight = !isLookingRight;
-        }
-
-        //Update the animation state
-        isRunning = horizontalMovementValue != 0;
-        isGoingUp = !isGrounded && rb2d.velocity.y > 0.1;
-        isFalling = !isGrounded && rb2d.velocity.y < -0.1;
-        if (isFalling) doubleJumpTrailEffect.emitting = false;
-
+        #region Animation State
+        anim.SetBool("isGrounded", IsGrounded());
+        anim.SetBool("isJumping", rb.velocity.y > 0f);
+        anim.SetBool("isFalling", rb.velocity.y < 0f);
+        anim.SetBool("isRunning", rb.velocity.x != 0);
+        Debug.Log("rb.velocity.y < 0 =>" + (rb.velocity.y < 0));
+        #endregion
     }
 
-    //Gizmos only for debugging
+    void Flip()
+    {
+        isLookingRight = !isLookingRight;
+        transform.Rotate(0f, 180f, 0f);
+    }
+
+    bool IsGrounded()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, groundLayer);
+        return hit.collider != null;
+    }
+
+    #region Wall Slide and Jump
+    bool IsOnWall()
+    {
+        bool isOnWall = Physics2D.OverlapCircle(rightWallCheck.transform.position, 0.2f, groundLayer);
+        return isOnWall;
+    }
+    void WallSlide()
+    {
+        if(IsOnWall() && !IsGrounded() && playerInput.Game.WASD.ReadValue<Vector2>().x != 0)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));         
+        }
+        else
+        {
+            isWallSliding = false;
+        }
+    }
+    void StopWallJumping()
+    {
+        isWallJumping = false;
+    }
+    #endregion
+    
+    #region Dash
+    IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
+        dashTrail.emitting = true;
+
+        float dashDirection = 1;
+        if (isLookingRight)
+        {
+            dashDirection = 1;
+        }
+        else
+        {
+            dashDirection = -1;
+        }
+        rb.velocity = new Vector2(dashDirection * dashingPower, 0f);
+        yield return new WaitForSeconds(dashingDuration);
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        dashTrail.emitting = false;
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+
+    }
+    #endregion
+
+    #region Gizmos
     private void OnDrawGizmos()
     {
+        // Ground Check Gizmo
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(leftWallCheck.transform.position, 0.2f);
-        Gizmos.DrawWireSphere(rightWallCheck.transform.position, 0.2f);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 1f);
+
+        // Wall Check Gizmo
+        Gizmos.DrawWireSphere(rightWallCheck.transform.position, 0.1f);
     }
+    #endregion
 }

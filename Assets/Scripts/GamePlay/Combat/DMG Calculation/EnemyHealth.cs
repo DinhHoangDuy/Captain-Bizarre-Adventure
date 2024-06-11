@@ -2,7 +2,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-// [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(EnemyResistance))]
 public class EnemyHealth : MonoBehaviour
@@ -11,13 +10,19 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     private float currentHealth;
 
+    /// <summary>
+    /// Initializes the enemy's current health to the maximum health value.
+    /// </summary>
     private void Start()
     {
         enemyResistance = GetComponent<EnemyResistance>();
-        //This line of code sets the current health of the enemy to the maximum health value, which is set in the EnemyResistance script.
         currentHealth = maxHealth;
     }
 
+    /// <summary>
+    /// Reduces the enemy's current health by the specified damage amount.
+    /// </summary>
+    /// <param name="damage">The amount of damage to be taken.</param>
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
@@ -32,6 +37,9 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Performs the death logic for the enemy and destroys the game object.
+    /// </summary>
     public void Die()
     {
         // Add death logic here

@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Controls the patrol behavior of an enemy character.
+/// </summary>
 public class EnemyPatrol : MonoBehaviour
 {
     // Variables
@@ -20,10 +23,12 @@ public class EnemyPatrol : MonoBehaviour
     private Vector3 target;
     private bool isChasing = false;
     private bool isWaiting = false;
-    private bool isRunning = false;
     private bool isAttacking = false;
     private float threshold = 1f;
 
+    /// <summary>
+    /// Initializes the required components and sets the initial patrol point.
+    /// </summary>
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,6 +39,12 @@ public class EnemyPatrol : MonoBehaviour
         currentPatrolPoint = patrolPoint1;
     }
 
+    /// <summary>
+    /// Updates the enemy's behavior based on the player's position and the current state.
+    /// </summary>
+    /// <summary>
+    /// This method is called once per frame. It updates the enemy's behavior, including patrolling and chasing the player.
+    /// </summary>
     void Update()
     {
         if(isAttacking)
@@ -48,7 +59,7 @@ public class EnemyPatrol : MonoBehaviour
 
 
         Patrol();
-        if (distanceToPlayer < chaseRange && Vector2.Dot(directionToPlayer, enemyForward) > 0 && player.position.y >= transform.position.y - threshold || isChasing && player.position.y >= transform.position.y - threshold)
+        if (distanceToPlayer < chaseRange && Vector2.Dot(directionToPlayer, enemyForward) > 0)
         {
             isChasing = true;
             target = player.position;
@@ -83,6 +94,9 @@ public class EnemyPatrol : MonoBehaviour
         animator.SetBool("isRunning", rb.velocity.magnitude > 0f);
     }
 
+    /// <summary>
+    /// Checks if the enemy has reached a patrol point and switches to the next one.
+    /// </summary>
     void Patrol()
     {
         if (Vector2.Distance(transform.position, patrolPoint1.position) <= 0.2f && currentPatrolPoint == patrolPoint1)
@@ -98,6 +112,10 @@ public class EnemyPatrol : MonoBehaviour
             StartCoroutine(StandStill());
         }
     }
+
+    /// <summary>
+    /// Pauses the enemy's movement for a specified amount of time.
+    /// </summary>
     IEnumerator StandStill()
     {
         isWaiting = true;
@@ -105,6 +123,9 @@ public class EnemyPatrol : MonoBehaviour
         isWaiting = false;
     }
 
+    /// <summary>
+    /// Moves the enemy towards the target position. If the enemy is chasing the player, it moves at a faster speed.
+    /// </summary>
     void MoveTowardsTarget()
     {
         if (Vector2.Distance(transform.position, currentPatrolPoint.position) > 0.2f || isChasing)
@@ -125,16 +146,25 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the enemy's attacking state to true.
+    /// </summary>
     public void IsAttacking()
     {
         isAttacking = true;
     }
+
+    /// <summary>
+    /// Sets the enemy's attacking state to false.
+    /// </summary>
     public void IsNotAttacking()
     {
         isAttacking = false;
     }
 
-
+    /// <summary>
+    /// Draws gizmos to visualize the chase range and patrol points in the scene view.
+    /// </summary>
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

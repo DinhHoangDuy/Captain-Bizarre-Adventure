@@ -139,7 +139,7 @@ public class DialogueManager : MonoBehaviour
         else
         {
             PlatformerMovement2D.blocked = true;
-            PlatformerMovement2D.rb2d.velocity = Vector2.zero;     
+            PlatformerMovement2D.rb.velocity = Vector2.zero;     
         }
 
         if(Input.GetButtonDown("Submit"))

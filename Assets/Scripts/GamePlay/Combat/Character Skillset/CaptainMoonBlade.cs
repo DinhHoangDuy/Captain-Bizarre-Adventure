@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(DamageOutCalculator))]
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
-[RequireComponent(typeof(CaptainMoonBladeAnimation))]
 [RequireComponent(typeof(ExpansionChips))]
 public class CaptainMoonBlade : MonoBehaviour
 {
@@ -84,6 +83,8 @@ public class CaptainMoonBlade : MonoBehaviour
         [SerializeField] private LayerMask destroyableLayers;
         private DamageOutCalculator dmgCalulator;
         private ExpansionChips expansionChips;
+
+        private Animator anim;
     #endregion
 
     #region Current Status 
@@ -127,6 +128,7 @@ public class CaptainMoonBlade : MonoBehaviour
         platformerMovement2D = GetComponent<PlatformerMovement2D>();
         dmgCalulator = GetComponent<DamageOutCalculator>();
         expansionChips = GetComponent<ExpansionChips>();
+        anim = GetComponent<Animator>();
     }
     private void Start()    
     {
@@ -196,7 +198,8 @@ public class CaptainMoonBlade : MonoBehaviour
         if(Time.time >= nextAttackTime)
         {
             fireTriggered = true;  
-            nextAttackTime = Time.time + 1f / attackRate;          
+            nextAttackTime = Time.time + 1f / attackRate;
+            anim.SetTrigger("Basic Attack");       
         }
     }
     public void UltimateAttack()
@@ -211,6 +214,8 @@ public class CaptainMoonBlade : MonoBehaviour
         //Check if Captain has enough SP and one stack to cast the ultimate
         if(CanCastUltimate() && !isAttacking)
         {
+            anim.SetTrigger("Ultimate");
+
             //Sent the trigger to the animator coder
             ultimateTriggered = true;
             currentSP -= requiredSP;
@@ -233,8 +238,9 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         bool hasEnoughSP = currentSP >= requiredSP;
         bool isCooldownOver = currentUltimateCooldown <= 0;
-        bool isOnGround = platformerMovement2D._isGrounded;
-        bool canCast = hasEnoughSP && isCooldownOver && isOnGround;
+        // bool isOnGround = platformerMovement2D._isGrounded;
+        // bool canCast = hasEnoughSP && isCooldownOver && isOnGround;
+        bool canCast = hasEnoughSP && isCooldownOver;
         return canCast;
     }
     //Passive
@@ -348,7 +354,7 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         //Calculate the wave direction (left or right) only
         Quaternion waveRotation;
-        if(!platformerMovement2D.isLookingRight)
+        if(!platformerMovement2D.IsLookingRight)
         {
             waveRotation = Quaternion.Euler(0, 0, 180);
         }

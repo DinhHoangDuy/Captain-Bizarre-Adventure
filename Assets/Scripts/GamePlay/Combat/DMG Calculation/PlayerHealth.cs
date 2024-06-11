@@ -78,6 +78,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else
         {
+            GetComponent<Animator>().Play("Hit");
             // Calculate the direction from the damage source to the player
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             Vector2 knockbackDirection = (Vector2)transform.position - damageSourcePosition;

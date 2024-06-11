@@ -20,7 +20,6 @@ public class MeleeEnemy : MonoBehaviour
 
     
     private Animator animator;
-
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -61,6 +60,10 @@ public class MeleeEnemy : MonoBehaviour
         yield return new WaitForSeconds(attackDelay);
         attackAllowed = true;
     }
+    
+    /// <summary>
+    /// This event is called from the animation event in the attack animation
+    /// </summary>
     public void DealDamge()
     {
         // Detect player in attack range during attack
@@ -73,6 +76,10 @@ public class MeleeEnemy : MonoBehaviour
     }
     #endregion
 
+
+    /// <summary>
+    /// Draws the attack range gizmo in the scene view
+    /// </summary>
     void OnDrawGizmosSelected()
     {
         if(attackPoint == null)
