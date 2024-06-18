@@ -355,12 +355,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec65a722dd6b42bf9e275354f9b496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trailRenderer: {fileID: 1691375614550857047}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  rightWallCheck: {fileID: 6617033573333375749}
-  wallJumpingPower: {x: 70, y: 20}
-  dashTrail: {fileID: 1691375614550857047}
+  wallCheck: {fileID: 4030414313041973073}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &4593632438534977704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,10 +372,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6855818143754167541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86928302149dfb7f8985e1013663476d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d16278877ff0a66898c875576a67f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicDamage: 30
+  basicDamage: 100
   damageType: 0
   criticalRate: 20
   criticalDamageMultiplier: 150
@@ -387,8 +389,8 @@ MonoBehaviour:
   basicAttackUWTriggerChance: 20
   waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
     type: 3}
-  ultimateBaseDamage: 50
-  ultimateDamageMultiplier: 30
+  ultimateBaseDamage: 150
+  ultimateDamageMultiplier: 105
   waveSpeed: 30
   waveLifeTime: 0.2
   ultimateUWPassiveBonus: 10

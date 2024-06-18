@@ -83,6 +83,7 @@ public class CaptainMoonBlade : MonoBehaviour
         [SerializeField] private LayerMask destroyableLayers;
         private DamageOutCalculator dmgCalulator;
         private ExpansionChips expansionChips;
+        private PlatformerMovement2D platformerMovement;
 
         private Animator anim;
     #endregion
@@ -129,6 +130,7 @@ public class CaptainMoonBlade : MonoBehaviour
         dmgCalulator = GetComponent<DamageOutCalculator>();
         expansionChips = GetComponent<ExpansionChips>();
         anim = GetComponent<Animator>();
+        platformerMovement = GetComponent<PlatformerMovement2D>();
     }
     private void Start()    
     {
@@ -240,7 +242,7 @@ public class CaptainMoonBlade : MonoBehaviour
         bool isCooldownOver = currentUltimateCooldown <= 0;
         // bool isOnGround = platformerMovement2D._isGrounded;
         // bool canCast = hasEnoughSP && isCooldownOver && isOnGround;
-        bool canCast = hasEnoughSP && isCooldownOver;
+        bool canCast = hasEnoughSP && isCooldownOver && !blocked && platformerMovement.IsGrounded();
         return canCast;
     }
     //Passive

@@ -69,7 +69,6 @@ public class EnemyPatrol : MonoBehaviour
         {
             isChasing = false;
             target = currentPatrolPoint.position;
-            Debug.Log("Patrolling to " + target);
         }
 
         if (!isWaiting || isChasing)
@@ -101,13 +100,11 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (Vector2.Distance(transform.position, patrolPoint1.position) <= 0.2f && currentPatrolPoint == patrolPoint1)
         {
-            Debug.Log("Reached patrol point 1, switching to patrol point 2");
             currentPatrolPoint = patrolPoint2;
             StartCoroutine(StandStill());
         }
         else if (Vector2.Distance(transform.position, patrolPoint2.position) <= 0.2f && currentPatrolPoint == patrolPoint2)
         {
-            Debug.Log("Reached patrol point 2, switching to patrol point 1");
             currentPatrolPoint = patrolPoint1;
             StartCoroutine(StandStill());
         }

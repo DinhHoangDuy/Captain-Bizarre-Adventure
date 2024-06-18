@@ -1,271 +1,320 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(BoxCollider2D))]
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(CharacterStats))]
 public class PlatformerMovement2D : MonoBehaviour
 {
-    //Components
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private GameObject rightWallCheck;
     private PlayerInput playerInput;
-    private InputAction wasd;
-    public static Rigidbody2D rb;
-    public static Animator anim;
 
-    #region Current State
-    private CharacterStats characterStats;
-    private float moveSpeed;
-    private float jumpForce;
+    private float horizontal;
+    private float speed;
+    private float jumpingPower;
     private float gravityScale;
     private int extraJumps;
-    private int currentExtraJumps;
+    private int extraJumpsCounter;
+    private float coyoteTime = 0.2f;
+    private float coyoteTimeCounter;
+    private bool isFacingRight = true;
+    public bool IsLookingRight => isFacingRight;
+    public static bool blocked = false;
 
-    // Wall Jump
-    [Header("Wall Jump Settings")]
-    private bool isWallSliding = false;
+    private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
-    private float wallJumpDuration = 0.2f;
-    [SerializeField] private Vector2 wallJumpingPower;
-    private bool isWallJumping = false;
-    private float wallJumpingDirection;
 
-    // Dash
-    [Header ("Dash Settings")]
+    private bool isWallJumping;
+    private float wallJumpingDirection;
+    private float wallJumpingTime = 0.2f;
+    private float wallJumpingCounter;
+    private float wallJumpingDuration = 0.4f;
+    private Vector2 wallJumpingPower = new Vector2(6f, 16f);
+
     private bool canDash = true;
     private bool isDashing = false;
-    private float dashingPower;
-    private float dashingDuration = 0.2f;
-    private float dashingCooldown = 1f;
-    [SerializeField] private TrailRenderer dashTrail;
-    
-    #endregion
-
-    // State
-    private bool isLookingRight = true;
-    public bool IsLookingRight { get { return isLookingRight; } }
-    public static bool blocked = false;
-    private float coyoteTime = 0.2f;
+    private float dashForce;
+    private float dashTime = 0.2f;
+    private float dashCooldown = 1f;
+    [SerializeField] private TrailRenderer trailRenderer;
 
 
-    void OnEnable()
+    private float _fallSpeedYDampingChangeThreshold;
+
+    public static Rigidbody2D rb;
+    private Animator anim;
+    private CharacterStats stats;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private LayerMask wallLayer;
+
+    // Only for Debugging
+    private float currentVelocityY;
+
+    private void OnEnable()
     {
-        playerInput.Enable();
+        playerInput.Game.Enable();
     }
-    void OnDisable()
+    private void OnDisable()
     {
-        playerInput.Disable();
+        playerInput.Game.Disable();
     }
 
-    void Awake()
+
+    private void Awake()
     {
         playerInput = new PlayerInput();
-        wasd = playerInput.Game.WASD;
-
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-    }
-    
-    void Start()
-    {
-        characterStats = GetComponent<CharacterStats>();
-        moveSpeed = characterStats.MoveSpeed;
-        jumpForce = characterStats.JumpForce;
-        gravityScale = characterStats.GravityScale;
-        extraJumps = characterStats.ExtraJumps;
-
-        currentExtraJumps = extraJumps;
-
-        dashingPower = characterStats.DashForce;
+        stats = GetComponent<CharacterStats>();
     }
 
-    void Update()
+    private void Start()
     {
-        if(blocked)
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            return;
-        }
+        speed = stats.MoveSpeed;
+        jumpingPower = stats.JumpForce;
+        gravityScale = stats.GravityScale;
+        rb.gravityScale = gravityScale;
+        extraJumps = stats.ExtraJumps;
+        extraJumpsCounter = extraJumps;
+        coyoteTimeCounter = coyoteTime;
+        dashForce = stats.DashForce;
 
-        if(isDashing)
-        {
-            return;
-        }
+        _fallSpeedYDampingChangeThreshold = CameraManager.instance._fallSpeedYDampingChangeThreshold;
+    }
 
-        #region Horizontal Movement
-        if(playerInput.Game.WASD.ReadValue<Vector2>().x != 0)
+    private void Update()
+    {
+        if (blocked || isDashing) return;
+        horizontal = playerInput.Game.WASD.ReadValue<Vector2>().x;
+
+        if (playerInput.Game.Jump.triggered && (coyoteTimeCounter > 0 || extraJumpsCounter  > 0))
         {
-            float horizontalInput = wasd.ReadValue<Vector2>().x;
-            rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
+            if(!IsGrounded() && coyoteTimeCounter <= 0)
+            {
+                extraJumpsCounter --;
+            }
+
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+        if(IsGrounded())
+        {
+            extraJumpsCounter  = extraJumps;
+            coyoteTimeCounter = coyoteTime;
         }
         else
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if(rb.velocity.x > 0 && !isLookingRight)
+        if(rb.velocity.y < -20f)
         {
-            Flip();
+            rb.velocity = new Vector2(rb.velocity.x, -20f);
         }
-        else if(rb.velocity.x < 0 && isLookingRight)
-        {
-            Flip();
-        }
-        #endregion
 
-        #region Jumping
-        rb.gravityScale = gravityScale;
-        if(playerInput.Game.Jump.triggered)
+
+        WallSlide();
+        WallJump();
+
+        if (!isWallJumping)
         {
-            if(coyoteTime > 0 || currentExtraJumps > 0 && !isWallSliding)
+            if (transform.localRotation.y < 0 && horizontal > 0f || transform.localRotation.y >= 0 && horizontal < 0f)
             {
-                if(!IsGrounded())
-                {
-                    currentExtraJumps--;
-                }
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            }
-            else if(isWallSliding)
-            {
-                isWallJumping = true;
-                if(isLookingRight)
-                {
-                    rb.velocity = new Vector2(-wallJumpingPower.x, wallJumpingPower.y);
-                }
-                else
-                {
-                    rb.velocity = new Vector2(wallJumpingPower.x, wallJumpingPower.y);
-                }
-                Invoke(nameof(StopWallJumping), wallJumpDuration);
+                Flip();
             }
         }
-        #endregion
-        #region Falling
-        if(rb.velocity.y < -30)
+        if (rb.velocity.y < -_fallSpeedYDampingChangeThreshold)
         {
-            rb.velocity = new Vector2(rb.velocity.x, -30);
+            CameraManager.instance.LowYDamping();
         }
-        else if(rb.velocity.y < 0)
+        if(rb.velocity.y >= 0f)
         {
-            rb.gravityScale = gravityScale * 1.5f;
+            //Reset so it can be called again
+            CameraManager.instance.NormalYDamping();
         }
-        else rb.gravityScale = gravityScale;
-        #endregion
 
-        #region Dash
         if(playerInput.Game.Dash.triggered && canDash)
         {
             StartCoroutine(Dash());
         }
-        #endregion
 
-        #region Grounded Logic
-        // Coyote Time
-        if(!IsGrounded())
+        // Debub Only
+        currentVelocityY = rb.velocity.y;
+
+    }
+
+    private void FixedUpdate()
+    {
+        if(isDashing)
         {
-            coyoteTime -= Time.deltaTime;
+            return;
+        } 
+            
+        if (!isWallJumping)
+        {
+            if(!blocked)
+            {
+                rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+            }
+        }
+        if(rb.velocity.y < 0)
+        {
+            rb.gravityScale = gravityScale * 1.5f;
         }
         else
         {
-            coyoteTime = 0.2f;
-            currentExtraJumps = extraJumps;
+            rb.gravityScale = gravityScale;
         }
-        #endregion
 
-        IsOnWall();
-        WallSlide();
-    }
-    void FixedUpdate()
-    {
         #region Animation State
         anim.SetBool("isGrounded", IsGrounded());
         anim.SetBool("isJumping", rb.velocity.y > 0f);
         anim.SetBool("isFalling", rb.velocity.y < 0f);
-        anim.SetBool("isRunning", rb.velocity.x != 0);
-        Debug.Log("rb.velocity.y < 0 =>" + (rb.velocity.y < 0));
+        anim.SetBool("isRunning", rb.velocity.x != 0f);
+        anim.SetBool("IsWallSliding", isWallSliding);
+        if (transform.localRotation.y < 0)
+        {
+            isFacingRight = false;
+        }
+        else if (transform.localRotation.y >= 0)
+        {
+            isFacingRight = true;
+        }
         #endregion
     }
 
-    void Flip()
+    #region Is Grounded
+    public bool IsGrounded()
     {
-        isLookingRight = !isLookingRight;
-        transform.Rotate(0f, 180f, 0f);
-    }
-
-    bool IsGrounded()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1f, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.2f, groundLayer);
         return hit.collider != null;
+        // return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+    #endregion
+
+    #region WallSlide & WallJump
+    private bool IsWalled()
+    {
+        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer) && !IsGrounded();
     }
 
-    #region Wall Slide and Jump
-    bool IsOnWall()
+    private void WallSlide()
     {
-        bool isOnWall = Physics2D.OverlapCircle(rightWallCheck.transform.position, 0.2f, groundLayer);
-        return isOnWall;
-    }
-    void WallSlide()
-    {
-        if(IsOnWall() && !IsGrounded() && playerInput.Game.WASD.ReadValue<Vector2>().x != 0)
+        if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));         
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
         }
         else
         {
             isWallSliding = false;
         }
     }
-    void StopWallJumping()
+
+    private void WallJump()
+    {
+        if (isWallSliding)
+        {
+            isWallJumping = false;
+            if (transform.localRotation.y >= 0)
+            {
+                wallJumpingDirection = -1f;
+            }
+            else if (transform.localRotation.y < 0)
+            {
+                wallJumpingDirection = 1f;
+            }
+            else
+            {
+                Debug.LogError("WallJumpingDirection Error");
+            }
+            wallJumpingCounter = wallJumpingTime;
+
+            CancelInvoke(nameof(StopWallJumping));
+        }
+        else
+        {
+            wallJumpingCounter -= Time.deltaTime;
+        }
+
+        if (playerInput.Game.Jump.triggered && wallJumpingCounter > 0f)
+        {
+            isWallJumping = true;
+            rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            wallJumpingCounter = 0f;
+            transform.Rotate(0f, 180f, 0f);
+
+            Invoke(nameof(StopWallJumping), wallJumpingDuration);
+        }
+    }
+
+    private void StopWallJumping()
     {
         isWallJumping = false;
     }
     #endregion
+
     
+    private void Flip()
+    {
+        transform.Rotate(0f, 180f, 0f);
+    }
     #region Dash
-    IEnumerator Dash()
+    private IEnumerator Dash()
     {
         canDash = false;
         isDashing = true;
         float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0;
-        rb.velocity = Vector2.zero;
-        dashTrail.emitting = true;
+        rb.gravityScale = 0f;
 
-        float dashDirection = 1;
-        if (isLookingRight)
+        float dashDirection;
+        if(horizontal < 0)
         {
-            dashDirection = 1;
+            dashDirection = -1f;
+        }
+        else if(horizontal > 0)
+        {
+            dashDirection = 1f;
         }
         else
         {
-            dashDirection = -1;
+            if(IsGrounded() && rb.velocity.x == 0 )
+            {
+                dashDirection = isFacingRight ? -1f : 1f;
+            }
+            else
+            {
+                dashDirection = isFacingRight ? 1f : -1f;
+            }
         }
-        rb.velocity = new Vector2(dashDirection * dashingPower, 0f);
-        yield return new WaitForSeconds(dashingDuration);
+        rb.velocity = new Vector2(dashDirection * dashForce, 0f);
+
+        trailRenderer.emitting = true;
+        if (transform.localRotation.y < 0 && dashDirection > 0f || transform.localRotation.y >= 0 && dashDirection < 0f)
+        {
+            Flip();
+        }
+        yield return new WaitForSeconds(dashTime);
+        trailRenderer.emitting = false;
         rb.gravityScale = originalGravity;
         isDashing = false;
-        dashTrail.emitting = false;
-        yield return new WaitForSeconds(dashingCooldown);
+
+        yield return new WaitForSeconds(dashCooldown);
         canDash = true;
-
     }
     #endregion
 
-    #region Gizmos
-    private void OnDrawGizmos()
+
+    public void BlockMovement()
     {
-        // Ground Check Gizmo
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 1f);
-
-        // Wall Check Gizmo
-        Gizmos.DrawWireSphere(rightWallCheck.transform.position, 0.1f);
+        rb.velocity = Vector2.zero;
+        blocked = true;
     }
-    #endregion
+    public void EnableMovement()
+    {
+        blocked = false;
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 1.2f);
+    }
 }

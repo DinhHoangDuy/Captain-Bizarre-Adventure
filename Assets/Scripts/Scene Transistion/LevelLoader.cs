@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
+    [SerializeField] private GameObject playerUI;
     private Animator transitionAnim;
-    [SerializeField] private TextMeshProUGUI loadingText;
     private string levelName;
     private void Start()
     {
@@ -26,17 +26,18 @@ public class LevelLoader : MonoBehaviour
             return;
         }
         this.levelName = levelName;
-        loadingText.text = "Moving to " + levelName + "...";
         transitionAnim.SetTrigger("Trigger");
     }
     public void BlockInput()
     {
         PlatformerMovement2D.blocked = true;
         CaptainMoonBlade.blocked = true;
+        playerUI.SetActive(false);
     }
     public void UnblockInput()
     {
         PlatformerMovement2D.blocked = false;
         CaptainMoonBlade.blocked = false;
+        playerUI.SetActive(true);
     }
 }
