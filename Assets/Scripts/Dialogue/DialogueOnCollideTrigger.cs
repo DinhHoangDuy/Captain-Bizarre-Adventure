@@ -23,6 +23,7 @@ public class DialogueOnCollideTrigger : MonoBehaviour
         {
             if(!isUsed)
             {
+                PlatformerMovement2D.instance.blocked = true;
                 ExternalDialogueManager.GetInstance().EnterDialogueMode(inkJSON);
                 isUsed = true;
             }

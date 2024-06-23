@@ -73,12 +73,12 @@ public class PauseMenu : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
-        PlatformerMovement2D.blocked = true;       
+        PlatformerMovement2D.instance.blocked = true;       
     }
     public void ResumeGame()
     {
         isPaused = false;
         Time.timeScale = 1f;
-        PlatformerMovement2D.blocked = false;
+        PlatformerMovement2D.instance.blocked = false;
     }
 }

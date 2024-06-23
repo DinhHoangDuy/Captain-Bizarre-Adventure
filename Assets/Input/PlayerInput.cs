@@ -107,6 +107,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExpansionChipPanel"",
+                    ""type"": ""Button"",
+                    ""id"": ""83599fe1-707f-498e-b8aa-29b193917ff5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -237,7 +246,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KMB"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -248,7 +257,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/numpadEnter"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KMB"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -259,15 +268,43 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""KMB"",
                     ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96b524be-6be2-4cd3-9c6a-907245d97482"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KMB"",
+                    ""action"": ""ExpansionChipPanel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""KMB"",
+            ""bindingGroup"": ""KMB"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Game
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
@@ -280,6 +317,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
         m_Game_Submit = m_Game.FindAction("Submit", throwIfNotFound: true);
         m_Game_Inventory = m_Game.FindAction("Inventory", throwIfNotFound: true);
+        m_Game_ExpansionChipPanel = m_Game.FindAction("ExpansionChipPanel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,6 +388,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Pause;
     private readonly InputAction m_Game_Submit;
     private readonly InputAction m_Game_Inventory;
+    private readonly InputAction m_Game_ExpansionChipPanel;
     public struct GameActions
     {
         private @PlayerInput m_Wrapper;
@@ -363,6 +402,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Pause => m_Wrapper.m_Game_Pause;
         public InputAction @Submit => m_Wrapper.m_Game_Submit;
         public InputAction @Inventory => m_Wrapper.m_Game_Inventory;
+        public InputAction @ExpansionChipPanel => m_Wrapper.m_Game_ExpansionChipPanel;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -399,6 +439,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @ExpansionChipPanel.started += instance.OnExpansionChipPanel;
+            @ExpansionChipPanel.performed += instance.OnExpansionChipPanel;
+            @ExpansionChipPanel.canceled += instance.OnExpansionChipPanel;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -430,6 +473,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @ExpansionChipPanel.started -= instance.OnExpansionChipPanel;
+            @ExpansionChipPanel.performed -= instance.OnExpansionChipPanel;
+            @ExpansionChipPanel.canceled -= instance.OnExpansionChipPanel;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -447,6 +493,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public GameActions @Game => new GameActions(this);
+    private int m_KMBSchemeIndex = -1;
+    public InputControlScheme KMBScheme
+    {
+        get
+        {
+            if (m_KMBSchemeIndex == -1) m_KMBSchemeIndex = asset.FindControlSchemeIndex("KMB");
+            return asset.controlSchemes[m_KMBSchemeIndex];
+        }
+    }
     public interface IGameActions
     {
         void OnWASD(InputAction.CallbackContext context);
@@ -458,5 +513,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnExpansionChipPanel(InputAction.CallbackContext context);
     }
 }

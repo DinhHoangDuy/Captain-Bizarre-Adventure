@@ -30,13 +30,13 @@ public class LevelLoader : MonoBehaviour
     }
     public void BlockInput()
     {
-        PlatformerMovement2D.blocked = true;
+        PlatformerMovement2D.instance.blocked = true;
         CaptainMoonBlade.blocked = true;
         playerUI.SetActive(false);
     }
     public void UnblockInput()
     {
-        PlatformerMovement2D.blocked = false;
+        PlatformerMovement2D.instance.blocked = false;
         CaptainMoonBlade.blocked = false;
         playerUI.SetActive(true);
     }

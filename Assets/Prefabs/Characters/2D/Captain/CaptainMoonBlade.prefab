@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 2791965336337402899}
   - component: {fileID: 6975911404759449875}
   - component: {fileID: 4593632438534977704}
-  - component: {fileID: 3844423867350078264}
   m_Layer: 8
   m_Name: CaptainMoonBlade
   m_TagString: Player
@@ -355,7 +354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec65a722dd6b42bf9e275354f9b496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocked: 0
   trailRenderer: {fileID: 1691375614550857047}
+  rb: {fileID: 0}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -411,27 +412,6 @@ MonoBehaviour:
   currentSP: 0
   ultimateTriggered: 0
   isAttacking: 0
---- !u!114 &3844423867350078264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaaf070a4bf0c5600b0a4b1fe00b0ee0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SweetSnacks: 0
-  SweetSnacksSPRegenRate: 4
-  SweetSnacksSPRegenAmount: 1
-  SharpBlade: 0
-  SharpBladeDMGBoost: 5
-  Bloodlust: 0
-  BloodlustTriggerChance: 10
-  Blink: 0
-  WeakBody: 0
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

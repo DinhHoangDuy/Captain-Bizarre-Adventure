@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(DamageOutCalculator))]
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
-[RequireComponent(typeof(ExpansionChips))]
 public class CaptainMoonBlade : MonoBehaviour
 {
     #region Captain's Skill Set Description
@@ -82,7 +81,6 @@ public class CaptainMoonBlade : MonoBehaviour
         [SerializeField] private LayerMask enemyLayers;
         [SerializeField] private LayerMask destroyableLayers;
         private DamageOutCalculator dmgCalulator;
-        private ExpansionChips expansionChips;
         private PlatformerMovement2D platformerMovement;
 
         private Animator anim;
@@ -128,7 +126,6 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         platformerMovement2D = GetComponent<PlatformerMovement2D>();
         dmgCalulator = GetComponent<DamageOutCalculator>();
-        expansionChips = GetComponent<ExpansionChips>();
         anim = GetComponent<Animator>();
         platformerMovement = GetComponent<PlatformerMovement2D>();
     }
@@ -142,30 +139,9 @@ public class CaptainMoonBlade : MonoBehaviour
         {
             Debug.LogWarning("Wave of Energy Prefab is not assigned to the Captain's Skill Set");
         }
-
-        // Implement the Expansion Chips
-        if(expansionChips._SharpBlade)
-        {
-            dmgCalulator.IncreaseDMGBoost(expansionChips._SharpBladeDMGBoost);
-        }
-        if(expansionChips._WeakBody)
-        {
-            dmgCalulator.DecreaseDMGBoost(50);
-        }
     }
     private void Update()
     {
-        #region Expansions Chips
-        // Increase SP per 4 seconds if the Sweet Snacks is equiped
-        if(expansionChips._SweetSnacks)
-        {
-            if(sweetSnacksCoroutine == null)
-            {
-                sweetSnacksCoroutine = StartCoroutine(SweetSnacksSPRegen(expansionChips._SweetSnacksSPRegenRate, expansionChips._SweetSnacksSPRegenAmount));
-            }
-        }
-        #endregion
-
         // Limit the SP to the maxSP
         currentSP = Mathf.Clamp(currentSP, 0, maxSP);
 
@@ -248,7 +224,6 @@ public class CaptainMoonBlade : MonoBehaviour
     //Passive
     private Coroutine passiveCoroutine;
     public bool isAttacking = false;
-    private Coroutine sweetSnacksCoroutine;
 
     private void TriggerPassive() //Implement this method to the Basic Attack damage method
     {
@@ -281,22 +256,6 @@ public class CaptainMoonBlade : MonoBehaviour
     }
     #endregion
 
-    #region Expansion Chips
-
-    #region Sweet Snacks
-    private IEnumerator SweetSnacksSPRegen(int time, int amount)
-    {
-        Debug.Log("Sweet Snacks: Captain is regenerating SP");
-        if(currentSP < maxSP)
-        {
-            currentSP += amount * (SPRegenEfficiency / 100);
-        }
-        yield return new WaitForSeconds(time);
-        sweetSnacksCoroutine = null;
-    }
-    #endregion
-    #endregion
-
     #region Animation Events
     public void DealDMG()
     {
@@ -315,14 +274,6 @@ public class CaptainMoonBlade : MonoBehaviour
             // Debug.Log("Captain's Basic Attack Hit hit enemies or destroyables!");
         }
 
-        // Expansions Chips: Bloodlust
-        if(expansionChips._Bloodlust && hitEnemies.Length > 0)
-        {
-            if(UnityEngine.Random.Range(0, 100) <= expansionChips._BloodlustTriggerChance)
-            {
-                GetComponent<PlayerHealth>().IncreaseHealth(1);
-            }
-        }
 
         //Damage them
         foreach (Collider2D enemy in hitEnemies)

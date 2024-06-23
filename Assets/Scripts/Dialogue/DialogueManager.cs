@@ -93,7 +93,7 @@ public class DialogueManager : MonoBehaviour
     {
         //Make sure the character can still move when this script is active
         DialogueIsPlaying = false;
-        PlatformerMovement2D.blocked = false;
+        PlatformerMovement2D.instance.blocked = false;
 
         //Gain access to the Dialogue Panel, which is the parrent of the Dialogue Box
         dialoguePanel = dialogueBox.transform.parent.gameObject;        
@@ -133,13 +133,15 @@ public class DialogueManager : MonoBehaviour
         // return right away if dialogue isn't playing
         if (!DialogueIsPlaying)
         {
-            PlatformerMovement2D.blocked = false;
+            PlatformerMovement2D.instance.blocked = false;
+            Debug.Log("Dialogue is not playing");
             return;
         }
         else
         {
-            PlatformerMovement2D.blocked = true;
-            PlatformerMovement2D.rb.velocity = Vector2.zero;     
+            PlatformerMovement2D.instance.blocked = true;
+            PlatformerMovement2D.instance.rb.velocity = Vector2.zero; 
+            Debug.Log("Dialogue is playing");       
         }
 
         if(Input.GetButtonDown("Submit"))
@@ -161,7 +163,7 @@ public class DialogueManager : MonoBehaviour
     {
         currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
-        PlatformerMovement2D.blocked = false;
+        PlatformerMovement2D.instance.blocked = true;
         Debug.Log("The Dialogue trigger is used");
 
         //Set default Dialogue portrait and background to check for startup error (Mostly related to the Ink file)
@@ -179,7 +181,7 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         DialogueIsPlaying = false;    
         dialogueText.text = "";
-        PlatformerMovement2D.blocked = false;
+        PlatformerMovement2D.instance.blocked = false;
         ExternalDialogueManager.GetInstance().ExitDialogueMode();
     }
     private void ClickToContinue()
@@ -202,6 +204,7 @@ public class DialogueManager : MonoBehaviour
     }
     private void ContinueStory()
     {
+        DialogueIsPlaying = true;
         if (currentStory.canContinue && videoPlayer.clip == null)
         {
             //Initiate Coroutine for typing effect

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlatformerMovement2D : MonoBehaviour
 {
+    public static PlatformerMovement2D instance;
     private PlayerInput playerInput;
 
     private float horizontal;
@@ -15,7 +16,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private float coyoteTimeCounter;
     private bool isFacingRight = true;
     public bool IsLookingRight => isFacingRight;
-    public static bool blocked = false;
+    public bool blocked = false;
 
     private bool isWallSliding;
     private float wallSlidingSpeed = 2f;
@@ -37,7 +38,7 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private float _fallSpeedYDampingChangeThreshold;
 
-    public static Rigidbody2D rb;
+    public Rigidbody2D rb;
     private Animator anim;
     private CharacterStats stats;
     [SerializeField] private LayerMask groundLayer;
@@ -59,6 +60,11 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+
         playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();

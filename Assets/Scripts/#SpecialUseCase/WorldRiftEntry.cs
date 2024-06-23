@@ -1,6 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+// using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldRiftEntry : MonoBehaviour
@@ -14,8 +13,8 @@ public class WorldRiftEntry : MonoBehaviour
     [System.Obsolete]
     void Start()
     {        
-        PlatformerMovement2D.blocked = true;
-        if (PlatformerMovement2D.blocked)
+        PlatformerMovement2D.instance.blocked = true;
+        if (PlatformerMovement2D.instance.blocked)
         {
             Debug.Log("Player Movement Blocked");
         }

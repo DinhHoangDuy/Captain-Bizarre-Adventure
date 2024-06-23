@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe7a3deb38f1e03392f332ee002cb7e, type: 3}
+  m_Name: Energy Drink
+  m_EditorClassIdentifier: 
+  itemName: Energy Drink
+  itemBackStory: A handy Energy Drink you can find almost everywhere.
+  itemDescription: Immediately gain 30% of max SP
+  itemIcon: {fileID: 21300000, guid: 3c32afe3d0e507df19fdcc885d6179e6, type: 3}
+  statsToChange: 2
+  amountToChange: 30
