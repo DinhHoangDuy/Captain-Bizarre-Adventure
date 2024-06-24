@@ -9,13 +9,11 @@ using UnityEngine.UIElements;
 public class ExpansionChipItem : MonoBehaviour
 {
     [SerializeField] private ExpansionChipSO chipData;
-    private ExpansionChipManager expansionChipManager;
     private SpriteRenderer spriteRenderer;
     
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        expansionChipManager = GameObject.Find("/Player UI").GetComponent<ExpansionChipManager>();
     }
     private void Start()
     {

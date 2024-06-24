@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
 {
     [Header("Chip Variables on the inspector")]
+    public ExpansionChipSO chipData;
     public TextMeshProUGUI chipNameUIText;
     public Image chipIconUIImage;
     public Image selectedShader;
@@ -20,7 +21,6 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TextMeshProUGUI chipDescriptionText;
 
     // Chip Data
-    [HideInInspector] public ExpansionChipSO chipData;
     [HideInInspector] public string chipNameData;
     [HideInInspector] public string chipDescriptionData;
     private Sprite chipIconData;
@@ -93,9 +93,9 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
             OnLeftClick();
         }
     }
+    #region On Left Click
     void OnLeftClick()
     {
-        Debug.Log("Left Clicked on " + gameObject.name);
         if(!isSelected)
         {
             expansionChipManager.DeselectAllSlots();
@@ -112,4 +112,29 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
             expansionChipManager.DeleteDescription();
         }
     }
+    #endregion
+
+    #region Equipping/Unequipping the Chip
+    // Equipping/Unequipping the Chip
+    public void EquipChip()
+    {
+        if (isLocked)
+        {
+            Debug.Log("Cannot equip a locked chip");
+            return;
+        }
+        if (isEquipped)
+        {
+            isEquipped = false;
+            equippedShader.gameObject.SetActive(false);
+            Debug.Log("The chip " + chipNameData + " has been unequipped");
+        }
+        else
+        {
+            isEquipped = true;
+            equippedShader.gameObject.SetActive(true);
+            Debug.Log("The chip " + chipNameData + " has been equipped");
+        }
+    }
+    #endregion
 }

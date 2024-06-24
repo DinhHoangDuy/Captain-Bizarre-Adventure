@@ -1737,6 +1737,7 @@ MonoBehaviour:
   - {fileID: 2565657443509080521}
   - {fileID: 609630290480637057}
   - {fileID: 4715989268229647665}
+  equipButton: {fileID: 3901606970819367863}
   chipIconDescription: {fileID: 3462907434081277782}
   blankChipIcon: {fileID: 21300000, guid: d7e95050db448f2a3b676b232394769d, type: 3}
   chipNameDescriptionPanel: {fileID: 1060856848691840209}
@@ -4274,7 +4275,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use
+  m_text: 'Equip
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cf0e7eb4dd1d0a14a8f924db8f1d88f7, type: 2}
   m_sharedMaterial: {fileID: -8242370821450418706, guid: cf0e7eb4dd1d0a14a8f924db8f1d88f7,
@@ -4302,8 +4305,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6572,12 +6575,16 @@ PrefabInstance:
     - target: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
         type: 3}
       propertyPath: m_Name
-      value: ChipSlot (1)
+      value: Broken Sword Chip
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2999368743998214882}
   m_SourcePrefab: {fileID: 100100000, guid: ee0b7a54b87b86a04b47535a587e18f6, type: 3}
 --- !u!224 &172244551854729438 stripped
 RectTransform:
@@ -6591,12 +6598,31 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3299136309467500680}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6689425421576938171}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8743807f15e603f0082831ef0714ba0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6689425421576938171 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 3299136309467500680}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2999368743998214882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6689425421576938171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7bb5aa0a0f4a7d7cb7cb82e2a9330d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debuffValue: 50
 --- !u!1001 &3312093290352114641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6890,7 +6916,7 @@ PrefabInstance:
     - target: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
         type: 3}
       propertyPath: m_Name
-      value: ChipSlot (2)
+      value: Energy Generator Chip
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7057,12 +7083,16 @@ PrefabInstance:
     - target: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
         type: 3}
       propertyPath: m_Name
-      value: ChipSlot
+      value: Sharpened Sword Chip
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5216515721392887402}
   m_SourcePrefab: {fileID: 100100000, guid: ee0b7a54b87b86a04b47535a587e18f6, type: 3}
 --- !u!224 &1240739264884528793 stripped
 RectTransform:
@@ -7076,12 +7106,31 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 4511745591578537679}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5729017100124675324}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8743807f15e603f0082831ef0714ba0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5729017100124675324 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8150809460481782323, guid: ee0b7a54b87b86a04b47535a587e18f6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4511745591578537679}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5216515721392887402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5729017100124675324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53d357a7617d7f19e9d206eae136e13d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffValue: 5
 --- !u!1001 &4797064124586856140
 PrefabInstance:
   m_ObjectHideFlags: 0
