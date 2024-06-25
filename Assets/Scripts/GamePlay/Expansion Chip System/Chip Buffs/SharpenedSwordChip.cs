@@ -9,8 +9,10 @@ public class SharpenedSwordChip : MonoBehaviour, IChip
     public float buffValue = 5f;
 
     #region Dependencies
-    private bool isBuffActive = false;
-    private ExpansionChipSlot expansionChipSlot;
+    public bool isBuffActive { get; set; }
+    [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
+    public ExpansionChipStatus expansionChipStatus { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     private DamageOutCalculator damageOutCalculator;
 
     private void Start()

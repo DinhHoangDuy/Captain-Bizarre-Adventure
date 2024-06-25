@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16b3be31b9cb66660bd56c935fefc797, type: 3}
-  m_Name: Energy Generator
+  m_Name: Hammer
   m_EditorClassIdentifier: 
-  chipName: Energy Generator
-  chipDescription: If the character has less than 60 SP, gain 1 SP per second
-  chipIcon: {fileID: 21300000, guid: ab68b4aee890a759fb493fcc5769c3ab, type: 3}
-  chipLoad: 1
+  chipName: Hammer
+  chipDescription: 'Ultimate costs 25% more SP but deals 40% bonus DMG. '
+  chipIcon: {fileID: 21300000, guid: 3c32afe3d0e507df19fdcc885d6179e6, type: 3}
+  chipLoad: 2

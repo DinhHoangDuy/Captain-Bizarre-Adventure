@@ -26,9 +26,14 @@ public class PlayerSP : MonoBehaviour
         spBar.SetSP(currentSP, maxSP);
     }
 
-    public void IncreaseSP(int percent)
+    public void IncreaseSPByPersent(int percent)
     {
         skillset.currentSP += maxSP * (percent / 100.0f);
         Debug.Log("SP increased by " + maxSP * (percent / 100.0f));
+    }
+    public void IncreaseSPByValue(int value)
+    {
+        skillset.currentSP += value;
+        Debug.Log("SP increased by " + value);
     }
 }

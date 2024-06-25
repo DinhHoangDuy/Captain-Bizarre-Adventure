@@ -1,5 +1,14 @@
 public interface IChip
 {
-    public void ApplyBuff();
-    public void RemoveBuff();
+    ExpansionChipSlot expansionChipSlot { get; set; }
+    ExpansionChipStatus expansionChipStatus { get; set; }
+    bool isBuffActive { get; set; }
+    void ApplyBuff()
+    {
+        isBuffActive = true;
+    }
+    void RemoveBuff()
+    {
+        isBuffActive = false;
+    }
 }

@@ -64,11 +64,25 @@ public class CaptainMoonBlade : MonoBehaviour
 
             [SerializeField] private float ultimateCooldown = 10f;
             [SerializeField] private int requiredSP = 30;
+            public int _requiredSP { get { return requiredSP; } }
+
+            /* This will only be used by a chip from the Expansion Chip System*/
+            #region Hammer Expansion Chip
+            private bool isRequiredSPIncreased = false;
+            public void increaseRequiredSP(int value)
+            {
+                requiredSP += (requiredSP * value) / 100;
+            }
+            public void decreaseRequiredSP(int value)
+            {
+                requiredSP -= (requiredSP * value) / 100;
+            }
+            #endregion           
 
         
         //Passive
         [Header("Captain's Passive Attributes")]
-            [SerializeField] private float passiveDuration = 5f;
+        [SerializeField] private float passiveDuration = 5f;
         [SerializeField] private int passiveDMGBoost = 30;
        
     #endregion
@@ -82,13 +96,13 @@ public class CaptainMoonBlade : MonoBehaviour
         [SerializeField] private LayerMask destroyableLayers;
         private DamageOutCalculator dmgCalulator;
         private PlatformerMovement2D platformerMovement;
-
+        private ExpansionChipStatus expansionChipStatus;
         private Animator anim;
     #endregion
 
     #region Current Status 
     public static bool blocked = false;
-    [SerializeField] private bool isPassiveActive = false;
+    [SerializeField] private bool isUnbreakableWillActive = false;
     private float basicAttackDamage;
     public bool fireTriggered;
     private bool criticalHit = false;
@@ -128,6 +142,7 @@ public class CaptainMoonBlade : MonoBehaviour
         dmgCalulator = GetComponent<DamageOutCalculator>();
         anim = GetComponent<Animator>();
         platformerMovement = GetComponent<PlatformerMovement2D>();
+        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
     }
     private void Start()    
     {
@@ -162,6 +177,19 @@ public class CaptainMoonBlade : MonoBehaviour
                 BasicAttack();
             }
         }
+
+        #region Hammer Expansion Chip
+        if(expansionChipStatus.isHammerChipEquipped && !isRequiredSPIncreased)
+        {
+            increaseRequiredSP(25);
+            isRequiredSPIncreased = true;
+        }
+        else if (!expansionChipStatus.isHammerChipEquipped && isRequiredSPIncreased)
+        {
+            decreaseRequiredSP(25);
+            isRequiredSPIncreased = false;
+        }
+        #endregion
     }
 
 
@@ -185,9 +213,15 @@ public class CaptainMoonBlade : MonoBehaviour
         //Sent the ultimate damage to the wave of energy prefab
         ultimateDamage = ultimateBaseDamage + (basicDamage * ultimateDamageMultiplier / 100);
         ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
-        if(isPassiveActive)
+        if(isUnbreakableWillActive)
         {
             ultimateDamage += ultimateDamage * ultimateUWPassiveBonus / 100;
+        }
+        if(expansionChipStatus.isHammerChipEquipped)
+        {
+            Debug.Log("Before Hammer Chip buff: " + ultimateDamage);
+            ultimateDamage += ultimateDamage * HammerChip.hammerChipBuffValue / 100;
+            Debug.Log("After Hammer Chip buff: " + ultimateDamage);
         }
         //Check if Captain has enough SP and one stack to cast the ultimate
         if(CanCastUltimate() && !isAttacking)
@@ -201,7 +235,7 @@ public class CaptainMoonBlade : MonoBehaviour
             currentUltimateCooldown = ultimateCooldown;
 
             //Activate the Passive if it is not active, otherwise, remove the passive
-            if(isPassiveActive)
+            if(isUnbreakableWillActive)
             {
                 UltRemovePassive();
             }
@@ -240,19 +274,19 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         StopCoroutine(ActivatePassive());
         dmgCalulator.DecreaseDMGBoost(passiveDMGBoost);
-        isPassiveActive = false;
+        isUnbreakableWillActive = false;
     }
         
     private IEnumerator ActivatePassive()
     {
-        if(!isPassiveActive)
+        if(!isUnbreakableWillActive)
         {
-            isPassiveActive = true;
+            isUnbreakableWillActive = true;
             dmgCalulator.IncreaseDMGBoost(passiveDMGBoost);
         }
         yield return new WaitForSeconds(passiveDuration);
         dmgCalulator.DecreaseDMGBoost(passiveDMGBoost);
-        isPassiveActive = false;        
+        isUnbreakableWillActive = false;        
     }
     #endregion
 

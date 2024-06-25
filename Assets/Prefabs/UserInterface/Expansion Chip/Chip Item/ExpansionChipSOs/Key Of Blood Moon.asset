@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16b3be31b9cb66660bd56c935fefc797, type: 3}
-  m_Name: Energy Generator
+  m_Name: Key Of Blood Moon
   m_EditorClassIdentifier: 
-  chipName: Energy Generator
-  chipDescription: If the character has less than 60 SP, gain 1 SP per second
-  chipIcon: {fileID: 21300000, guid: ab68b4aee890a759fb493fcc5769c3ab, type: 3}
-  chipLoad: 1
+  chipName: Key Of Blood Moon
+  chipDescription: Chip limit breakthrough, instead of being limited by load limit,
+    will now be limited by the number of chips. The expansion chip system will be
+    "overclocked"
+  chipIcon: {fileID: 21300000, guid: ed9a4fc07b7e7894494d1891f2660574, type: 3}
+  chipLoad: 0

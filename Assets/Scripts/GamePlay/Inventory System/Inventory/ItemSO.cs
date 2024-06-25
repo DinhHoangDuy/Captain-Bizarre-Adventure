@@ -28,7 +28,7 @@ public class ItemSO : ScriptableObject
             }
             else
             {
-                if(playerHealth.currentHealth == playerHealth._maxHealth)
+                if(playerHealth.currentHealth == playerHealth.maxHealth)
                 {
                     Debug.Log("Health is already full");
                     return false;
@@ -55,7 +55,7 @@ public class ItemSO : ScriptableObject
                     return false;
                 }
                 Debug.Log($"Increasing SP by {amountToChange}%");
-                playerSP.IncreaseSP(amountToChange);
+                playerSP.IncreaseSPByPersent(amountToChange);
                 return true;
             }
         }

@@ -83,6 +83,8 @@ GameObject:
   - component: {fileID: 2791965336337402899}
   - component: {fileID: 6975911404759449875}
   - component: {fileID: 4593632438534977704}
+  - component: {fileID: 9095723127629387375}
+  - component: {fileID: 423896620546387375}
   m_Layer: 8
   m_Name: CaptainMoonBlade
   m_TagString: Player
@@ -294,6 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e6f208bd4282a4f83424cc9acb8c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   characterHit: 0
   knockbackForce: 10
 --- !u!114 &3961857234049573280
@@ -382,9 +385,9 @@ MonoBehaviour:
   criticalDamageMultiplier: 150
   attackRate: 2
   startSP: 15
-  SPRegenRate: 1
+  SPRegenRate: 3
   SPRegenEfficiency: 100
-  maxSP: 70
+  maxSP: 100
   basicAttackBaseDMG: 10
   basicAttackMultiplier: 60
   basicAttackUWTriggerChance: 20
@@ -395,8 +398,8 @@ MonoBehaviour:
   waveSpeed: 30
   waveLifeTime: 0.2
   ultimateUWPassiveBonus: 10
-  ultimateCooldown: 10
-  requiredSP: 30
+  ultimateCooldown: 12
+  requiredSP: 60
   passiveDuration: 5
   passiveDMGBoost: 30
   attackPoint: {fileID: 5593513566568407175}
@@ -412,6 +415,30 @@ MonoBehaviour:
   currentSP: 0
   ultimateTriggered: 0
   isAttacking: 0
+--- !u!114 &9095723127629387375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aedd17869a2c465079557bfbc97b292b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &423896620546387375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aedd17869a2c465079557bfbc97b292b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,8 +9,10 @@ public class BrokenSwordChip : MonoBehaviour, IChip
     public float debuffValue = 50f;
 
     #region Dependencies
-    private bool isBuffActive = false;
-    private ExpansionChipSlot expansionChipSlot;
+    public bool isBuffActive { get; set; }
+    [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
+    public ExpansionChipStatus expansionChipStatus { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     private DamageOutCalculator damageOutCalculator;
 
     private void Start()
@@ -21,15 +23,18 @@ public class BrokenSwordChip : MonoBehaviour, IChip
     #endregion
     private void Update()
     {
+        // Check if the chip is equipped and the buff is not active
         if (expansionChipSlot.isEquipped && !isBuffActive)
         {
             ApplyBuff();
         }
+        // Check if the chip is not equipped and the buff is active
         else if(!expansionChipSlot.isEquipped && isBuffActive)
         {
             RemoveBuff();
         }
     }
+
 
     public void ApplyBuff()
     {
@@ -44,5 +49,5 @@ public class BrokenSwordChip : MonoBehaviour, IChip
         damageOutCalculator.IncreaseDMGBoost(debuffValue);
         Debug.Log("Current DMG Boost: " + damageOutCalculator._totalDMGBoost);
         isBuffActive = false;
-    }    
+    }
 }

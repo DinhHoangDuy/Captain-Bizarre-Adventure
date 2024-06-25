@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ExpansionChipSO : ScriptableObject
 {
     public string chipName;
-    [TextArea]
+    [TextArea (7, 15)]
     public string chipDescription;
     public Sprite chipIcon;
     public int chipLoad;

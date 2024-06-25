@@ -23,7 +23,7 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
     // Chip Data
     [HideInInspector] public string chipNameData;
     [HideInInspector] public string chipDescriptionData;
-    private Sprite chipIconData;
+    [HideInInspector] private Sprite chipIconData;
     [HideInInspector] public int chipLoadData;
     public bool isLocked;
     [HideInInspector] public bool isEquipped = false;
@@ -79,11 +79,16 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
         if (isSelected)
         {
             selectedShader.gameObject.SetActive(true);
+            equippedShader.gameObject.SetActive(false);
         }
         else
         {
             selectedShader.gameObject.SetActive(false);
-        }
+            if(isEquipped)
+            {
+                equippedShader.gameObject.SetActive(true);
+            }
+        }        
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -110,30 +115,6 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
         {
             isSelected = false;
             expansionChipManager.DeleteDescription();
-        }
-    }
-    #endregion
-
-    #region Equipping/Unequipping the Chip
-    // Equipping/Unequipping the Chip
-    public void EquipChip()
-    {
-        if (isLocked)
-        {
-            Debug.Log("Cannot equip a locked chip");
-            return;
-        }
-        if (isEquipped)
-        {
-            isEquipped = false;
-            equippedShader.gameObject.SetActive(false);
-            Debug.Log("The chip " + chipNameData + " has been unequipped");
-        }
-        else
-        {
-            isEquipped = true;
-            equippedShader.gameObject.SetActive(true);
-            Debug.Log("The chip " + chipNameData + " has been equipped");
         }
     }
     #endregion

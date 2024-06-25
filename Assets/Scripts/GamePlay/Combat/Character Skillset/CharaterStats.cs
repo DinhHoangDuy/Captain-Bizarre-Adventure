@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ExpansionChipStatus))]
 public class CharacterStats : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 5;
-    public int _maxHealth { get { return maxHealth; } }
+    public int maxHealth = 5;
     #region Movement
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;

@@ -8,7 +8,7 @@ public class HealthBar : MonoBehaviour
     //This script is attached to the health bar Game Object containing 2 images, one for the background and one for the fill
     [SerializeField] private Image totalHealthBar;
     [SerializeField] private Image currentHealthBar;
-    [SerializeField] private PlayerHealth playerHealth; //Reference to the player's health script
+    private PlayerHealth playerHealth; //Reference to the player's health script
 
     private void Start()
     {
@@ -23,11 +23,15 @@ public class HealthBar : MonoBehaviour
             Debug.LogError("Current Health Bar is null!!");
             return;
         }
-        //Get the player's health script to access the health value, and set the max health value of the health bar
-        totalHealthBar.fillAmount = (float)(playerHealth._maxHealth / 10.0);
+
+        //Get the player's health script
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
     }
     private void Update()
     {
+        //Get the player's health script to access the health value, and set the max health value of the health bar
+        totalHealthBar.fillAmount = (float)(playerHealth.maxHealth / 10.0);
+
         //Set the current health value of the health bar
         currentHealthBar.fillAmount = (float)(playerHealth.currentHealth / 10.0);
     }

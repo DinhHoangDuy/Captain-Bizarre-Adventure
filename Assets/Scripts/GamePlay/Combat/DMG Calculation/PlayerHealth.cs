@@ -6,10 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(TakeDMG))]
 public class PlayerHealth : MonoBehaviour
 {
-    private int maxHealth;
+    public int maxHealth;
     private CharacterStats characterStats;
     private Rigidbody2D rb2d;
-    public int _maxHealth { get { return maxHealth; } }
     public int currentHealth { get; private set; }
 
     [HideInInspector] public bool characterHit = false;
@@ -27,7 +26,7 @@ public class PlayerHealth : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         characterStats = GetComponent<CharacterStats>();
-        maxHealth = characterStats._maxHealth;
+        maxHealth = characterStats.maxHealth;
     }
 
     private void Start()
