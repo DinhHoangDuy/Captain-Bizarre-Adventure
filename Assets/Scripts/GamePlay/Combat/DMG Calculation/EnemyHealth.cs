@@ -29,6 +29,13 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            if(ExpansionChipStatus.instance.isMacabreDanceChipEquipped)
+            {
+                // Killing enemies resets Ultimate CD. The next Ultimate will have 30% Total DMG Boost
+                CaptainMoonBlade.currentUltimateCooldown = 0;
+                ExpansionChipStatus.instance.isMacabreDanceActive = true;
+            }
+
             GetComponent<Animator>().Play("Death");
         }
         else

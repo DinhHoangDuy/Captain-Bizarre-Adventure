@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7069759243441496267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3871784116034056463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2829359077726942525}
+  m_Layer: 0
+  m_Name: Dream Builder Platform Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2829359077726942525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871784116034056463}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.019349337, y: -1.536, z: -0.03178218}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7069759243441496267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6617033573333375749
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,8 +114,6 @@ GameObject:
   - component: {fileID: 2791965336337402899}
   - component: {fileID: 6975911404759449875}
   - component: {fileID: 4593632438534977704}
-  - component: {fileID: 9095723127629387375}
-  - component: {fileID: 423896620546387375}
   m_Layer: 8
   m_Name: CaptainMoonBlade
   m_TagString: Player
@@ -109,6 +138,7 @@ Transform:
   - {fileID: 4030414313041973073}
   - {fileID: 854023719993366937}
   - {fileID: 5593513566568407175}
+  - {fileID: 2829359077726942525}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &157167080231217789
@@ -357,12 +387,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec65a722dd6b42bf9e275354f9b496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dreamBuilderPlatform: {fileID: 7633789218336709396, guid: f1fbe33553f7329948a6b093d32258b4,
+    type: 3}
+  dreamBuilderPlatformSpawnPoint: {fileID: 2829359077726942525}
   blocked: 0
   trailRenderer: {fileID: 1691375614550857047}
   rb: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 520
   wallCheck: {fileID: 4030414313041973073}
   wallLayer:
     serializedVersion: 2
@@ -379,13 +412,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d16278877ff0a66898c875576a67f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicDamage: 100
+  basicATK: 100
   damageType: 0
   criticalRate: 20
   criticalDamageMultiplier: 150
   attackRate: 2
-  startSP: 15
-  SPRegenRate: 3
+  startSP: 30
+  SPRegenRate: 1
   SPRegenEfficiency: 100
   maxSP: 100
   basicAttackBaseDMG: 10
@@ -398,7 +431,7 @@ MonoBehaviour:
   waveSpeed: 30
   waveLifeTime: 0.2
   ultimateUWPassiveBonus: 10
-  ultimateCooldown: 12
+  ultimateCooldown: 10
   requiredSP: 60
   passiveDuration: 5
   passiveDMGBoost: 30
@@ -410,35 +443,11 @@ MonoBehaviour:
   destroyableLayers:
     serializedVersion: 2
     m_Bits: 128
-  isPassiveActive: 0
+  isUnbreakableWillActive: 0
   fireTriggered: 0
   currentSP: 0
   ultimateTriggered: 0
   isAttacking: 0
---- !u!114 &9095723127629387375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aedd17869a2c465079557bfbc97b292b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &423896620546387375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aedd17869a2c465079557bfbc97b292b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

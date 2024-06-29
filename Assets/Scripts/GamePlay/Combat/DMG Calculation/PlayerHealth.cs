@@ -67,8 +67,14 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
         // Clamp the current health to be between 0 and max health
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
+        if(ExpansionChipStatus.instance.isOverclocked)
+        { 
+            // If the ExpansionChipStatuc is overclocked, the player will receive more damage
+            currentHealth = Mathf.Clamp(currentHealth - damage - 1, 0, maxHealth);
+        } 
+        else currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
         characterHit = true;
+        
         if(currentHealth <= 0)
         {
             currentHealth = 0;

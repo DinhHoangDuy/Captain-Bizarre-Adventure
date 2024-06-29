@@ -1,0 +1,14 @@
+Captain's Skill Set Description:
+- Basic Damage: 100
+- Critical Rate: 20%
+- Critical Damage: 150%
+- Health: 5 hearts stacks
+- Damage type: Physical
+- Blood Moon Blade: Captain's basic attack is a 2-hit in a single button. Each hit deals 10 + 60%/70%/80% of Captain's basic attack damage as physical damage.
+- About the Ultimate skill "The Vow under the Moon":
+    + Shoots a wave of energy in a straight line, dealing 150/170 (+ 105% of physical attack) as physical damage to the first enemy hit. This attack can't crit.
+    + "The Vow under the Moon" will grant the "Unbreakable Will" for 5 seconds if the buff is not active.
+- Passive "Unbreakable Will": 
+    + Each Basic Attack has a 20%/30%/40% chance to grant "Unbreakable Will" for 5 seconds. This effect will be refreshed if the effect is triggered again during the duration.
+    + When "Unbreakable Will" is active, Captain will gain 30% total Damage Boost.
+    + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active.

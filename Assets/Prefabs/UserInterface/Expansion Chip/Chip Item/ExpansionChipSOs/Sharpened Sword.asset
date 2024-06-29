@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Sharpened Sword
   m_EditorClassIdentifier: 
   chipName: Sharpened Sword
-  chipDescription: increase 5% of Basic attack value
+  chipDescription: Increase 5% of Basic attack value
   chipIcon: {fileID: 21300000, guid: ed9a4fc07b7e7894494d1891f2660574, type: 3}
   chipLoad: 1

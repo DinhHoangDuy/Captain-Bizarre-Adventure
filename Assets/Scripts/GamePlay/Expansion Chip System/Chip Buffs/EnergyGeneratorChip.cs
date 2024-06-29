@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnergyGenerator : MonoBehaviour, IChip
+public class EnergyGeneratorChip : MonoBehaviour, IChip
 {
+    /*
+        When equipped, if the character has less than 60 SP, gain 1 SP per second
+    */
+    [Header("Max SP the chip can generate")]
+    public int maxSP = 60;
     public ExpansionChipSlot expansionChipSlot { get; set; }
     private ExpansionChipStatus expansionChipStatus;
     public bool isBuffActive { get; set; }
@@ -13,6 +18,8 @@ public class EnergyGenerator : MonoBehaviour, IChip
     {
         expansionChipSlot = GetComponent<ExpansionChipSlot>();
         expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
+        // Set the max SP the chip can generate to the ExpansionChipStatus
+        expansionChipStatus.SetEnergyGeneratorThresshold(maxSP);
     }
     void Update()
     {
@@ -25,13 +32,13 @@ public class EnergyGenerator : MonoBehaviour, IChip
             RemoveBuff();
         }
     }
-    void ApplyBuff()
+    public void ApplyBuff()
     {
         Debug.Log("Applying Buff: Energy Generator Chip");
         expansionChipStatus.isEnergyGeneratorEquipped = true;
         isBuffActive = true;
     }
-    void RemoveBuff()
+    public void RemoveBuff()
     {
         Debug.Log("Removing Buff: Energy Generator Chip");
         expansionChipStatus.isEnergyGeneratorEquipped = false;

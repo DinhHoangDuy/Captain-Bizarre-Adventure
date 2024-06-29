@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Hammer
   m_EditorClassIdentifier: 
   chipName: Hammer
-  chipDescription: 'Ultimate costs 25% more SP but deals 40% bonus DMG. '
+  chipDescription: 'Ultimate costs 25% more SP but deals 30% bonus DMG. '
   chipIcon: {fileID: 21300000, guid: 3c32afe3d0e507df19fdcc885d6179e6, type: 3}
   chipLoad: 2

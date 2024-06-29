@@ -21,20 +21,17 @@ public class CaptainMoonBlade : MonoBehaviour
     - About the Ultimate skill "The Vow under the Moon":
         + Shoots a wave of energy in a straight line, dealing 150/170 (+ 105% of physical attack) as physical damage to the first enemy hit. This attack can't crit.
         + "The Vow under the Moon" will grant the "Unbreakable Will" for 5 seconds if the buff is not active.
-    - About the Ultimate skill requirement:
-        + The skill will use a stack system.
-            * The skill will consume 1 stack and 50 SP to cast.
     - Passive "Unbreakable Will": 
         + Each Basic Attack has a 20%/30%/40% chance to grant "Unbreakable Will" for 5 seconds. This effect will be refreshed if the effect is triggered again during the duration.
         + When "Unbreakable Will" is active, Captain will gain 30% total Damage Boost.
-        + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active. This Ultimate will be consumed if the wave hits an enemy. 
+        + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active.
     */
     #endregion
 
     #region Captain's Skill Set Attributes
         [Header("Captain's Skill Set Attributes")]
         [Header("Captain's Basic Attributes")]
-            [SerializeField] private float basicDamage = 100;
+            public float basicATK = 100;
             [SerializeField] private DamageType damageType = DamageType.Physical;
             [SerializeField] private float criticalRate = 20f;
             [SerializeField] private float criticalDamageMultiplier = 150f;
@@ -63,29 +60,48 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private float ultimateUWPassiveBonus = 10f;
 
             [SerializeField] private float ultimateCooldown = 10f;
-            [SerializeField] private int requiredSP = 30;
-            public int _requiredSP { get { return requiredSP; } }
+            [SerializeField] private int requiredSP = 60;
+            public int _requiredSP { get { return requiredSP; } }          
 
-            /* This will only be used by a chip from the Expansion Chip System*/
-            #region Hammer Expansion Chip
-            private bool isRequiredSPIncreased = false;
-            public void increaseRequiredSP(int value)
-            {
-                requiredSP += (requiredSP * value) / 100;
-            }
-            public void decreaseRequiredSP(int value)
-            {
-                requiredSP -= (requiredSP * value) / 100;
-            }
-            #endregion           
-
-        
         //Passive
         [Header("Captain's Passive Attributes")]
         [SerializeField] private float passiveDuration = 5f;
         [SerializeField] private int passiveDMGBoost = 30;
        
     #endregion
+
+    #region Expansion Chip System
+        // Hammer Expansion Chip: Increase the required SP by 25%, and the ultimate damage by 40%
+        // Swiftness Expansion Chip: Decrease the required SP by 25%, and decrease the cooldown by 20%
+        private bool isRequiredSPIncreased = false;
+        private bool isRequiredSPDecreased = false;
+        private int originalRequiredSP;
+        private float originalUltimateCooldown;
+        public void IncreaseRequiredSP(int value)
+        {
+            requiredSP += (originalRequiredSP * value) / 100;
+        }
+        public void DecreaseRequiredSP(int value)
+        {
+            requiredSP -= (originalRequiredSP * value) / 100;
+        }
+        public void RestoreTheOriginalSPRequirement()
+        {
+            requiredSP = originalRequiredSP;
+        }
+        public void DecreaseUltimateCooldown(int value)
+        {
+            ultimateCooldown -= (originalUltimateCooldown * value) / 100;
+        }
+        public void RestoreOriginalUltimateCooldown()
+        {
+            ultimateCooldown = originalUltimateCooldown;
+        }
+
+        // Wrath Chip Buff: If passive "Unbreakable Will" is active, Captain deals 20% bonus Crit DMG.
+        public bool isWarthChipEquipped = false;
+        [HideInInspector] public float WarthCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
+    #endregion 
 
     #region Script Dependencies
         [Header("Script Dependencies")]
@@ -105,13 +121,11 @@ public class CaptainMoonBlade : MonoBehaviour
     [SerializeField] private bool isUnbreakableWillActive = false;
     private float basicAttackDamage;
     public bool fireTriggered;
-    private bool criticalHit = false;
     public float currentSP;
 
     public bool ultimateTriggered;
     private float ultimateDamage;
-    private float currentUltimateCooldown = 0f;
-    public float _currentUltimateCooldown { get { return currentUltimateCooldown; } }
+    public static float currentUltimateCooldown = 0f;
     public float _ultimateCooldown { get { return ultimateCooldown; } }
     #endregion   
 
@@ -148,6 +162,8 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         // Set the current SP to the start SP
         currentSP = startSP;
+        originalRequiredSP = requiredSP;
+        originalUltimateCooldown = ultimateCooldown;
         
         //Get a Warning if the wave of energy prefab is not assigned
         if(waveOfEnergyPrefab == null)
@@ -181,15 +197,33 @@ public class CaptainMoonBlade : MonoBehaviour
         #region Hammer Expansion Chip
         if(expansionChipStatus.isHammerChipEquipped && !isRequiredSPIncreased)
         {
-            increaseRequiredSP(25);
+            IncreaseRequiredSP(25);
             isRequiredSPIncreased = true;
         }
         else if (!expansionChipStatus.isHammerChipEquipped && isRequiredSPIncreased)
         {
-            decreaseRequiredSP(25);
+            RestoreTheOriginalSPRequirement();
             isRequiredSPIncreased = false;
         }
         #endregion
+        #region Swiftness Expansion Chip
+        if(expansionChipStatus.isSwiftnessChipEquipped && !isRequiredSPDecreased)
+        {
+            DecreaseRequiredSP(10);
+            DecreaseUltimateCooldown(SwiftnessChip.SwitfChipReduceCooldownValue);
+            isRequiredSPDecreased = true;
+        }
+        else if (!expansionChipStatus.isSwiftnessChipEquipped && isRequiredSPDecreased)
+        {
+            RestoreTheOriginalSPRequirement();
+            isRequiredSPDecreased = false;
+        }
+        #endregion
+
+        if(expansionChipStatus.isWarthChipEquipped)
+        {
+            Debug.Log("Warth Chip is equipped. Crit DMG Bonus: " + WarthCritDMGBuffValue + "%");
+        }
     }
 
 
@@ -197,7 +231,7 @@ public class CaptainMoonBlade : MonoBehaviour
     public void BasicAttack()
     {   
         //Calculate the Basic Attack Damage
-        basicAttackDamage = basicAttackBaseDMG + (basicDamage * basicAttackMultiplier / 100);
+        basicAttackDamage = basicAttackBaseDMG + (basicATK * basicAttackMultiplier / 100);
         basicAttackDamage = dmgCalulator.BoostDamage(basicAttackDamage);
 
         // Sent the trigger to the animator coder
@@ -211,17 +245,46 @@ public class CaptainMoonBlade : MonoBehaviour
     public void UltimateAttack()
     {
         //Sent the ultimate damage to the wave of energy prefab
-        ultimateDamage = ultimateBaseDamage + (basicDamage * ultimateDamageMultiplier / 100);
-        ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
+        ultimateDamage = ultimateBaseDamage + (basicATK * ultimateDamageMultiplier / 100);
+        if(expansionChipStatus.isMacabreDanceActive && expansionChipStatus.isMacabreDanceChipEquipped)
+        {
+            // Killing enemies resets Ultimate CD. The next Ultimate will have 30% Total DMG Boost
+            float OriginalDamage = ultimateDamage;
+            ultimateDamage = dmgCalulator.MacabreDanceTotalDMGBoost(ultimateDamage);
+            expansionChipStatus.isMacabreDanceActive = false;
+        }
+        else
+        {
+            ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
+        }
+        // Check if the Unbreakable Will is active
         if(isUnbreakableWillActive)
         {
             ultimateDamage += ultimateDamage * ultimateUWPassiveBonus / 100;
         }
+        // Check if the hit is critical
+        bool criticalHit = false;
+        if (UnityEngine.Random.Range(0, 100) <= criticalRate)
+        {
+            criticalHit = true;
+        }
+        else
+        {
+            criticalHit = false;
+        }
+        if(criticalHit)
+        {
+            ultimateDamage = ultimateDamage * (criticalDamageMultiplier / 100);
+            if(isUnbreakableWillActive && criticalHit)
+            {
+                ultimateDamage += ultimateDamage * WarthCritDMGBuffValue / 100;
+            }
+            criticalHit = false;
+        }
+
         if(expansionChipStatus.isHammerChipEquipped)
         {
-            Debug.Log("Before Hammer Chip buff: " + ultimateDamage);
             ultimateDamage += ultimateDamage * HammerChip.hammerChipBuffValue / 100;
-            Debug.Log("After Hammer Chip buff: " + ultimateDamage);
         }
         //Check if Captain has enough SP and one stack to cast the ultimate
         if(CanCastUltimate() && !isAttacking)
@@ -296,9 +359,19 @@ public class CaptainMoonBlade : MonoBehaviour
         //Detect enemies in range of attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         Collider2D[] hitDestroyables = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, destroyableLayers);
-        
+        bool criticalHit = false;
         if(hitEnemies.Length > 0 || hitDestroyables.Length > 0)
         {
+            //Critical Rate calculation
+            if (UnityEngine.Random.Range(0, 100) <= criticalRate)
+            {
+                criticalHit = true;
+            }
+            else
+            {
+                criticalHit = false;
+            }
+
             //SP Regen
             if(currentSP < maxSP)
             {
@@ -311,26 +384,17 @@ public class CaptainMoonBlade : MonoBehaviour
 
         //Damage them
         foreach (Collider2D enemy in hitEnemies)
-        {
-            //Critical Rate and Damage
-            if (UnityEngine.Random.Range(0, 100) <= criticalRate)
-            {
-                criticalHit = true;
-            }
-            else
-            {
-                criticalHit = false;
-            }
-            if(!criticalHit)
-            {
-                enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackDamage, damageType, DamageFromSkill.BasicAttack);
-            }
-            else
-            {
-                float basicAttackCriticalDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
-                enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackCriticalDamage, damageType, DamageFromSkill.BasicAttack);
-                criticalHit = false; //This is to reset the critical hit status
-            }            
+        {          
+            if(criticalHit)
+            {        
+                basicAttackDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
+                if(expansionChipStatus.isWarthChipEquipped)
+                {
+                    basicAttackDamage += basicAttackDamage * WarthCritDMGBuffValue / 100;
+                }
+            }          
+            enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackDamage, damageType, DamageFromSkill.BasicAttack);
+            criticalHit = false;
         }   
         foreach (Collider2D destroyable in hitDestroyables)
         {

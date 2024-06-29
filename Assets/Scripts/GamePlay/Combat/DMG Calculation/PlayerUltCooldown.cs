@@ -32,7 +32,7 @@ public class PlayerUltCooldown : MonoBehaviour
         }
 
         // Display the cooldown of the ultimate skill
-        currentUltimateCooldown = skillset._currentUltimateCooldown;
+        currentUltimateCooldown = CaptainMoonBlade.currentUltimateCooldown;
         if (ultimateIcon != null)
         {
             ultimateIcon.UpdateCooldownTime(currentUltimateCooldown, ultCooldown);

@@ -28,7 +28,7 @@ public class ExpansionChipManager : MonoBehaviour
 
     // Manager State
     private bool anySlotSelected = false;
-    private bool isAllowedToEquip = false;
+    // private bool isAllowedToEquip = false;
 
 
     private void Awake()
@@ -52,59 +52,106 @@ public class ExpansionChipManager : MonoBehaviour
         // Update Button Text based on the selected Chip
         for (int i = 0; i < expansionChipSlots.Length; i++)
         {
+            // Initialize variables for button text and interactability
+            string buttonText = "Equip";
+            bool buttonInteractable = true;
+
+            // Pre-calculate frequently used values
+            bool isLocked = expansionChipSlots[i].isLocked;
+            bool isEquipped = expansionChipSlots[i].isEquipped;
+            int chipLoadData = expansionChipSlots[i].chipLoadData;
+
+            // Check if the slot is selected
             if (expansionChipSlots[i].isSelected)
             {
                 anySlotSelected = true;
-                if(expansionChipSlots[i].isLocked)
+
+                if (isLocked)
                 {
-                    equipButton.GetComponentInChildren<TextMeshProUGUI>().text = "Locked";
-                    // Change the button color to gray
-                    equipButton.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                    buttonText = "Locked";
+                    buttonInteractable = false;
                 }
-                else if (expansionChipSlots[i].isEquipped)
+                else if (isEquipped)
                 {
-                    equipButton.GetComponentInChildren<TextMeshProUGUI>().text = "Unequip";
-                    equipButton.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                    buttonText = "Unequip";
                 }
-                else if (!expansionChipSlots[i].isEquipped)
+                else
                 {
-                    if (isAllowedToEquip)
+                    if (ExpansionChipStatus.instance.isOverclocked || ExpansionChipStatus.instance.isOverloaded)
                     {
-                        equipButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip";
-                        equipButton.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+                        if (chipLoadData == 0 || (expansionChipStatus.isKeyOfBloodMoonEquipped && currentChipAmount < maxChipAmount))
+                        {
+                            buttonText = "Equip";
+                        }
+                        else
+                        {
+                            buttonText = "Equip is not allowed";
+                            buttonInteractable = false;
+                        }
                     }
                     else
                     {
-                        equipButton.GetComponentInChildren<TextMeshProUGUI>().text = "Equip is not allowed";
-                        equipButton.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                        int futureLoad = currentLoad + chipLoadData;
+                        int futureChipAmount = currentChipAmount + (chipLoadData > 0 ? 1 : 0);
+
+                        if (expansionChipStatus.isKeyOfBloodMoonEquipped)
+                        {
+                            if (futureChipAmount > maxChipAmount)
+                            {
+                                buttonText = "Overloaded!";
+                                buttonInteractable = false;
+                            }
+                        }
+                        else
+                        {
+                            if (futureLoad > maxLoad)
+                            {
+                                buttonText = "Overclocked!";
+                                buttonInteractable = false;
+                            }
+                        }
                     }
                 }
-            }
+
+                // Apply the calculated text and interactability to the button
+                equipButton.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
+                equipButton.interactable = buttonInteractable;
+            }        
         }
         equipButton.gameObject.SetActive(anySlotSelected);
 
         #region Update Chip Load/Amount
-        if(currentLoad > maxLoad && !expansionChipStatus.isKeyOfBloodMoonEquipped)
-        {
-            expansionChipStatus.isOverclocked = true;
-            isAllowedToEquip = false;
+        if(!expansionChipStatus.isKeyOfBloodMoonEquipped)
+        { 
+            // Key of Blood Moon is not equipped
+            ExpansionChipStatus.instance.isOverloaded = false; // Overload will only be able to active when the Key of Blood Moon is equipped
+            if(currentLoad > maxLoad)
+            {
+                ExpansionChipStatus.instance.isOverclocked = true;
+            }
+            else
+            {
+                ExpansionChipStatus.instance.isOverclocked = false;
+            }
         }
-        else
+        else 
         {
-            expansionChipStatus.isOverclocked = false;
-            isAllowedToEquip = true;
+            // Key of Blood Moon is equipped
+            ExpansionChipStatus.instance.isOverclocked = true; // Overclock state is forced to be active when the Key of Blood Moon is equipped
+            if(currentChipAmount > maxChipAmount)
+            {
+                ExpansionChipStatus.instance.isOverloaded = true;
+                // isAllowedToEquip = false;
+            }
+            else
+            {
+                ExpansionChipStatus.instance.isOverloaded = false;
+                // isAllowedToEquip = true;
+            }
         }
 
-        if(currentChipAmount > maxChipAmount && expansionChipStatus.isKeyOfBloodMoonEquipped)
-        {
-            expansionChipStatus.isChipAmountBreach = true;
-            isAllowedToEquip = false;
-        }
-        else
-        {
-            expansionChipStatus.isChipAmountBreach = false;
-            isAllowedToEquip = true;
-        }
+        Debug.Log("The Key of Blood Moon is not equipped: " + (expansionChipStatus.isKeyOfBloodMoonEquipped == false) + ". Current Load is: " + currentLoad + " / " + maxLoad);
+        Debug.Log("The Key of Blood Moon is equipped: " + (expansionChipStatus.isKeyOfBloodMoonEquipped == true) +  ". Current Chip Amount is: " + currentChipAmount + " / " + maxChipAmount);
         UpdateLoadIndicator();
         UpdateLoadIndicatorText();
         #endregion
@@ -128,17 +175,14 @@ public class ExpansionChipManager : MonoBehaviour
                     expansionChipSlots[i].equippedShader.enabled = false;
 
                     ChangeChipLoad(-expansionChipSlots[i].chipLoadData);
-                    
-                    if(expansionChipSlots[i].chipNameData == "Key of Blood Moon")
-                    {
-                        ChangeChipAmount(0);
-                    }
-                    else if(expansionChipSlots[i].chipLoadData > 0)
+                
+                    if(expansionChipSlots[i].chipLoadData > 0)
                     {
                         ChangeChipAmount(-1);
                     }
                     else
                     {
+                        ChangeChipAmount(0);
                         Debug.Log("Chip Amount is not counted for this chip: " + expansionChipSlots[i].chipNameData);
                     }
                     return;
@@ -150,17 +194,13 @@ public class ExpansionChipManager : MonoBehaviour
                     expansionChipSlots[i].equippedShader.enabled = true;
 
                     ChangeChipLoad(expansionChipSlots[i].chipLoadData);
-
-                    if(expansionChipSlots[i].chipNameData == "Key of Blood Moon")
-                    {
-                        ChangeChipAmount(0);
-                    }
-                    else if(expansionChipSlots[i].chipLoadData > 0)
+                    if(expansionChipSlots[i].chipLoadData > 0)
                     {
                         ChangeChipAmount(1);
                     }
                     else
                     {
+                        ChangeChipAmount(0);
                         Debug.Log("Chip Amount is not counted for this chip: " + expansionChipSlots[i].chipNameData);
                     }
                     return;

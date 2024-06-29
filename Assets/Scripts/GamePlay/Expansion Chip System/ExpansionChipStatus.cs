@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ExpansionChipStatus : MonoBehaviour
 {
+    public static ExpansionChipStatus instance;
     // TODO: Add expansion chip effects here!!!
 
     #region Overclock state
@@ -16,9 +17,10 @@ public class ExpansionChipStatus : MonoBehaviour
 
         Breach the chip amount limit: The player can't add more chips to the system, and the TotalDMGBoost will be reduced by 10%      
     */
-    [HideInInspector] public bool isOverclocked = false;
     [HideInInspector] public bool isKeyOfBloodMoonEquipped = false;
-    [HideInInspector] public bool isChipAmountBreach = false;
+    [HideInInspector] public bool isOverclocked = false;
+    [HideInInspector] public bool isOverloaded = false;
+    private bool overloadDebuffApplied = false;
     #endregion
 
     #region Energy Generator
@@ -28,37 +30,79 @@ public class ExpansionChipStatus : MonoBehaviour
     private PlayerSP playerSP;
     public bool isEnergyGeneratorEquipped = false;
     private float energyGeneratorSPGainDelay = 1;
+    private float energyGeneratorThresshold;
+    public void SetEnergyGeneratorThresshold(int value)
+    {
+        energyGeneratorThresshold = value;
+        Debug.Log("Energy Generator Thresshold: " + energyGeneratorThresshold);
+    }
     #endregion
 
     #region "Hammer" Chip
     public bool isHammerChipEquipped = false;
     #endregion
 
+    #region Dream Builder Chip
+    public bool isDreamBuilderChipEquipped = false;
+    public bool isDreamBuilderAvailable;
+    public float dreamBuilderPlatformDuration;
+    public float dreamBuilderPlatformCooldown;
+    public float dreamBuilderPlatformCurrentCooldown;
+    #endregion
+
+    #region Wraith Chip
+    public bool isWarthChipEquipped;
+    #endregion
+
+    #region Macabre Dance Chip
+    public bool isMacabreDanceChipEquipped;
+    public float MacabreDanceTotalDMGBoost;
+    public bool isMacabreDanceActive;
+    #endregion
+    
+    #region Swiftness Expansion Chip
+    public bool isSwiftnessChipEquipped;
+    #endregion
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     private void Start()
     {
-        playerSP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerSP>();
+        playerSP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerSP>(); 
+        dreamBuilderPlatformCurrentCooldown = 0;
+
     }
 
     private void Update()
     {
         #region Key of Blood Moon Chip Effect
-        if (isKeyOfBloodMoonEquipped)
-        // If the Key of Blood Moon Chip is equipped,
-        // ignore the load limit, and force the system to the overclocked state
+        // Apply the overload debuff if the player has breached the chip amount limit
+        if(isOverloaded && !overloadDebuffApplied)
         {
-            isOverclocked = true;
+            // The player can't add more chips to the system, and the TotalDMGBoost will be reduced by 10%
+            DamageOutCalculator.instance.DecreaseDMGBoost(10);
+            overloadDebuffApplied = true;
         }
-        else
+        else if(!isOverloaded && overloadDebuffApplied)
         {
-            isOverclocked = false;
+            DamageOutCalculator.instance.IncreaseDMGBoost(10);
+            overloadDebuffApplied = false;
         }
+        Debug.Log("isOverClocked: " + isOverclocked);
+        Debug.Log("isOverloaded: " + isOverloaded);
         #endregion
 
         #region Energy Generator Chip Effect
         if(isEnergyGeneratorEquipped)
         {
             // If the Energy Generator Chip is equipped, and the character has less than 60 SP, gain 1 SP per second
-            if(playerSP._currentSP < 60 && energyGeneratorSPGainDelay <= 0)
+            if(playerSP._currentSP < energyGeneratorThresshold && energyGeneratorSPGainDelay <= 0)
             {
                 playerSP.IncreaseSPByValue(1);
                 energyGeneratorSPGainDelay = 1;
@@ -68,6 +112,26 @@ public class ExpansionChipStatus : MonoBehaviour
                 energyGeneratorSPGainDelay -= Time.deltaTime;
             }
         }
+        #endregion
+
+        #region Dream Builder Chip Effect
+        if(isDreamBuilderChipEquipped)
+        {
+            if(dreamBuilderPlatformCurrentCooldown > 0)
+            {
+                dreamBuilderPlatformCurrentCooldown -= Time.deltaTime;
+                isDreamBuilderAvailable = false;
+            }
+            else
+            {
+                isDreamBuilderAvailable = true;
+            }
+        }
+        else
+        {
+            isDreamBuilderAvailable = false;
+        }
+
         #endregion
     }
 }

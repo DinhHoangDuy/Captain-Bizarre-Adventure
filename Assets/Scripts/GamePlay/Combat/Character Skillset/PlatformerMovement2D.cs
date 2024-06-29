@@ -5,15 +5,23 @@ public class PlatformerMovement2D : MonoBehaviour
 {
     public static PlatformerMovement2D instance;
     private PlayerInput playerInput;
+    private ExpansionChipStatus expansionChipStatus;
 
     private float horizontal;
-    private float speed;
+    public float movespeed;
     private float jumpingPower;
     private float gravityScale;
     private int extraJumps;
     private int extraJumpsCounter;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
+
+    #region Dream Builder Chip
+    [Header("Dream Builder Chip")]
+    [SerializeField] private GameObject dreamBuilderPlatform;
+    [SerializeField] private Transform dreamBuilderPlatformSpawnPoint;
+    #endregion
+
     private bool isFacingRight = true;
     public bool IsLookingRight => isFacingRight;
     public bool blocked = false;
@@ -38,7 +46,7 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private float _fallSpeedYDampingChangeThreshold;
 
-    public Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Animator anim;
     private CharacterStats stats;
     [SerializeField] private LayerMask groundLayer;
@@ -57,7 +65,6 @@ public class PlatformerMovement2D : MonoBehaviour
         playerInput.Game.Disable();
     }
 
-
     private void Awake()
     {
         if (instance == null)
@@ -69,11 +76,9 @@ public class PlatformerMovement2D : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         stats = GetComponent<CharacterStats>();
-    }
+        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
 
-    private void Start()
-    {
-        speed = stats.MoveSpeed;
+        movespeed = stats.MoveSpeed;
         jumpingPower = stats.JumpForce;
         gravityScale = stats.GravityScale;
         rb.gravityScale = gravityScale;
@@ -81,7 +86,10 @@ public class PlatformerMovement2D : MonoBehaviour
         extraJumpsCounter = extraJumps;
         coyoteTimeCounter = coyoteTime;
         dashForce = stats.DashForce;
+    }
 
+    private void Start()
+    {     
         _fallSpeedYDampingChangeThreshold = CameraManager.instance._fallSpeedYDampingChangeThreshold;
     }
 
@@ -90,15 +98,48 @@ public class PlatformerMovement2D : MonoBehaviour
         if (blocked || isDashing) return;
         horizontal = playerInput.Game.WASD.ReadValue<Vector2>().x;
 
-        if (playerInput.Game.Jump.triggered && (coyoteTimeCounter > 0 || extraJumpsCounter  > 0))
-        {
-            if(!IsGrounded() && coyoteTimeCounter <= 0)
-            {
-                extraJumpsCounter --;
-            }
+        #region Vertical Jumping
+        // if (playerInput.Game.Jump.triggered && (coyoteTimeCounter > 0 || extraJumpsCounter  > 0))
+        // {
+        //     if(!IsGrounded() && coyoteTimeCounter <= 0 && !isWallSliding)
+        //     // if(!IsGrounded() && coyoteTimeCounter <= 0)
+        //     {
+        //         if(expansionChipStatus.isDreamBuilderAvailable)
+        //         {
+        //             Instantiate(dreamBuilderPlatform, dreamBuilderPlatformSpawnPoint.position, Quaternion.identity);
+        //             expansionChipStatus.dreamBuilderPlatformCurrentCooldown = expansionChipStatus.dreamBuilderPlatformCooldown;
+        //         }
+        //         else
+        //         {
+        //             extraJumpsCounter --;
+        //         }
+        //     }
 
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        //     rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        // }
+        if(playerInput.Game.Jump.triggered && !isWallSliding)
+        {
+            if(coyoteTimeCounter <= 0)
+            {
+                if(expansionChipStatus.isDreamBuilderAvailable)
+                {
+                    Instantiate(dreamBuilderPlatform, dreamBuilderPlatformSpawnPoint.position, Quaternion.identity);
+                    expansionChipStatus.dreamBuilderPlatformCurrentCooldown = expansionChipStatus.dreamBuilderPlatformCooldown;
+                    rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                }
+                else if(extraJumpsCounter > 0)
+                {
+                    extraJumpsCounter --;
+                    rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+                }
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            }
         }
+        #endregion
+
         if(IsGrounded())
         {
             extraJumpsCounter  = extraJumps;
@@ -156,7 +197,7 @@ public class PlatformerMovement2D : MonoBehaviour
         {
             if(!blocked)
             {
-                rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+                rb.velocity = new Vector2(horizontal * movespeed, rb.velocity.y);
             }
         }
         if(rb.velocity.y < 0)
@@ -189,6 +230,8 @@ public class PlatformerMovement2D : MonoBehaviour
     public bool IsGrounded()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.2f, groundLayer);
+        // TODO: Check if the raycast hit the ground layer or the DreamGround layer
+        // Debug.Log("Raycast hit layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer));
         return hit.collider != null;
         // return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }

@@ -15,4 +15,4 @@ MonoBehaviour:
   chipName: Energy Generator
   chipDescription: If the character has less than 60 SP, gain 1 SP per second
   chipIcon: {fileID: 21300000, guid: ab68b4aee890a759fb493fcc5769c3ab, type: 3}
-  chipLoad: 1
+  chipLoad: 3

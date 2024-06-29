@@ -31,12 +31,12 @@ public class HammerChip : MonoBehaviour, IChip
             RemoveBuff();
         }
     }
-    void ApplyBuff()
+    public void ApplyBuff()
     {
         expansionChipStatus.isHammerChipEquipped = true;
         isBuffActive = true;
     }
-    void RemoveBuff()
+    public void RemoveBuff()
     {
         expansionChipStatus.isHammerChipEquipped = false;
         isBuffActive = false;

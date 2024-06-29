@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DamageOutCalculator : MonoBehaviour
 {
+    public static DamageOutCalculator instance;
     //The total amount of damage boost (uses %)
     private float totalDMGBoost = 0;
     public float _totalDMGBoost { get { return totalDMGBoost; } }
@@ -23,6 +24,18 @@ public class DamageOutCalculator : MonoBehaviour
     public float BoostDamage(float damage)
     {
         return damage + (damage * totalDMGBoost / 100);
+    }
+    public float MacabreDanceTotalDMGBoost(float damage)
+    {
+        return damage + (damage * (totalDMGBoost + ExpansionChipStatus.instance.MacabreDanceTotalDMGBoost) / 100);
+    }
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
     }
 
     private void Update()
