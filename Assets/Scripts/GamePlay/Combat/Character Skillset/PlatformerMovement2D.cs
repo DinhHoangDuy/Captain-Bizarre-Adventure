@@ -4,11 +4,14 @@ using UnityEngine;
 public class PlatformerMovement2D : MonoBehaviour
 {
     public static PlatformerMovement2D instance;
+    [SerializeField] private GameObject groundCheck;
     private PlayerInput playerInput;
     private ExpansionChipStatus expansionChipStatus;
+    private BoxCollider2D boxCollider2D;
 
     private float horizontal;
-    public float movespeed;
+    private float moveDirection;
+    [HideInInspector] public float movespeed;
     private float jumpingPower;
     private float gravityScale;
     private int extraJumps;
@@ -24,6 +27,9 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private bool isFacingRight = true;
     public bool IsLookingRight => isFacingRight;
+
+    private float HoldPositionDelay;
+
     public bool blocked = false;
 
     private bool isWallSliding;
@@ -33,13 +39,13 @@ public class PlatformerMovement2D : MonoBehaviour
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
-    private float wallJumpingDuration = 0.4f;
+    private float wallJumpingDuration = 0.2f;
     private Vector2 wallJumpingPower = new Vector2(6f, 16f);
 
     private bool canDash = true;
     private bool isDashing = false;
     private float dashForce;
-    private float dashTime = 0.2f;
+    private float dashTime = 0.1f;
     private float dashCooldown = 1f;
     [SerializeField] private TrailRenderer trailRenderer;
 
@@ -76,6 +82,7 @@ public class PlatformerMovement2D : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         stats = GetComponent<CharacterStats>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
         expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
 
         movespeed = stats.MoveSpeed;
@@ -97,26 +104,19 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         if (blocked || isDashing) return;
         horizontal = playerInput.Game.WASD.ReadValue<Vector2>().x;
-
+        if(horizontal < 0)
+        {
+            moveDirection = -1f;
+        }
+        else if(horizontal > 0)
+        {
+            moveDirection = 1f;
+        }
+        else
+        {
+            moveDirection = 0f;
+        }
         #region Vertical Jumping
-        // if (playerInput.Game.Jump.triggered && (coyoteTimeCounter > 0 || extraJumpsCounter  > 0))
-        // {
-        //     if(!IsGrounded() && coyoteTimeCounter <= 0 && !isWallSliding)
-        //     // if(!IsGrounded() && coyoteTimeCounter <= 0)
-        //     {
-        //         if(expansionChipStatus.isDreamBuilderAvailable)
-        //         {
-        //             Instantiate(dreamBuilderPlatform, dreamBuilderPlatformSpawnPoint.position, Quaternion.identity);
-        //             expansionChipStatus.dreamBuilderPlatformCurrentCooldown = expansionChipStatus.dreamBuilderPlatformCooldown;
-        //         }
-        //         else
-        //         {
-        //             extraJumpsCounter --;
-        //         }
-        //     }
-
-        //     rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        // }
         if(playerInput.Game.Jump.triggered && !isWallSliding)
         {
             if(coyoteTimeCounter <= 0)
@@ -158,10 +158,14 @@ public class PlatformerMovement2D : MonoBehaviour
 
         WallSlide();
         WallJump();
+        if(!isWallSliding)
+        {
+            HoldPositionDelay = 0.1f;
+        }
 
         if (!isWallJumping)
         {
-            if (transform.localRotation.y < 0 && horizontal > 0f || transform.localRotation.y >= 0 && horizontal < 0f)
+            if (transform.localRotation.y < 0 && moveDirection > 0f || transform.localRotation.y >= 0 && horizontal < 0f)
             {
                 Flip();
             }
@@ -183,7 +187,10 @@ public class PlatformerMovement2D : MonoBehaviour
 
         // Debub Only
         currentVelocityY = rb.velocity.y;
-
+        if(currentVelocityY > 0f)
+        {
+            Debug.Log("currentVelocityY > 0: " + (currentVelocityY > 0f));
+        }
     }
 
     private void FixedUpdate()
@@ -195,9 +202,10 @@ public class PlatformerMovement2D : MonoBehaviour
             
         if (!isWallJumping)
         {
+            // Horizontal Movement
             if(!blocked)
             {
-                rb.velocity = new Vector2(horizontal * movespeed, rb.velocity.y);
+                rb.velocity = new Vector2(moveDirection * movespeed, rb.velocity.y);
             }
         }
         if(rb.velocity.y < 0)
@@ -229,11 +237,10 @@ public class PlatformerMovement2D : MonoBehaviour
     #region Is Grounded
     public bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.2f, groundLayer);
-        // TODO: Check if the raycast hit the ground layer or the DreamGround layer
-        // Debug.Log("Raycast hit layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer));
-        return hit.collider != null;
-        // return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.transform.position, 0.2f, groundLayer);
+        // Vector2 boxCastSize = new Vector2(boxCollider2D.bounds.size.x, 0.3f);
+        // RaycastHit2D hit = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCastSize, 0f, Vector2.down, 0.1f, groundLayer);
+        // return hit.collider != null;
     }
     #endregion
 
@@ -248,7 +255,15 @@ public class PlatformerMovement2D : MonoBehaviour
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+            if(HoldPositionDelay >= 0f)
+            {
+                HoldPositionDelay -= Time.deltaTime;
+                rb.velocity = new Vector2(rb.velocity.x, 0f);
+            }
+            else
+            {
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+            }
         }
         else
         {
@@ -261,6 +276,7 @@ public class PlatformerMovement2D : MonoBehaviour
         if (isWallSliding)
         {
             isWallJumping = false;
+            // Wall Jumping Direction
             if (transform.localRotation.y >= 0)
             {
                 wallJumpingDirection = -1f;
@@ -273,6 +289,7 @@ public class PlatformerMovement2D : MonoBehaviour
             {
                 Debug.LogError("WallJumpingDirection Error");
             }
+            // Wall Jumping Counter
             wallJumpingCounter = wallJumpingTime;
 
             CancelInvoke(nameof(StopWallJumping));
@@ -285,6 +302,7 @@ public class PlatformerMovement2D : MonoBehaviour
         if (playerInput.Game.Jump.triggered && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
+            trailRenderer.emitting = true;
             rb.velocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
             transform.Rotate(0f, 180f, 0f);
@@ -296,6 +314,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private void StopWallJumping()
     {
         isWallJumping = false;
+        trailRenderer.emitting = false;
     }
     #endregion
 
@@ -360,10 +379,12 @@ public class PlatformerMovement2D : MonoBehaviour
         blocked = false;
     }
 
+    #region  Gizmos
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * 1.2f);
+        Gizmos.DrawWireSphere(groundCheck.transform.position, 0.2f);
     }
+    #endregion
 }

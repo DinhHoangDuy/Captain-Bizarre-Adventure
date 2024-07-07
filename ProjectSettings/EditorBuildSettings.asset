@@ -15,6 +15,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Metroivania Maps/Tutorial -
       Movement.unity
     guid: d85a67c1f5595a84dbc9b18baf5c39b2
+  - enabled: 1
+    path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Metroivania Maps/Tutorial -
+      Combat.unity
+    guid: c354bbe01b7aff97099898f412868538
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: e69a93576567f7d4588336e196a76ed0,
       type: 2}

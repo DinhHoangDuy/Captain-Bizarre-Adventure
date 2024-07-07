@@ -387,6 +387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec65a722dd6b42bf9e275354f9b496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundCheck: {fileID: 769648960938377852}
+  movespeed: 0
   dreamBuilderPlatform: {fileID: 7633789218336709396, guid: f1fbe33553f7329948a6b093d32258b4,
     type: 3}
   dreamBuilderPlatformSpawnPoint: {fileID: 2829359077726942525}
@@ -435,6 +437,8 @@ MonoBehaviour:
   requiredSP: 60
   passiveDuration: 5
   passiveDMGBoost: 30
+  isWarthChipEquipped: 0
+  WarthCritDMGBuffValue: 0
   attackPoint: {fileID: 5593513566568407175}
   attackRange: 1
   enemyLayers:

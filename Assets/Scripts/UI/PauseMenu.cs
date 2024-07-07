@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
     public static bool isPaused = false;
     [Header("Pause Menu Buttons")]
     [SerializeField] private Button resumeButton;
+    [SerializeField] private Button exitButton;
     //Adapt new Input System
     private PlayerInput playerInput;
     private InputAction pauseInput;
@@ -22,6 +23,7 @@ public class PauseMenu : MonoBehaviour
         playerInput = new PlayerInput();
         //Pause Menu Button
         resumeButton.onClick.AddListener(ResumeGame);
+        exitButton.onClick.AddListener(() => SceneManager.LoadScene("Scenes/MainMenu/Welcome"));
     }
     private void OnEnable()
     {

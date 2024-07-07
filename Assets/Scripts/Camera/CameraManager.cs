@@ -2,7 +2,6 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Cinemachine;
 using System.Collections;
-using UnityEditor.EditorTools;
 // using System.Numerics;
 
 public class CameraManager : MonoBehaviour

@@ -86,13 +86,14 @@ GameObject:
   - component: {fileID: 8809146884001757710}
   - component: {fileID: 3745532392508695797}
   - component: {fileID: 6336355668613549628}
+  - component: {fileID: 3085289135495060917}
   m_Layer: 5
   m_Name: Selected Shader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8809146884001757710
 RectTransform:
   m_ObjectHideFlags: 0
@@ -150,6 +151,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &3085289135495060917
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2309798412978848782}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aec6f257f20a73425a7cbef5754a0e29, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4597959328983197683
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,15 +553,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8743807f15e603f0082831ef0714ba0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chipData: {fileID: 0}
   chipNameUIText: {fileID: 3198435049515678043}
   chipIconUIImage: {fileID: 7792978027311804474}
   selectedShader: {fileID: 6336355668613549628}
   equippedShader: {fileID: 8535335474601917905}
   lockedShader: {fileID: 4342082216827499808}
-  chipData: {fileID: 0}
+  chipIconDescription: {fileID: 0}
+  chipNameDescriptionPanel: {fileID: 0}
+  chipDescriptionText: {fileID: 0}
   chipNameData: 
   chipDescriptionData: 
   chipLoadData: 0
-  isUnlocked: 0
+  isLocked: 0
   isEquipped: 0
   isSelected: 0
