@@ -22,10 +22,10 @@ public class TakeDMG : MonoBehaviour
     }
 
     #region Player Take Damage
-    public event System.Action<int, Vector2> OnHitPlayerReceived;
-    public void HitPlayer(int damageAmount, Vector2 damageSourcePosition)        
+    public event System.Action<int> OnHitPlayerReceived;
+    public void HitPlayer(int damageAmount)        
     {
-        OnHitPlayerReceived?.Invoke(damageAmount, damageSourcePosition);
+        OnHitPlayerReceived?.Invoke(damageAmount);
     }
     #endregion
 }

@@ -105,6 +105,7 @@ ScriptedImporter:
     pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 0
@@ -126,6 +127,7 @@ ScriptedImporter:
     pivot: {x: 0.6818182, y: -1.3333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 153
@@ -146,6 +148,7 @@ ScriptedImporter:
     pivot: {x: 0.35185185, y: -0.826087}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 192
@@ -166,6 +169,7 @@ ScriptedImporter:
     pivot: {x: 0.4074074, y: -0.4848485}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 65
@@ -186,6 +190,7 @@ ScriptedImporter:
     pivot: {x: 0.6571429, y: -0.53333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -206,6 +211,7 @@ ScriptedImporter:
     pivot: {x: 0.6571429, y: -0.53333336}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 47
@@ -226,6 +232,7 @@ ScriptedImporter:
     pivot: {x: 0.36842105, y: -0.71428573}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 127
@@ -246,6 +253,7 @@ ScriptedImporter:
     pivot: {x: 0.41509435, y: -0.43243244}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -266,6 +274,7 @@ ScriptedImporter:
     pivot: {x: 0.41176474, y: -0.42105263}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -286,6 +295,7 @@ ScriptedImporter:
     pivot: {x: 0.6, y: -0.43243244}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 4
@@ -306,6 +316,7 @@ ScriptedImporter:
     pivot: {x: 0.5333333, y: -1.9}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 90
@@ -326,6 +337,7 @@ ScriptedImporter:
     pivot: {x: 0.5217391, y: -1.3333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 122
@@ -346,6 +358,7 @@ ScriptedImporter:
     pivot: {x: 0.5833334, y: -1.3333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 222
@@ -366,6 +379,7 @@ ScriptedImporter:
     pivot: {x: 0.6666667, y: -1.2307693}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 37
@@ -386,6 +400,7 @@ ScriptedImporter:
     pivot: {x: 0.51612896, y: -2.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 183
@@ -406,6 +421,7 @@ ScriptedImporter:
     pivot: {x: 0.45833328, y: -1.3333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 90
@@ -426,6 +442,7 @@ ScriptedImporter:
     pivot: {x: 0.5999999, y: -1.3333334}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
     rect:
       serializedVersion: 2
       x: 242

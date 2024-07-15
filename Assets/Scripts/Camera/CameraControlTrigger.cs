@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEditor;
-using Cinemachine;
+using Unity.Cinemachine;
 
 public class CameraControlTrigger : MonoBehaviour
 {
-    public CustomInspectionObjects customInspectionObjects = new CustomInspectionObjects(); // Initialize here 
+    public CameraControlTriggerCustomInspectionObjects customInspectionObjects = new CameraControlTriggerCustomInspectionObjects(); // Initialize here 
     private Collider2D triggerCollider;
     void Start()
     {
@@ -24,11 +24,17 @@ public class CameraControlTrigger : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D player)
     {
+        //======= Swap the camera when the player exits the trigger =======
         Vector2 exitDirection = (player.transform.position - triggerCollider.bounds.center).normalized;
-        if(customInspectionObjects.swapCamera && customInspectionObjects.leftVirtualCamera != null && customInspectionObjects.rightVirtualCamera != null)
+        if(customInspectionObjects.swapCameraHorizontally && customInspectionObjects.leftVirtualCamera != null && customInspectionObjects.rightVirtualCamera != null)
         {
             // Swap the camera
-            CameraManager.instance.SwapCamera(customInspectionObjects.leftVirtualCamera, customInspectionObjects.rightVirtualCamera, exitDirection);
+            CameraManager.instance.SwapCameraLeftRight(customInspectionObjects.leftVirtualCamera, customInspectionObjects.rightVirtualCamera, exitDirection);
+        }
+        if(customInspectionObjects.swapCameraVertically && customInspectionObjects.topVirtualCamera != null && customInspectionObjects.bottomVirtualCamera != null)
+        {
+            // Swap the camera
+            CameraManager.instance.SwapCameraTopBottom(customInspectionObjects.topVirtualCamera, customInspectionObjects.bottomVirtualCamera, exitDirection);
         }
 
         if (player.CompareTag("Player"))
@@ -43,14 +49,18 @@ public class CameraControlTrigger : MonoBehaviour
 }
 
 [System.Serializable]
-public class CustomInspectionObjects
+public class CameraControlTriggerCustomInspectionObjects
 {
     // Will appear in the Editor
-    public bool swapCamera = false;
-    public bool panCameraOnContact = false;
-    [HideInInspector] public CinemachineVirtualCamera leftVirtualCamera;
-    [HideInInspector] public CinemachineVirtualCamera rightVirtualCamera;
+    public bool swapCameraHorizontally = false;
+    [HideInInspector] public CinemachineCamera leftVirtualCamera;
+    [HideInInspector] public CinemachineCamera rightVirtualCamera;
 
+    public bool swapCameraVertically = false;
+    [HideInInspector] public CinemachineCamera topVirtualCamera;
+    [HideInInspector] public CinemachineCamera bottomVirtualCamera;
+
+    public bool panCameraOnContact = false; 
     [HideInInspector] public PanDirection panDirection;
     [HideInInspector] public float panDistance = 3f;
     [HideInInspector] public float panTime = 0.35f;
@@ -75,7 +85,7 @@ public class MyScriptEditor : Editor
         // Ensure customInspectionObjects is not null
         if (cameraControlTrigger.customInspectionObjects == null)
         {
-            cameraControlTrigger.customInspectionObjects = new CustomInspectionObjects();
+            cameraControlTrigger.customInspectionObjects = new CameraControlTriggerCustomInspectionObjects();
             EditorUtility.SetDirty(cameraControlTrigger);
         }
     }
@@ -87,13 +97,22 @@ public class MyScriptEditor : Editor
         // Ensure customInspectionObjects is not null
         if (cameraControlTrigger.customInspectionObjects != null)
         {
-            if (cameraControlTrigger.customInspectionObjects.swapCamera)
+            // Sway Camera custom inspection
+            if (cameraControlTrigger.customInspectionObjects.swapCameraHorizontally)
             {
                 // Ensure the objects and properties you access are initialized
                 // Example for leftVirtualCamera and rightVirtualCamera
-                cameraControlTrigger.customInspectionObjects.leftVirtualCamera = EditorGUILayout.ObjectField("Left Virtual Camera", cameraControlTrigger.customInspectionObjects.leftVirtualCamera, typeof(CinemachineVirtualCamera), true) as CinemachineVirtualCamera;
-                cameraControlTrigger.customInspectionObjects.rightVirtualCamera = EditorGUILayout.ObjectField("Right Virtual Camera", cameraControlTrigger.customInspectionObjects.rightVirtualCamera, typeof(CinemachineVirtualCamera), true) as CinemachineVirtualCamera;
+                cameraControlTrigger.customInspectionObjects.leftVirtualCamera = EditorGUILayout.ObjectField("Left Virtual Camera", cameraControlTrigger.customInspectionObjects.leftVirtualCamera, typeof(CinemachineCamera), true) as CinemachineCamera;
+                cameraControlTrigger.customInspectionObjects.rightVirtualCamera = EditorGUILayout.ObjectField("Right Virtual Camera", cameraControlTrigger.customInspectionObjects.rightVirtualCamera, typeof(CinemachineCamera), true) as CinemachineCamera;
             }
+            if(cameraControlTrigger.customInspectionObjects.swapCameraVertically)
+            {
+                // Similar null checks and initialization should be ensured for topVirtualCamera and bottomVirtualCamera
+                cameraControlTrigger.customInspectionObjects.topVirtualCamera = EditorGUILayout.ObjectField("Top Virtual Camera", cameraControlTrigger.customInspectionObjects.topVirtualCamera, typeof(CinemachineCamera), true) as CinemachineCamera;
+                cameraControlTrigger.customInspectionObjects.bottomVirtualCamera = EditorGUILayout.ObjectField("Bottom Virtual Camera", cameraControlTrigger.customInspectionObjects.bottomVirtualCamera, typeof(CinemachineCamera), true) as CinemachineCamera;
+            }
+
+            // Pan Camera custom inspection
 
             if (cameraControlTrigger.customInspectionObjects.panCameraOnContact)
             {

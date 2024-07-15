@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -10,6 +11,17 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float maxHealth;
     private float currentHealth;
 
+    // Being Pushed
+    private float direction;
+    private float force;
+    public bool isPushed = false; 
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     /// <summary>
     /// Initializes the enemy's current health to the maximum health value.
     /// </summary>
@@ -17,6 +29,15 @@ public class EnemyHealth : MonoBehaviour
     {
         enemyResistance = GetComponent<EnemyResistance>();
         currentHealth = maxHealth;
+    }
+    private void Update()
+    {
+        if(isPushed)
+        {
+            rb.AddForce(new Vector2(direction * force, 0), ForceMode2D.Impulse);
+            return;
+        }
+
     }
 
     /// <summary>
@@ -41,8 +62,15 @@ public class EnemyHealth : MonoBehaviour
         else
         {
             GetComponent<Animator>().Play("Take Hit");
+            rb.AddForce(new Vector2(direction * force, 0), ForceMode2D.Impulse);
         }
     }
+    public void SetPushDirectionAndPower(float direction, float force)
+    {
+        this.direction = direction;
+        this.force = force;
+    }
+
 
     /// <summary>
     /// Performs the death logic for the enemy and destroys the game object.

@@ -58,7 +58,7 @@ public class PlayerHealth : MonoBehaviour
     }
 
 
-    private void TakeDamage(int damage, Vector2 damageSourcePosition)
+    private void TakeDamage(int damage)
     // private void TakeDamage(int damage)
     {
         if(isInvincible)
@@ -86,16 +86,6 @@ public class PlayerHealth : MonoBehaviour
             GetComponent<Animator>().Play("Hit");
             // Calculate the direction from the damage source to the player
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            Vector2 knockbackDirection = (Vector2)transform.position - damageSourcePosition;
-            knockbackDirection.Normalize();
-
-            // Apply a force to the player's Rigidbody2D component in the opposite direction of the damage source
-            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-            // Add a constant force that always pulls the player behind when the vector x is less than 0.5 and greater than -0.5
-            if(knockbackDirection.x < 0.5 && knockbackDirection.x > -0.5)
-            {
-                rb.AddForce(Vector2.left * knockbackForce, ForceMode2D.Impulse);
-            }
             StartCoroutine(IFrame(invincibilityTime));
         }
     }
@@ -145,7 +135,7 @@ public class PlayerHealth : MonoBehaviour
         if(collision.CompareTag("FallingZone"))
         {
             isInvincible = false;
-            TakeDamage(maxHealth, collision.transform.position);
+            TakeDamage(maxHealth);
         }
 
         if (collision.CompareTag("Checkpoint"))

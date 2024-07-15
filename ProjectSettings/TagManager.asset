@@ -2,23 +2,21 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
-  - Dummy
   - FallingZone
   - Checkpoint
-  - PlayerConsole
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - Enemy
   - Water
   - UI
-  - Enemy
-  - DestroyableObject
-  - Friendly
-  - DreamGround
+  - Player
+  - Ground
+  - Destroyable
+  - 
   - 
   - 
   - 
@@ -45,12 +43,5 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Foreground
-    uniqueID: 3168418857
-    locked: 0
-  - name: Player
-    uniqueID: 1625648647
-    locked: 0
-  - name: Background
-    uniqueID: 2823265255
-    locked: 0
+  m_RenderingLayers:
+  - Default

@@ -426,10 +426,13 @@ MonoBehaviour:
   basicAttackBaseDMG: 10
   basicAttackMultiplier: 60
   basicAttackUWTriggerChance: 20
+  basicAttackHitForce: 20
+  basicAttackRecoilForce: 5
   waveOfEnergyPrefab: {fileID: 3582970393861231693, guid: 244709c72e60af74a9764cd5b9a23ee5,
     type: 3}
   ultimateBaseDamage: 150
   ultimateDamageMultiplier: 105
+  waveHitForce: 30
   waveSpeed: 30
   waveLifeTime: 0.2
   ultimateUWPassiveBonus: 10

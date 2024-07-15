@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -48,11 +49,14 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private int basicAttackBaseDMG = 10;
             [SerializeField] private float basicAttackMultiplier = 60f;
             [SerializeField] private float basicAttackUWTriggerChance = 20f;
+            [SerializeField] private float basicAttackHitForce = 20f;
+            [SerializeField] private float basicAttackRecoilForce = 5f;
 
         [Header("Captain's Ultimate Attributes")]
             [SerializeField] private GameObject waveOfEnergyPrefab;
             [SerializeField] private float ultimateBaseDamage = 150;
             [SerializeField] private float ultimateDamageMultiplier = 105f;
+            [SerializeField] private float waveHitForce = 30f;
             [SerializeField] private float waveSpeed = 30f;
             [SerializeField] private float waveLifeTime = 0.2f;
 
@@ -113,6 +117,7 @@ public class CaptainMoonBlade : MonoBehaviour
         private DamageOutCalculator dmgCalulator;
         private PlatformerMovement2D platformerMovement;
         private ExpansionChipStatus expansionChipStatus;
+        private Rigidbody2D rb;
         private Animator anim;
     #endregion
 
@@ -156,6 +161,7 @@ public class CaptainMoonBlade : MonoBehaviour
         dmgCalulator = GetComponent<DamageOutCalculator>();
         anim = GetComponent<Animator>();
         platformerMovement = GetComponent<PlatformerMovement2D>();
+        rb = GetComponent<Rigidbody2D>();
         expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
     }
     private void Start()    
@@ -354,11 +360,12 @@ public class CaptainMoonBlade : MonoBehaviour
     #endregion
 
     #region Animation Events
-    public void DealDMG()
+    public void DealBasicDMG()
     {
         //Detect enemies in range of attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         Collider2D[] hitDestroyables = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, destroyableLayers);
+        Collider2D[] hitWall = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, PlatformerMovement2D.instance.wallLayer);
         bool criticalHit = false;
         if(hitEnemies.Length > 0 || hitDestroyables.Length > 0)
         {
@@ -379,12 +386,18 @@ public class CaptainMoonBlade : MonoBehaviour
             }
             TriggerPassive();
             // Debug.Log("Captain's Basic Attack Hit hit enemies or destroyables!");
+            
+            // Push the characters behind
+            float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
+            float force = basicAttackRecoilForce;
+            // rb.AddForce(new Vector2(pushDirection * force, 0), ForceMode2D.Impulse);
+            rb.velocity = new Vector2(pushDirection * force, rb.velocity.y);
         }
-
 
         //Damage them
         foreach (Collider2D enemy in hitEnemies)
-        {          
+        {    
+            // Calculate the damage taken only when enemy is found in the range      
             if(criticalHit)
             {        
                 basicAttackDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
@@ -393,12 +406,34 @@ public class CaptainMoonBlade : MonoBehaviour
                     basicAttackDamage += basicAttackDamage * WarthCritDMGBuffValue / 100;
                 }
             }          
+
+            // Deal the damage to the enemy
             enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackDamage, damageType, DamageFromSkill.BasicAttack);
+            // Reset the critical hit to false
             criticalHit = false;
+            // send push signal to the enemy health script
+            float hitDirection = enemy.transform.position.x - transform.position.x;
+            if(hitDirection > 0)
+            {
+                hitDirection = 1;
+            }
+            else
+            {
+                hitDirection = -1;
+            }
+            enemy.GetComponent<EnemyHealth>().SetPushDirectionAndPower(hitDirection, basicAttackHitForce);
         }   
         foreach (Collider2D destroyable in hitDestroyables)
         {
             destroyable.GetComponent<TakeDMG>().TakeDestroyableDamage(1);
+        }
+        if(hitWall.Length > 0)
+        {
+            // Push the characters behind
+            float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
+            float force = basicAttackRecoilForce;
+            // rb.AddForce(new Vector2(pushDirection * force, 0), ForceMode2D.Impulse);
+            rb.velocity = new Vector2(pushDirection * force, rb.velocity.y);
         }
     }
     public void ShootEnergyWave()
@@ -416,7 +451,7 @@ public class CaptainMoonBlade : MonoBehaviour
 
         GameObject waveOfEnergy = Instantiate(waveOfEnergyPrefab, transform.position, waveRotation);
         MoonWaveProjectile waveProjectile = waveOfEnergy.GetComponent<MoonWaveProjectile>();
-        waveProjectile.SetWaveDamage(ultimateDamage, damageType);
+        waveProjectile.SetWaveDamage(ultimateDamage, damageType, waveHitForce);
         waveProjectile.SetSpeed(waveSpeed);
         waveProjectile.SetDuration(waveLifeTime);
     }

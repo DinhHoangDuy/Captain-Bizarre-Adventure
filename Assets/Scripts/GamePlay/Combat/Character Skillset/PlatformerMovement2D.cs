@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -57,7 +58,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private CharacterStats stats;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] public LayerMask wallLayer;
 
     // Only for Debugging
     private float currentVelocityY;
@@ -379,12 +380,14 @@ public class PlatformerMovement2D : MonoBehaviour
         blocked = false;
     }
 
+
     #region  Gizmos
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
         Gizmos.DrawWireSphere(groundCheck.transform.position, 0.2f);
+
     }
     #endregion
 }

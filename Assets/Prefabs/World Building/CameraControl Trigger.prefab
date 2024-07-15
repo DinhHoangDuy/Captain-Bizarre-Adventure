@@ -92,10 +92,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customInspectionObjects:
-    swapCamera: 0
-    panCameraOnContact: 0
+    swapCameraHorizontally: 0
     leftVirtualCamera: {fileID: 0}
     rightVirtualCamera: {fileID: 0}
+    swapCameraVertically: 0
+    topVirtualCamera: {fileID: 0}
+    bottomVirtualCamera: {fileID: 0}
+    panCameraOnContact: 0
     panDirection: 0
     panDistance: 3
     panTime: 0.35

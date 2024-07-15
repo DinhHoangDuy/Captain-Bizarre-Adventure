@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -20,13 +18,15 @@ public class MoonWaveProjectile : MonoBehaviour
         public float waveDamage { get; private set;}
         private float speed;
         private float lifeTime;
+        private float waveHitForce;
         public DamageType damageType { get; private set;}
         private GameObject[] enemies = new GameObject[0];
 
-        public void SetWaveDamage(float damage, DamageType DMGType)
+        public void SetWaveDamage(float damage, DamageType DMGType, float hitForce)
         {
             waveDamage = damage;
             damageType = DMGType;
+            waveHitForce = hitForce;
         }
         public void SetSpeed(float speed)
         {
@@ -50,8 +50,7 @@ public class MoonWaveProjectile : MonoBehaviour
         StartCoroutine(DestroyProjectile());
     }
     private void Update()
-    {
-        //Destroy the projectile if it hits a wall
+    {        
         RaycastHit2D hitWall = Physics2D.Raycast(transform.position, transform.right, 0.5f, wallLayer);
         if (hitWall)
         {
@@ -78,8 +77,10 @@ public class MoonWaveProjectile : MonoBehaviour
                 enemies = new GameObject[enemies.Length + 1];
                 enemies[enemies.Length - 1] = hitEnemy.gameObject;
                 hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType, DamageFromSkill.UltimateSkill);
-                Debug.Log("Enemy is not in the list: " + hitEnemy.gameObject.name + ". The enemy took damage in this frame!.");
-                Debug.Log("Enemy took: " + waveDamage + " damage of type: " + damageType);
+
+                // Push the enemy back
+                float hitDirection = transform.right.x;
+                hitEnemy.GetComponent<EnemyHealth>().SetPushDirectionAndPower(hitDirection, waveHitForce);
             }
 
             return;

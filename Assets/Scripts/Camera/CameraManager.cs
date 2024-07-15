@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 using System.Collections;
 // using System.Numerics;
 
@@ -8,7 +8,7 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager instance;
 
-    [SerializeField] private CinemachineVirtualCamera[] _allVirtualCameras;
+    [SerializeField] private CinemachineCamera[] _allVirtualCameras;
     private float targetYDamping;
     [Tooltip("Adjust this value as needed for smoother or faster transitions")] 
     [SerializeField] private float lerpSpeed = 2f;
@@ -17,12 +17,12 @@ public class CameraManager : MonoBehaviour
     [Header("Camera Settings")]
     public float _fallSpeedYDampingChangeThreshold = -15f;
 
-    private CinemachineVirtualCamera _currentVirtualCamera;
-    private CinemachineFramingTransposer _framingTransposer;
+    private CinemachineCamera _currentVirtualCamera;
+    private CinemachinePositionComposer _PositionComposer;
 
     private float _normYPanAmount;
 
-    private Vector2 _startingTrackedObjectOffset;
+    private Vector3 _startingTrackedObjectOffset;
     private Coroutine _panCameraCoroutine;
 
     private void Awake()
@@ -40,22 +40,22 @@ public class CameraManager : MonoBehaviour
                 _currentVirtualCamera = _allVirtualCameras[i];
 
                 // Set the current framing transposer
-                _framingTransposer = _currentVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+                _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
             }
         }
         // Set the YDamping amound so it's base from the inspector value
-        _normYPanAmount = _framingTransposer.m_YDamping;
+        _normYPanAmount = _PositionComposer.Damping.y;
 
         // Set the starting tracked object offset
-        _startingTrackedObjectOffset = _framingTransposer.m_TrackedObjectOffset;
+        _startingTrackedObjectOffset = _PositionComposer.TargetOffset;
     }
 
 
     private void Update()
     {
-        if (_framingTransposer.m_YDamping != targetYDamping)
+        if (_PositionComposer.Damping.y != targetYDamping)
         {
-            _framingTransposer.m_YDamping = Mathf.Lerp(_framingTransposer.m_YDamping, targetYDamping, lerpSpeed * Time.deltaTime);
+            _PositionComposer.Damping.y = Mathf.Lerp(_PositionComposer.Damping.y, targetYDamping, lerpSpeed * Time.deltaTime);
         }
     }
 
@@ -102,13 +102,13 @@ public class CameraManager : MonoBehaviour
                 default: break;
             }
             endPos *= panDistance;
-            startPos = _framingTransposer.m_TrackedObjectOffset;
+            startPos = _PositionComposer.TargetOffset;
             endPos += startPos;
         }
         // handle pan back to starting position
         else
         {
-            startPos = _framingTransposer.m_TrackedObjectOffset;
+            startPos = _PositionComposer.TargetOffset;
             endPos = _startingTrackedObjectOffset;
         }
 
@@ -118,18 +118,18 @@ public class CameraManager : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             Vector3 panLerp = Vector3.Lerp(startPos, endPos, elapsedTime / panTime);
-            _framingTransposer.m_TrackedObjectOffset = panLerp;
+            _PositionComposer.TargetOffset = panLerp;
             yield return null;
         }
     }
     #endregion
 
     #region Camera Swap
-    public void SwapCamera(CinemachineVirtualCamera leftCamera, CinemachineVirtualCamera rightCamera, Vector2 triggerExitDirection)
+    public void SwapCameraLeftRight(CinemachineCamera leftCamera, CinemachineCamera rightCamera, Vector2 triggerExitDirection)
     {
-        // if the current camera is the left camera and the trigger exit direction is on the right
         if (_currentVirtualCamera == leftCamera && triggerExitDirection.x > 0f)
         {
+            // -------- Change the camera when the player exits the trigger from the left to the right-------
             // activate the right camera
             rightCamera.enabled = true;
             // deactivate the left camera
@@ -137,11 +137,11 @@ public class CameraManager : MonoBehaviour
             // set the current camera to the right camera
             _currentVirtualCamera = rightCamera;
             // set the current framing transposer
-            _framingTransposer = _currentVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
         }
-        // if the current camera is the left camera and the trigger exit direction is on the right
         else if (_currentVirtualCamera == rightCamera && triggerExitDirection.x < 0f)
         {
+            // -------- Change the camera when the player exits the trigger from the right to the left-------
             // activate the left camera
             leftCamera.enabled = true;
             // deactivate the right camera
@@ -149,7 +149,36 @@ public class CameraManager : MonoBehaviour
             // set the current camera to the right camera
             _currentVirtualCamera = leftCamera;
             // set the current framing transposer
-            _framingTransposer = _currentVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+        }
+        
+    }
+
+    public void SwapCameraTopBottom(CinemachineCamera topCamera, CinemachineCamera bottomCamera, Vector2 triggerExitDirection)
+    {
+        if (_currentVirtualCamera == topCamera && triggerExitDirection.y < 0f)
+        {
+            //-------- Change the camera when the player exits the trigger from the top to the bottom-------
+            // activate the bottom camera
+            bottomCamera.enabled = true;
+            // deactivate the top camera
+            topCamera.enabled = false;
+            // set the current camera to the bottom camera
+            _currentVirtualCamera = bottomCamera;
+            // set the current framing transposer
+            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+        }
+        else if (_currentVirtualCamera == bottomCamera && triggerExitDirection.y > 0f)
+        {
+            // -------- Change the camera when the player exits the trigger from the bottom to the top-------
+            // activate the top camera
+            topCamera.enabled = true;
+            // deactivate the bottom camera
+            bottomCamera.enabled = false;
+            // set the current camera to the top camera
+            _currentVirtualCamera = topCamera;
+            // set the current framing transposer
+            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
         }
         
     }
