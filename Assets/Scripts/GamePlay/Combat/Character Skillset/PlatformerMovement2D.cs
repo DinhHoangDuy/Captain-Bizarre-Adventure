@@ -6,6 +6,8 @@ public class PlatformerMovement2D : MonoBehaviour
 {
     public static PlatformerMovement2D instance;
     [SerializeField] private GameObject groundCheck;
+    [SerializeField] private TrailRenderer trailRenderer;
+
     private PlayerInput playerInput;
     private ExpansionChipStatus expansionChipStatus;
     private BoxCollider2D boxCollider2D;
@@ -15,10 +17,13 @@ public class PlatformerMovement2D : MonoBehaviour
     [HideInInspector] public float movespeed;
     private float jumpingPower;
     private float gravityScale;
-    private int extraJumps;
-    private int extraJumpsCounter;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
+    
+    #region Extra Jumps
+    public int extraJumps = 0;
+    private int extraJumpsCounter;
+    #endregion
 
     #region Dream Builder Chip
     [Header("Dream Builder Chip")]
@@ -33,22 +38,28 @@ public class PlatformerMovement2D : MonoBehaviour
 
     public bool blocked = false;
 
+    #region Wall Slide & Wall Jump
+    [Header("Wall Slide & Wall Jump")]
+    public bool wallJumpAllowed = false;
     private bool isWallSliding;
-    private float wallSlidingSpeed = 2f;
+    [SerializeField] private float wallSlidingSpeed = 1f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
     private float wallJumpingTime = 0.2f;
     private float wallJumpingCounter;
     private float wallJumpingDuration = 0.2f;
-    private Vector2 wallJumpingPower = new Vector2(6f, 16f);
+    [SerializeField] private Vector2 wallJumpingPower = new Vector2(6f, 16f);
+    #endregion
 
+    #region Dash
+    public bool dashAllowed = false;
     private bool canDash = true;
     private bool isDashing = false;
     private float dashForce;
     private float dashTime = 0.1f;
     private float dashCooldown = 1f;
-    [SerializeField] private TrailRenderer trailRenderer;
+    #endregion
 
 
     private float _fallSpeedYDampingChangeThreshold;
@@ -90,7 +101,6 @@ public class PlatformerMovement2D : MonoBehaviour
         jumpingPower = stats.JumpForce;
         gravityScale = stats.GravityScale;
         rb.gravityScale = gravityScale;
-        extraJumps = stats.ExtraJumps;
         extraJumpsCounter = extraJumps;
         coyoteTimeCounter = coyoteTime;
         dashForce = stats.DashForce;
@@ -139,6 +149,11 @@ public class PlatformerMovement2D : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
             }
         }
+        if(playerInput.Game.Jump.WasReleasedThisFrame() && rb.velocity.y > 0)
+        {
+            // Stop Moving Upwards immediately when Jump Button is released
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0f);
+        }
         #endregion
 
         if(IsGrounded())
@@ -181,7 +196,7 @@ public class PlatformerMovement2D : MonoBehaviour
             CameraManager.instance.NormalYDamping();
         }
 
-        if(playerInput.Game.Dash.triggered && canDash)
+        if(dashAllowed && playerInput.Game.Dash.triggered && canDash)
         {
             StartCoroutine(Dash());
         }
@@ -253,6 +268,8 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private void WallSlide()
     {
+        if(!wallJumpAllowed) return; //Skip Wall Slide if Wall Jump is not allowed
+
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
@@ -274,6 +291,7 @@ public class PlatformerMovement2D : MonoBehaviour
 
     private void WallJump()
     {
+        if(!wallJumpAllowed) return; //Skip Wall Jump if Wall Jump is not allowed
         if (isWallSliding)
         {
             isWallJumping = false;
@@ -387,7 +405,6 @@ public class PlatformerMovement2D : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
         Gizmos.DrawWireSphere(groundCheck.transform.position, 0.2f);
-
     }
     #endregion
 }

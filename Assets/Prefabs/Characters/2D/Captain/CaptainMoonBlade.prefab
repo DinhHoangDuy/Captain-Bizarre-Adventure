@@ -62,6 +62,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7069759243441496267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5485901073725064786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6016597528094197365}
+  - component: {fileID: 5782815125760069755}
+  m_Layer: 0
+  m_Name: Light 2D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6016597528094197365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5485901073725064786}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7069759243441496267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5782815125760069755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5485901073725064786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 2
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_LightVolumeIntensity: 1
+  m_LightVolumeEnabled: 0
+  m_ApplyToSortingLayers: 00000000
+  m_LightCookieSprite: {fileID: 0}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 0
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowsEnabled: 1
+  m_ShadowIntensity: 0.75
+  m_ShadowSoftness: 0.3
+  m_ShadowSoftnessFalloffIntensity: 0.5
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_LocalBounds:
+    m_Center: {x: 0, y: -0.00000011920929, z: 0}
+    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 1.5
+  m_PointLightOuterRadius: 3
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
 --- !u!1 &6617033573333375749
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,6 +198,7 @@ GameObject:
   - component: {fileID: 2791965336337402899}
   - component: {fileID: 6975911404759449875}
   - component: {fileID: 4593632438534977704}
+  - component: {fileID: 7501681640988338528}
   m_Layer: 8
   m_Name: CaptainMoonBlade
   m_TagString: Player
@@ -139,6 +224,7 @@ Transform:
   - {fileID: 854023719993366937}
   - {fileID: 5593513566568407175}
   - {fileID: 2829359077726942525}
+  - {fileID: 6016597528094197365}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &157167080231217789
@@ -160,10 +246,11 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,13 +270,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 877855702, guid: e2654be0f8f7d2f4bbdd5dab9069695d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.3333334, y: 1.7222222}
+  m_Size: {x: 2.6666667, y: 2.6666667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -261,7 +348,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 2.6666667, y: 2.6666667}
-    newSize: {x: 1.3333334, y: 1.7222222}
+    newSize: {x: 2.6666667, y: 2.6666667}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -370,7 +457,6 @@ MonoBehaviour:
   maxHealth: 3
   moveSpeed: 10
   jumpForce: 15
-  extraJumps: 1
   wallJumpForce: 10
   wallSlideSpeed: 3
   gravityScale: 3.5
@@ -388,20 +474,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundCheck: {fileID: 769648960938377852}
+  trailRenderer: {fileID: 1691375614550857047}
   movespeed: 0
+  extraJumps: 0
   dreamBuilderPlatform: {fileID: 7633789218336709396, guid: f1fbe33553f7329948a6b093d32258b4,
     type: 3}
   dreamBuilderPlatformSpawnPoint: {fileID: 2829359077726942525}
   blocked: 0
-  trailRenderer: {fileID: 1691375614550857047}
+  wallJumpAllowed: 0
+  wallSlidingSpeed: 1
+  wallJumpingPower: {x: 6, y: 16}
+  dashAllowed: 0
   rb: {fileID: 0}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 520
+    m_Bits: 128
   wallCheck: {fileID: 4030414313041973073}
   wallLayer:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 128
 --- !u!114 &4593632438534977704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,18 +534,33 @@ MonoBehaviour:
   isWarthChipEquipped: 0
   WarthCritDMGBuffValue: 0
   attackPoint: {fileID: 5593513566568407175}
-  attackRange: 1
+  attackRange: 0.8
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   destroyableLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
   isUnbreakableWillActive: 0
   fireTriggered: 0
   currentSP: 0
   ultimateTriggered: 0
   isAttacking: 0
+--- !u!114 &7501681640988338528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6855818143754167541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f105f304aec74e4cc83d8ecb0acb4749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoaringWingActive: 0
+  WallJumpActive: 0
+  DashActive: 0
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,6 +613,7 @@ TrailRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
