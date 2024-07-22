@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerUltCooldown : MonoBehaviour
 {
-    [SerializeField] private UltimateIcon ultimateIcon;
+    private UltimateIcon ultimateIcon;
     private CaptainMoonBlade skillset;
     private float currentUltimateCooldown;
     private float ultCooldown;
@@ -13,6 +13,7 @@ public class PlayerUltCooldown : MonoBehaviour
     private void Awake()
     {
         skillset = GetComponent<CaptainMoonBlade>();
+        ultimateIcon = FindObjectOfType<UltimateIcon>();
     }
 
     private void Start()

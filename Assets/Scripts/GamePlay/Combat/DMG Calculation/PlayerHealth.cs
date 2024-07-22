@@ -149,6 +149,6 @@ public class PlayerHealth : MonoBehaviour
         // Respawn the player at the last checkpoint
         transform.position = lastCheckpoint;
         currentHealth = maxHealth;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
     }
 }

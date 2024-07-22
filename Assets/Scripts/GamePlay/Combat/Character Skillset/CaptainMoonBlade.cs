@@ -19,11 +19,10 @@ public class CaptainMoonBlade : MonoBehaviour
     - Health: 5 hearts stacks
     - Damage type: Physical
     - Blood Moon Blade: Captain's basic attack is a 2-hit in a single button. Each hit deals 10 + 60%/70%/80% of Captain's basic attack damage as physical damage.
-    - About the Ultimate skill "The Vow under the Moon":
+    - Ultimate skill "The Vow under the Moon":
         + Shoots a wave of energy in a straight line, dealing 150/170 (+ 105% of physical attack) as physical damage to the first enemy hit. This attack can't crit.
-        + "The Vow under the Moon" will grant the "Unbreakable Will" for 5 seconds if the buff is not active.
+        + "The Vow under the Moon" will grant the "Unbreakable Will" for 10 seconds if the buff is not active.
     - Passive "Unbreakable Will": 
-        + Each Basic Attack has a 20%/30%/40% chance to grant "Unbreakable Will" for 5 seconds. This effect will be refreshed if the effect is triggered again during the duration.
         + When "Unbreakable Will" is active, Captain will gain 30% total Damage Boost.
         + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active.
     */
@@ -48,7 +47,7 @@ public class CaptainMoonBlade : MonoBehaviour
         [Header("Captain's Basic Attack Attributes")]
             [SerializeField] private int basicAttackBaseDMG = 10;
             [SerializeField] private float basicAttackMultiplier = 60f;
-            [SerializeField] private float basicAttackUWTriggerChance = 20f;
+            // [SerializeField] private float basicAttackUWTriggerChance = 20f;
             [SerializeField] private float basicAttackHitForce = 20f;
             [SerializeField] private float basicAttackRecoilForce = 5f;
 
@@ -212,19 +211,6 @@ public class CaptainMoonBlade : MonoBehaviour
             isRequiredSPIncreased = false;
         }
         #endregion
-        #region Swiftness Expansion Chip
-        if(expansionChipStatus.isSwiftnessChipEquipped && !isRequiredSPDecreased)
-        {
-            DecreaseRequiredSP(10);
-            DecreaseUltimateCooldown(SwiftnessChip.SwitfChipReduceCooldownValue);
-            isRequiredSPDecreased = true;
-        }
-        else if (!expansionChipStatus.isSwiftnessChipEquipped && isRequiredSPDecreased)
-        {
-            RestoreTheOriginalSPRequirement();
-            isRequiredSPDecreased = false;
-        }
-        #endregion
 
         if(expansionChipStatus.isWarthChipEquipped)
         {
@@ -296,22 +282,18 @@ public class CaptainMoonBlade : MonoBehaviour
         if(CanCastUltimate() && !isAttacking)
         {
             anim.SetTrigger("Ultimate");
-
-            //Sent the trigger to the animator coder
             ultimateTriggered = true;
             currentSP -= requiredSP;
+            
             //Set the Ultimate Cooldown
             currentUltimateCooldown = ultimateCooldown;
 
-            //Activate the Passive if it is not active, otherwise, remove the passive
-            if(isUnbreakableWillActive)
+            // Start/Restart the passive coroutine of the passive 
+            if (passiveCoroutine != null)
             {
-                UltRemovePassive();
+                StopCoroutine(passiveCoroutine);
             }
-            else
-            {
-                StartCoroutine(ActivatePassive());
-            }
+            passiveCoroutine = StartCoroutine(ActivatePassive());
         }
     }
     //Ultimate Requirement
@@ -327,24 +309,6 @@ public class CaptainMoonBlade : MonoBehaviour
     //Passive
     private Coroutine passiveCoroutine;
     public bool isAttacking = false;
-
-    private void TriggerPassive() //Implement this method to the Basic Attack damage method
-    {
-        if(UnityEngine.Random.Range(0, 100) <= basicAttackUWTriggerChance)
-        {
-            if (passiveCoroutine != null)
-            {
-                StopCoroutine(passiveCoroutine);
-            }
-            passiveCoroutine = StartCoroutine(ActivatePassive());
-        }
-    }
-    private void UltRemovePassive()
-    {
-        StopCoroutine(ActivatePassive());
-        dmgCalulator.DecreaseDMGBoost(passiveDMGBoost);
-        isUnbreakableWillActive = false;
-    }
         
     private IEnumerator ActivatePassive()
     {
@@ -384,14 +348,12 @@ public class CaptainMoonBlade : MonoBehaviour
             {
                 currentSP += SPRegenRate * (SPRegenEfficiency / 100);
             }
-            TriggerPassive();
-            // Debug.Log("Captain's Basic Attack Hit hit enemies or destroyables!");
             
             // Push the characters behind
             float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
             float force = basicAttackRecoilForce;
             // rb.AddForce(new Vector2(pushDirection * force, 0), ForceMode2D.Impulse);
-            rb.velocity = new Vector2(pushDirection * force, rb.velocity.y);
+            rb.linearVelocity = new Vector2(pushDirection * force, rb.linearVelocity.y);
         }
 
         //Damage them
@@ -433,7 +395,7 @@ public class CaptainMoonBlade : MonoBehaviour
             float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
             float force = basicAttackRecoilForce;
             // rb.AddForce(new Vector2(pushDirection * force, 0), ForceMode2D.Impulse);
-            rb.velocity = new Vector2(pushDirection * force, rb.velocity.y);
+            rb.linearVelocity = new Vector2(pushDirection * force, rb.linearVelocity.y);
         }
     }
     public void ShootEnergyWave()

@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+[RequireComponent(typeof(BoxCollider2D))]
+public class GateWay : MonoBehaviour
 {
     [SerializeField] private string sceneName;
     [SerializeField] private Transform desiredPosition;
-    [SerializeField] private GameObject text;
-    // [SerializeField] private Cinemachine.CinemachineVirtualCamera vcam1;
-    // [SerializeField] private Cinemachine.CinemachineVirtualCamera vcam2;
+    [SerializeField] private GameObject textGameObject;
     [SerializeField] private GameObject MainCamera;
     [SerializeField] private GameObject SecondCamera;
+    [SerializeField] private bool interactionRequired = false;
     private LevelLoader levelLoader;
-    // private BoxCollider2D boxCollider2D;
     private PlayerInput inputActions;
     private bool sceneNullReported = false;
     private bool positionNullReported = false;
@@ -21,7 +18,6 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void Awake()
     {
-        // boxCollider2D = GetComponent<BoxCollider2D>();
         levelLoader = FindObjectOfType<LevelLoader>();
         inputActions = new PlayerInput();
     }
@@ -48,12 +44,16 @@ public class NewBehaviourScript : MonoBehaviour
             return;
         }
 
-        if (desiredPosition != null && inPosition)
+        if (inPosition && interactionRequired && inputActions.Game.Interact.triggered)
         {
-            if(inputActions.Game.Interact.triggered)
+            if(desiredPosition != null)
             {   
                 levelLoader.TriggerChangePosition(desiredPosition, MainCamera, SecondCamera);
-            }      
+            } 
+            else if(sceneName != "")
+            {
+                levelLoader.TriggerLoading(sceneName);
+            }
         }
     }
 
@@ -61,16 +61,35 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Automatically load the scene
+            // Load the scene
             if(sceneName != "" && desiredPosition == null)
             {
-                levelLoader.TriggerLoading(sceneName);
+                if (!interactionRequired)
+                {
+                    levelLoader.TriggerLoading(sceneName);
+                }
+                else
+                {
+                    textGameObject.SetActive(true);
+                    inPosition = true;
+                }
             }
-            // Press the button to change position
+            // Change position
             else if(sceneName == "" && desiredPosition != null)
             {
-                text.SetActive(true);
-                inPosition = true;
+                if (!interactionRequired)
+                {
+                    levelLoader.TriggerChangePosition(desiredPosition, MainCamera, SecondCamera);
+                }
+                else
+                {
+                    textGameObject.SetActive(true);
+                    inPosition = true;
+                }
+            }
+            else
+            {
+                Debug.LogError("2 of them are null or both are not null! This is not allowed.");
             }
         }
     }
@@ -78,7 +97,7 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            text.SetActive(false);
+            textGameObject.SetActive(false);
             inPosition = false;
         }
     }

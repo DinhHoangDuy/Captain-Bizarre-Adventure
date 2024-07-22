@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
     private Animator transitionAnim;
+    private GameObject playerUICanvas;
+    private Animator playerUICanvasAnim;
     private string levelName;
     private Transform desiredPosition;
     // private Cinemachine.CinemachineVirtualCamera vcam1;
@@ -16,6 +15,8 @@ public class LevelLoader : MonoBehaviour
     private void Start()
     {
         transitionAnim = GetComponent<Animator>();
+        playerUICanvas = GameObject.FindWithTag("PlayerUI");
+        playerUICanvasAnim = playerUICanvas.GetComponent<Animator>();
     }
 
     // Animation event!
@@ -42,14 +43,6 @@ public class LevelLoader : MonoBehaviour
         {
             Debug.LogError("2 of them are null or both are not null! This is not allowed.");
         }
-        // if(levelName != null)
-        // {
-        //     SceneManager.LoadScene(levelName);
-        // }
-        // else
-        // {
-        //     Debug.LogError("Level name is null");
-        // }
         
     }
     public void TriggerLoading(string levelName)
@@ -63,6 +56,7 @@ public class LevelLoader : MonoBehaviour
         {
             this.levelName = levelName;
             transitionAnim.SetTrigger("Trigger");
+            playerUICanvasAnim.SetTrigger("Trigger");
         }        
     }
     public void TriggerChangePosition(Transform desiredPosition, GameObject MainCamera, GameObject SecondCamera)
@@ -78,6 +72,7 @@ public class LevelLoader : MonoBehaviour
             this.SecondCamera = SecondCamera;
             this.desiredPosition = desiredPosition;
             transitionAnim.SetTrigger("Trigger");
+            playerUICanvasAnim.SetTrigger("Trigger");
         }
     }
     public void BlockInput()

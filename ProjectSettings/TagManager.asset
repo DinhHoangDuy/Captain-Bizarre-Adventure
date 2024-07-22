@@ -6,6 +6,9 @@ TagManager:
   tags:
   - FallingZone
   - Checkpoint
+  - UltimateIcon
+  - SPBar
+  - PlayerUI
   layers:
   - Default
   - TransparentFX

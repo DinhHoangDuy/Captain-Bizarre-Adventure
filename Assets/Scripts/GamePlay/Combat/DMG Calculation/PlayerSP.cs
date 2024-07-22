@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerSP : MonoBehaviour
 {
-    [SerializeField] private SPBar spBar;
+    private SPBar spBar;
     private CaptainMoonBlade skillset;
     private float currentSP;
     public float _currentSP => currentSP;
@@ -12,6 +12,7 @@ public class PlayerSP : MonoBehaviour
     private void Start()
     {
         skillset = GetComponent<CaptainMoonBlade>();
+        spBar = FindObjectOfType<SPBar>();
         
         currentSP = (int)skillset.currentSP;
         maxSP = skillset._maxSP;

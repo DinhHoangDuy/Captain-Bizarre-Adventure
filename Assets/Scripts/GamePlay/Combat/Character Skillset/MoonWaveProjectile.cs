@@ -46,7 +46,7 @@ public class MoonWaveProjectile : MonoBehaviour
     private void Start()
     {
         //Move the projectile
-        rb.velocity = transform.right * speed;
+        rb.linearVelocity = transform.right * speed;
         StartCoroutine(DestroyProjectile());
     }
     private void Update()

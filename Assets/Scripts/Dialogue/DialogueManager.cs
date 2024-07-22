@@ -140,7 +140,7 @@ public class DialogueManager : MonoBehaviour
         else
         {
             PlatformerMovement2D.instance.blocked = true;
-            PlatformerMovement2D.instance.rb.velocity = Vector2.zero; 
+            PlatformerMovement2D.instance.rb.linearVelocity = Vector2.zero; 
             Debug.Log("Dialogue is playing");       
         }
 
