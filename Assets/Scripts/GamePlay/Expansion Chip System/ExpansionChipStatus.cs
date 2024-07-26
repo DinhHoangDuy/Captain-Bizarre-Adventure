@@ -53,16 +53,7 @@ public class ExpansionChipStatus : MonoBehaviour
     #region Wraith Chip
     public bool isWarthChipEquipped;
     #endregion
-
-    #region Macabre Dance Chip
-    public bool isMacabreDanceChipEquipped;
-    public float MacabreDanceTotalDMGBoost;
-    public bool isMacabreDanceActive;
-    #endregion
     
-    #region Swiftness Expansion Chip
-    public bool isSwiftnessChipEquipped;
-    #endregion
 
     private void Awake()
     {

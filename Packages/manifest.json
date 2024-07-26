@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.singularitygroup.hotreload": "git+https://gitlab.hotreload.net/root/hot-reload-releases.git#1.12.12",
     "com.unity.2d.animation": "10.1.2",
     "com.unity.2d.aseprite": "1.1.4",
     "com.unity.2d.pixel-perfect": "5.0.3",

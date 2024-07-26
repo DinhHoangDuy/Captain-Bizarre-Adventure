@@ -25,10 +25,6 @@ public class DamageOutCalculator : MonoBehaviour
     {
         return damage + (damage * totalDMGBoost / 100);
     }
-    public float MacabreDanceTotalDMGBoost(float damage)
-    {
-        return damage + (damage * (totalDMGBoost + ExpansionChipStatus.instance.MacabreDanceTotalDMGBoost) / 100);
-    }
 
     private void Awake()
     {

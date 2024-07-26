@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(DamageOutCalculator))]
 [RequireComponent(typeof(PlatformerMovement2D))]
 [RequireComponent(typeof(PlayerHealth))]
-public class CaptainMoonBlade : MonoBehaviour
+public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
 {
     #region Captain's Skill Set Description
     /*
@@ -37,8 +37,7 @@ public class CaptainMoonBlade : MonoBehaviour
             [SerializeField] private float criticalDamageMultiplier = 150f;
             [SerializeField] private float attackRate = 2f;
             float nextAttackTime = 0f;
-            [SerializeField] private int startSP = 15;
-            public int _startSP { get { return startSP; } }
+            
             [SerializeField] private float SPRegenRate = 1;
             [SerializeField] private int SPRegenEfficiency = 100;
             [SerializeField] private int maxSP = 70;
@@ -131,6 +130,15 @@ public class CaptainMoonBlade : MonoBehaviour
     private float ultimateDamage;
     public static float currentUltimateCooldown = 0f;
     public float _ultimateCooldown { get { return ultimateCooldown; } }
+    
+    public void LoadData(GameData data)
+    {
+        this.currentSP = data.currentSP;
+    }
+    public void SaveData(ref GameData data)
+    {
+        data.currentSP = this.currentSP;
+    }
     #endregion   
 
     #region New Input System
@@ -165,8 +173,6 @@ public class CaptainMoonBlade : MonoBehaviour
     }
     private void Start()    
     {
-        // Set the current SP to the start SP
-        currentSP = startSP;
         originalRequiredSP = requiredSP;
         originalUltimateCooldown = ultimateCooldown;
         
@@ -238,17 +244,7 @@ public class CaptainMoonBlade : MonoBehaviour
     {
         //Sent the ultimate damage to the wave of energy prefab
         ultimateDamage = ultimateBaseDamage + (basicATK * ultimateDamageMultiplier / 100);
-        if(expansionChipStatus.isMacabreDanceActive && expansionChipStatus.isMacabreDanceChipEquipped)
-        {
-            // Killing enemies resets Ultimate CD. The next Ultimate will have 30% Total DMG Boost
-            float OriginalDamage = ultimateDamage;
-            ultimateDamage = dmgCalulator.MacabreDanceTotalDMGBoost(ultimateDamage);
-            expansionChipStatus.isMacabreDanceActive = false;
-        }
-        else
-        {
-            ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
-        }
+        ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
         // Check if the Unbreakable Will is active
         if(isUnbreakableWillActive)
         {

@@ -29,6 +29,11 @@ public class GateWay : MonoBehaviour
     {
         inputActions.Disable();
     }
+
+    private void Start()
+    {
+        textGameObject.SetActive(false);
+    }
     private void Update()
     {
         if (sceneName == "" && !sceneNullReported)
