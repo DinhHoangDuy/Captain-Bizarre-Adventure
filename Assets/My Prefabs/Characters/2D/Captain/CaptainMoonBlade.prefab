@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 769648960938377852}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.31, y: -0.88913, z: 0}
+  m_LocalPosition: {x: 0.25, y: -0.88913, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -428,7 +428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98fca54846b9e438da840f72e124ea02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spBar: {fileID: 0}
 --- !u!114 &9035116815877175140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,7 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8a9011df51d9245bd3c531d7d4f65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ultimateIcon: {fileID: 0}
 --- !u!114 &2791965336337402899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +474,8 @@ MonoBehaviour:
   groundCheck: {fileID: 769648960938377852}
   trailRenderer: {fileID: 1691375614550857047}
   movespeed: 0
-  extraJumps: 0
+  extraJumps: 1
+  doubleJumpAllowed: 0
   dreamBuilderPlatform: {fileID: 7633789218336709396, guid: f1fbe33553f7329948a6b093d32258b4,
     type: 3}
   dreamBuilderPlatformSpawnPoint: {fileID: 2829359077726942525}
@@ -510,7 +509,6 @@ MonoBehaviour:
   criticalRate: 20
   criticalDamageMultiplier: 150
   attackRate: 2
-  startSP: 30
   SPRegenRate: 1
   SPRegenEfficiency: 100
   maxSP: 100
@@ -557,7 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f105f304aec74e4cc83d8ecb0acb4749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoaringWingActive: 0
+  DoubleJumpActive: 0
   WallJumpActive: 0
   DashActive: 0
 --- !u!1 &7671879525921500279

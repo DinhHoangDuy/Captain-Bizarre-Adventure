@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class CharacterAdvancedSkillSet : MonoBehaviour
+public class CharacterSkillSet : MonoBehaviour
 {
-    public static CharacterAdvancedSkillSet instance;
+    public static CharacterSkillSet instance;
 
     #region Soaring Wing (Double Jump skill tree)
-    [Tooltip("This skill enables double jump")] public bool SoaringWingActive = false;
-    private bool isSoaringWingApplied = false;
+    [Tooltip("This skill enables double jump")] public bool DoubleJumpActive = false;
+    private bool isDoubleJumpApplied = false;
     #endregion
 
     #region Wall Jump (Wall Jump skill tree)
@@ -28,27 +28,23 @@ public class CharacterAdvancedSkillSet : MonoBehaviour
     }
     private void Update()
     {
-        // Check if Soaring Wing skill is active
-        if(SoaringWingActive && !isSoaringWingApplied)
+        // Check if Double Jump skill is active
+        if(DoubleJumpActive && !isDoubleJumpApplied)
         {
-            // Apply Soaring Wing skill
-            // Extra jumps
-            PlatformerMovement2D.instance.extraJumps += 1;
-            isSoaringWingApplied = true;
+            // Apply Double Jump skill
+            PlatformerMovement2D.instance.doubleJumpAllowed = true;
+            isDoubleJumpApplied = true;
         }
-        else if(!SoaringWingActive && isSoaringWingApplied)
+        else if(!DoubleJumpActive && isDoubleJumpApplied)
         {
-            // Remove Soaring Wing skill
-            // Reset extra jumps
-            PlatformerMovement2D.instance.extraJumps -= 1;
-            isSoaringWingApplied = false;
+            // Remove Double Jump skill 
+            PlatformerMovement2D.instance.doubleJumpAllowed = false;
+            isDoubleJumpApplied = false;
         }
 
         // Check if Wall Jump skill is active
         if(WallJumpActive && !isWallJumpApplied)
         {
-            // Apply Wall Jump skill
-            // Wall jump
             PlatformerMovement2D.instance.wallJumpAllowed = true;
             isWallJumpApplied = true;
         }

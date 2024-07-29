@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour
+public class CharacterStats : MonoBehaviour, IDataPersistence
 {
-    public int maxHealth = 5;
+    public int maxHealth;
     #region Movement
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -19,6 +19,18 @@ public class CharacterStats : MonoBehaviour
     public float WallSlideSpeed { get { return wallSlideSpeed; } }
     public float GravityScale { get { return gravityScale; } }
     public float DashForce { get { return dashForce; } }
+    #endregion
 
+
+    #region Save and Load System
+    public void LoadData(GameData data)
+    {
+        this.maxHealth = data.currentMaxHealth;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.currentMaxHealth = this.maxHealth;
+    }
     #endregion
 }

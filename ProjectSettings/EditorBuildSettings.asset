@@ -9,16 +9,16 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu/Welcome.unity
     guid: 8a8f7994753dd67489d0a62c41786d49
   - enabled: 1
-    path: Assets/Scenes/Stages/Maps/Metroivania Maps/Darkness Illuminated.unity
+    path: Assets/Scenes/Stages/Maps/Darkness Illuminated.unity
     guid: 8132678276ae74a4ba51beb8234e5945
   - enabled: 1
-    path: Assets/Scenes/Stages/Maps/Metroivania Maps/My Home.unity
+    path: Assets/Scenes/Stages/Maps/My Home.unity
     guid: 7746d199009617cfb9f6f16bd663c621
   - enabled: 1
-    path: Assets/Scenes/Stages/Maps/Metroivania Maps/Map 1.unity
+    path: Assets/Scenes/Stages/Maps/Map 1.unity
     guid: c1643856cc8e3c33696f27cc75db2326
   - enabled: 1
-    path: Assets/Scenes/Stages/Maps/Metroivania Maps/Map 2.unity
+    path: Assets/Scenes/Stages/Maps/Map 2.unity
     guid: d82e5ff914b9ec3b09f70ea4b9ee1361
   - enabled: 0
     path: Assets/Scenes/Stages/AfterTheBloodMoonFades/Metroivania Maps/Tutorial -

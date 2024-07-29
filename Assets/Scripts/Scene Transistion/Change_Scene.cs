@@ -5,6 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class Change_Scene : MonoBehaviour
 {
+    public static Change_Scene instance;
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     //MainMenu
     public void ToCGPage()
     {

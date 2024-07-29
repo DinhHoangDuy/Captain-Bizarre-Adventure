@@ -151,4 +151,8 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
     }
+    public void FullyHealHP()
+    {
+        currentHealth = maxHealth;
+    }
 }

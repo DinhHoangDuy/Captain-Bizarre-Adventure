@@ -3,7 +3,7 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 
-public class PlatformerMovement2D : MonoBehaviour
+public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 {
     public static PlatformerMovement2D instance;
     [SerializeField] private GameObject groundCheck;
@@ -22,8 +22,9 @@ public class PlatformerMovement2D : MonoBehaviour
     private float coyoteTimeCounter;
     
     #region Extra Jumps
-    public int extraJumps = 0;
+    public int extraJumps = 1;
     private int extraJumpsCounter;
+    public bool doubleJumpAllowed = false;
     #endregion
 
     #region Dream Builder Chip
@@ -61,8 +62,7 @@ public class PlatformerMovement2D : MonoBehaviour
     private float dashTime = 0.1f;
     private float dashCooldown = 1f;
     #endregion
-
-
+    
     private float _fallSpeedYDampingChangeThreshold;
 
     [HideInInspector] public Rigidbody2D rb;
@@ -203,7 +203,7 @@ public class PlatformerMovement2D : MonoBehaviour
             StartCoroutine(Dash());
         }
 
-        // Debub Only
+        // Debug Only
         currentVelocityY = rb.linearVelocity.y;
         if(currentVelocityY > 0f)
         {
@@ -275,6 +275,12 @@ public class PlatformerMovement2D : MonoBehaviour
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
+
+            if(extraJumpsCounter == 0)
+            {
+                extraJumpsCounter = extraJumps;
+            }
+
             if(HoldPositionDelay >= 0f)
             {
                 HoldPositionDelay -= Time.deltaTime;
@@ -323,7 +329,6 @@ public class PlatformerMovement2D : MonoBehaviour
         if (playerInput.Game.Jump.triggered && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
-            trailRenderer.emitting = true;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
             transform.Rotate(0f, 180f, 0f);
@@ -349,6 +354,11 @@ public class PlatformerMovement2D : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
+        if(extraJumpsCounter == 0)
+        {
+            extraJumpsCounter = extraJumps;
+        }
+
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
@@ -401,6 +411,24 @@ public class PlatformerMovement2D : MonoBehaviour
     }
 
 
+    #region Save and Load system
+    public void LoadData(GameData data)
+    {
+        this.doubleJumpAllowed = data.doubleJumpAllowed;
+        this.wallJumpAllowed = data.wallJumpAllowed;
+        this.dashAllowed = data.dashAllowed;
+
+        this.transform.position = data.lastSavedLocation;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.doubleJumpAllowed = this.doubleJumpAllowed;
+        data.wallJumpAllowed = this.wallJumpAllowed;
+        data.dashAllowed = this.dashAllowed;
+        data.lastSavedLocation = this.transform.position;
+    }
+    #endregion
     #region  Gizmos
     void OnDrawGizmos()
     {
