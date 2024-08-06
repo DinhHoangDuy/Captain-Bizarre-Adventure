@@ -24,7 +24,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #region Extra Jumps
     public int extraJumps = 1;
     private int extraJumpsCounter;
-    public bool doubleJumpAllowed = false;
+    public bool doubleJumpUnlocked = false;
     #endregion
 
     #region Dream Builder Chip
@@ -42,7 +42,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     #region Wall Slide & Wall Jump
     [Header("Wall Slide & Wall Jump")]
-    public bool wallJumpAllowed = false;
+    public bool wallJumpUnlocked = false;
     private bool isWallSliding;
     [SerializeField] private float wallSlidingSpeed = 1f;
 
@@ -55,12 +55,13 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #endregion
 
     #region Dash
-    public bool dashAllowed = false;
+    public bool dashUnlocked = false;
     private bool canDash = true;
     private bool isDashing = false;
     private float dashForce;
     private float dashTime = 0.1f;
     private float dashCooldown = 1f;
+    private float dashCurrentCooldown;
     #endregion
     
     private float _fallSpeedYDampingChangeThreshold;
@@ -77,11 +78,11 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void OnEnable()
     {
-        playerInput.Game.Enable();
+        playerInput.Player.Enable();
     }
     private void OnDisable()
     {
-        playerInput.Game.Disable();
+        playerInput.Player.Disable();
     }
 
     private void Awake()
@@ -115,7 +116,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     private void Update()
     {
         if (blocked || isDashing) return;
-        horizontal = playerInput.Game.WASD.ReadValue<Vector2>().x;
+        horizontal = playerInput.Player.Move.ReadValue<Vector2>().x;
         if(horizontal < 0)
         {
             moveDirection = -1f;
@@ -129,7 +130,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             moveDirection = 0f;
         }
         #region Vertical Jumping
-        if(playerInput.Game.Jump.triggered && !isWallSliding)
+        if(playerInput.Player.Jump.triggered && !isWallSliding)
         {
             if(coyoteTimeCounter <= 0f)
             {
@@ -150,7 +151,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
             }
         }
-        if(playerInput.Game.Jump.WasReleasedThisFrame() && rb.linearVelocity.y > 0)
+        if(playerInput.Player.Jump.WasReleasedThisFrame() && rb.linearVelocity.y > 0)
         {
             // Stop Moving Upwards immediately when Jump Button is released
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0f);
@@ -198,17 +199,27 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             CameraManager.instance.NormalYDamping();
         }
 
-        if(dashAllowed && playerInput.Game.Dash.triggered && canDash)
+        if(dashUnlocked && playerInput.Player.Dash.triggered && canDash)
         {
             StartCoroutine(Dash());
         }
 
+        if(dashCurrentCooldown > 0f)
+        {
+            dashCurrentCooldown -= Time.deltaTime;
+            canDash = false;
+        }
+        else
+        {
+            if(IsGrounded())
+            {
+                canDash = true;
+                Debug.Log("Dash is Ready to Use when the player is on the ground"); 
+            }
+        }
+
         // Debug Only
         currentVelocityY = rb.linearVelocity.y;
-        if(currentVelocityY > 0f)
-        {
-            Debug.Log("currentVelocityY > 0: " + (currentVelocityY > 0f));
-        }
     }
 
     private void FixedUpdate()
@@ -270,7 +281,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void WallSlide()
     {
-        if(!wallJumpAllowed) return; //Skip Wall Slide if Wall Jump is not allowed
+        if(!wallJumpUnlocked) return; //Skip Wall Slide if Wall Jump is not Unlocked
 
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
@@ -299,7 +310,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void WallJump()
     {
-        if(!wallJumpAllowed) return; //Skip Wall Jump if Wall Jump is not allowed
+        if(!wallJumpUnlocked) return; //Skip Wall Jump if Wall Jump is not Unlocked
         if (isWallSliding)
         {
             isWallJumping = false;
@@ -326,7 +337,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             wallJumpingCounter -= Time.deltaTime;
         }
 
-        if (playerInput.Game.Jump.triggered && wallJumpingCounter > 0f)
+        if (playerInput.Player.Jump.triggered && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
@@ -393,9 +404,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         trailRenderer.emitting = false;
         rb.gravityScale = originalGravity;
         isDashing = false;
-
-        yield return new WaitForSeconds(dashCooldown);
-        canDash = true;
+        dashCurrentCooldown = dashCooldown;
     }
     #endregion
 
@@ -414,18 +423,18 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #region Save and Load system
     public void LoadData(GameData data)
     {
-        this.doubleJumpAllowed = data.doubleJumpAllowed;
-        this.wallJumpAllowed = data.wallJumpAllowed;
-        this.dashAllowed = data.dashAllowed;
+        this.doubleJumpUnlocked = data.doubleJumpUnlocked;
+        this.wallJumpUnlocked = data.wallJumpUnlocked;
+        this.dashUnlocked = data.dashUnlocked;
 
         this.transform.position = data.lastSavedLocation;
     }
 
     public void SaveData(ref GameData data)
     {
-        data.doubleJumpAllowed = this.doubleJumpAllowed;
-        data.wallJumpAllowed = this.wallJumpAllowed;
-        data.dashAllowed = this.dashAllowed;
+        data.doubleJumpUnlocked = this.doubleJumpUnlocked;
+        data.wallJumpUnlocked = this.wallJumpUnlocked;
+        data.dashUnlocked = this.dashUnlocked;
         data.lastSavedLocation = this.transform.position;
     }
     #endregion

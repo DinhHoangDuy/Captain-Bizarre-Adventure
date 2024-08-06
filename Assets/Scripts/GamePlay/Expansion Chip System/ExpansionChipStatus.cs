@@ -19,7 +19,6 @@ public class ExpansionChipStatus : MonoBehaviour
     */
     [HideInInspector] public bool isKeyOfBloodMoonEquipped = false;
     [HideInInspector] public bool isOverclocked = false;
-    [HideInInspector] public bool isOverloaded = false;
     private bool overloadDebuffApplied = false;
     #endregion
 
@@ -72,23 +71,6 @@ public class ExpansionChipStatus : MonoBehaviour
 
     private void Update()
     {
-        #region Key of Blood Moon Chip Effect
-        // Apply the overload debuff if the player has breached the chip amount limit
-        if(isOverloaded && !overloadDebuffApplied)
-        {
-            // The player can't add more chips to the system, and the TotalDMGBoost will be reduced by 10%
-            DamageOutCalculator.instance.DecreaseDMGBoost(10);
-            overloadDebuffApplied = true;
-        }
-        else if(!isOverloaded && overloadDebuffApplied)
-        {
-            DamageOutCalculator.instance.IncreaseDMGBoost(10);
-            overloadDebuffApplied = false;
-        }
-        Debug.Log("isOverClocked: " + isOverclocked);
-        Debug.Log("isOverloaded: " + isOverloaded);
-        #endregion
-
         #region Energy Generator Chip Effect
         if(isEnergyGeneratorEquipped)
         {

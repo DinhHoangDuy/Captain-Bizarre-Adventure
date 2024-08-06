@@ -76,7 +76,7 @@ public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
         // Hammer Expansion Chip: Increase the required SP by 25%, and the ultimate damage by 40%
         // Swiftness Expansion Chip: Decrease the required SP by 25%, and decrease the cooldown by 20%
         private bool isRequiredSPIncreased = false;
-        private bool isRequiredSPDecreased = false;
+        // private bool isRequiredSPDecreased = false;
         private int originalRequiredSP;
         private float originalUltimateCooldown;
         public void IncreaseRequiredSP(int value)
@@ -150,8 +150,8 @@ public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
     private void OnEnable()
     {
         playerInput = new PlayerInput();
-        FireInput = playerInput.Game.Fire;
-        UltimateInput = playerInput.Game.Ultimate;
+        FireInput = playerInput.Player.Fire;
+        UltimateInput = playerInput.Player.Ultimate;
         UltimateInput.performed += ctx => UltimatePressed();
         playerInput.Enable();
     }
@@ -199,7 +199,7 @@ public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
         // Check if the player is attacking
         if(!isAttacking)
         {
-            if (playerInput.Game.Fire.triggered)
+            if (playerInput.Player.Fire.triggered)
             {
                 BasicAttack();
             }

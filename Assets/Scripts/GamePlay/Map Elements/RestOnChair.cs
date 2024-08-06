@@ -56,7 +56,7 @@ public class RestOnChair : MonoBehaviour
 
     private void Update()
     {
-        if(playerInput.Game.Interact.WasReleasedThisFrame() && nearTheChair)
+        if(playerInput.Player.Interact.WasReleasedThisFrame() && nearTheChair)
         {
             dataPersistenceManager.SaveGame();
             Debug.Log("Game saved");

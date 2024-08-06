@@ -33,7 +33,7 @@ public class InteractionBackend : MonoBehaviour
     }
     private void Update()
     {
-        if(_inputAction.Game.Interact.triggered && isInTheZone)
+        if(_inputAction.Player.Interact.triggered && isInTheZone)
         {
             Debug.Log("Interaction Triggered by player");
             if (vendingMachine != null)

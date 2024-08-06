@@ -18,12 +18,12 @@ public class PlayerConsoleManager : MonoBehaviour
     private void OnEnable()
     {
         playerInput = new PlayerInput();
-        playerInput.Game.Inventory.Enable();
+        playerInput.Player.Inventory.Enable();
     }
 
     private void OnDisable()
     {
-        playerInput.Game.Inventory.Disable();
+        playerInput.Player.Inventory.Disable();
     }
 
     private void Start()
@@ -34,8 +34,8 @@ public class PlayerConsoleManager : MonoBehaviour
 
     private void Update()
     {
-        inventoryPressed = playerInput.Game.Inventory.triggered && !PauseMenu.isPaused;
-        // TODO: Fix this error: it doenst reconize the "playerInput.Game.ExpansionChipPanel.triggered" condition
+        inventoryPressed = playerInput.Player.Inventory.triggered && !PauseMenu.isPaused;
+        // TODO: Fix this error: it doenst reconize the "playerInput.Player.ExpansionChipPanel.triggered" condition
         expansionChipPressed = Input.GetKeyDown(KeyCode.R) && !PauseMenu.isPaused;
     
         if (inventoryPressed)

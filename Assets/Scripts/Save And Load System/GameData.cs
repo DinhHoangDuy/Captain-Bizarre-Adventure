@@ -12,9 +12,9 @@ public class GameData
     public string lastSavedScene;
     
     // Character Skill Set unlocked
-    public bool doubleJumpAllowed;
-    public bool wallJumpAllowed;
-    public bool dashAllowed;
+    public bool doubleJumpUnlocked;
+    public bool wallJumpUnlocked;
+    public bool dashUnlocked;
     public SerializableDictionary<string, bool> unlockedSkills;
 
     
@@ -26,9 +26,9 @@ public class GameData
         currentSP = 20f;
         lastSavedLocation = new Vector3(0, 0, 0);
         // Default character skill set
-        doubleJumpAllowed = false;
-        dashAllowed = false;
-        wallJumpAllowed = false;
+        doubleJumpUnlocked = false;
+        dashUnlocked = false;
+        wallJumpUnlocked = false;
         unlockedSkills = new SerializableDictionary<string, bool>();
     }
 }

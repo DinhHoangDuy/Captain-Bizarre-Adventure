@@ -23,11 +23,11 @@ public class PauseMenu : MonoBehaviour
         playerInput = new PlayerInput();
         //Pause Menu Button
         resumeButton.onClick.AddListener(ResumeGame);
-        exitButton.onClick.AddListener(() => SceneManager.LoadScene("Scenes/MainMenu/Welcome"));
+        exitButton.onClick.AddListener(ExitGame);
     }
     private void OnEnable()
     {
-        pauseInput = playerInput.Game.Pause;
+        pauseInput = playerInput.Player.Pause;
         pauseInput.performed += PauseMenuPanel;
         pauseInput.Enable();
     }
@@ -82,5 +82,10 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
         PlatformerMovement2D.instance.blocked = false;
+    }
+    public void ExitGame()
+    {
+        isPaused = false;
+        SceneManager.LoadSceneAsync("Scenes/MainMenu/Welcome");
     }
 }

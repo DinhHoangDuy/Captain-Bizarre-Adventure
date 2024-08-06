@@ -40,11 +40,7 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
         lastCheckpoint = transform.position;
-        if(lastCheckpoint != null)
-        {
-            Debug.Log("Last Checkpoint is created when loading Level.: " + lastCheckpoint);
-        }
-        else
+        if(lastCheckpoint == null)
         {
             Debug.LogError("Failed to set the last checkpoint upon spawning!");
         }

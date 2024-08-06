@@ -32,27 +32,27 @@ public class CharacterSkillSet : MonoBehaviour
         if(DoubleJumpActive && !isDoubleJumpApplied)
         {
             // Apply Double Jump skill
-            PlatformerMovement2D.instance.doubleJumpAllowed = true;
+            PlatformerMovement2D.instance.doubleJumpUnlocked = true;
             isDoubleJumpApplied = true;
         }
         else if(!DoubleJumpActive && isDoubleJumpApplied)
         {
             // Remove Double Jump skill 
-            PlatformerMovement2D.instance.doubleJumpAllowed = false;
+            PlatformerMovement2D.instance.doubleJumpUnlocked = false;
             isDoubleJumpApplied = false;
         }
 
         // Check if Wall Jump skill is active
         if(WallJumpActive && !isWallJumpApplied)
         {
-            PlatformerMovement2D.instance.wallJumpAllowed = true;
+            PlatformerMovement2D.instance.wallJumpUnlocked = true;
             isWallJumpApplied = true;
         }
         else if(!WallJumpActive && isWallJumpApplied)
         {
             // Remove Wall Jump skill
             // Disable wall jump
-            PlatformerMovement2D.instance.wallJumpAllowed = false;
+            PlatformerMovement2D.instance.wallJumpUnlocked = false;
             isWallJumpApplied = false;
         }
 
@@ -61,14 +61,14 @@ public class CharacterSkillSet : MonoBehaviour
         {
             // Apply Dash skill
             // Dash
-            PlatformerMovement2D.instance.dashAllowed = true;
+            PlatformerMovement2D.instance.dashUnlocked = true;
             isDashApplied = true;
         }
         else if(!DashActive && isDashApplied)
         {
             // Remove Dash skill
             // Disable dash
-            PlatformerMovement2D.instance.dashAllowed = false;
+            PlatformerMovement2D.instance.dashUnlocked = false;
             isDashApplied = false;
         }
     }

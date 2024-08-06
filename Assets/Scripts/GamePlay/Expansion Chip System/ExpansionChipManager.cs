@@ -77,7 +77,7 @@ public class ExpansionChipManager : MonoBehaviour
                 }
                 else
                 {
-                    if (ExpansionChipStatus.instance.isOverclocked || ExpansionChipStatus.instance.isOverloaded)
+                    if (ExpansionChipStatus.instance.isOverclocked)
                     {
                         if (chipLoadData == 0 || (expansionChipStatus.isKeyOfBloodMoonEquipped && currentChipAmount < maxChipAmount))
                         {
@@ -123,8 +123,6 @@ public class ExpansionChipManager : MonoBehaviour
         #region Update Chip Load/Amount
         if(!expansionChipStatus.isKeyOfBloodMoonEquipped)
         { 
-            // Key of Blood Moon is not equipped
-            ExpansionChipStatus.instance.isOverloaded = false; // Overload will only be able to active when the Key of Blood Moon is equipped
             if(currentLoad > maxLoad)
             {
                 ExpansionChipStatus.instance.isOverclocked = true;
@@ -138,20 +136,8 @@ public class ExpansionChipManager : MonoBehaviour
         {
             // Key of Blood Moon is equipped
             ExpansionChipStatus.instance.isOverclocked = true; // Overclock state is forced to be active when the Key of Blood Moon is equipped
-            if(currentChipAmount > maxChipAmount)
-            {
-                ExpansionChipStatus.instance.isOverloaded = true;
-                // isAllowedToEquip = false;
-            }
-            else
-            {
-                ExpansionChipStatus.instance.isOverloaded = false;
-                // isAllowedToEquip = true;
-            }
         }
 
-        Debug.Log("The Key of Blood Moon is not equipped: " + (expansionChipStatus.isKeyOfBloodMoonEquipped == false) + ". Current Load is: " + currentLoad + " / " + maxLoad);
-        Debug.Log("The Key of Blood Moon is equipped: " + (expansionChipStatus.isKeyOfBloodMoonEquipped == true) +  ". Current Chip Amount is: " + currentChipAmount + " / " + maxChipAmount);
         UpdateLoadIndicator();
         UpdateLoadIndicatorText();
         #endregion
@@ -165,7 +151,6 @@ public class ExpansionChipManager : MonoBehaviour
             {
                 if(expansionChipSlots[i].isLocked)
                 {
-                    Debug.Log("Chip is locked");
                     return;
                 }
                 if (expansionChipSlots[i].isEquipped)
@@ -183,7 +168,6 @@ public class ExpansionChipManager : MonoBehaviour
                     else
                     {
                         ChangeChipAmount(0);
-                        Debug.Log("Chip Amount is not counted for this chip: " + expansionChipSlots[i].chipNameData);
                     }
                     return;
                 }
@@ -201,7 +185,6 @@ public class ExpansionChipManager : MonoBehaviour
                     else
                     {
                         ChangeChipAmount(0);
-                        Debug.Log("Chip Amount is not counted for this chip: " + expansionChipSlots[i].chipNameData);
                     }
                     return;
                 }
@@ -219,7 +202,6 @@ public class ExpansionChipManager : MonoBehaviour
     }
     public void UnlockChip(ExpansionChipSO chipData)
     {
-        Debug.Log("Unlocking chip: " + chipData.chipName);
         for (int i = 0; i < expansionChipSlots.Length; i++)
         {
             if (expansionChipSlots[i].chipData == chipData)
@@ -231,7 +213,6 @@ public class ExpansionChipManager : MonoBehaviour
     }
     public void DeleteDescription()
     {
-        Debug.Log("Deleting Description Panel");
         chipIconDescription.sprite = blankChipIcon;
         chipNameDescriptionPanel.text = "";
         chipDescriptionText.text = "";

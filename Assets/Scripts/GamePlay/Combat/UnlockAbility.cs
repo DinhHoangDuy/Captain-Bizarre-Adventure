@@ -12,18 +12,14 @@ public class UnlockAbility : MonoBehaviour, IDataPersistence
     void Awake()
     {
         characterSkillSet = FindAnyObjectByType<CharacterSkillSet>();
-    }
-    
-    void Start()
-    {
         // Get the name of the skill to unlock
         skillNameID = Enum.GetName(typeof(SkillToUnlock), skillToUnlock);
-
         if (characterSkillSet == null)
         {
             Debug.LogError("Character Skill Set is null");
         }
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
