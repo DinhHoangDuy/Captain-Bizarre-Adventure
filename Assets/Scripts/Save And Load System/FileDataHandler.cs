@@ -1,99 +1,184 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
+
 public class FileDataHandler
 {
     private string dataDirPath = "";
     private string dataFileName = "";
     private bool useEncryption = false;
-    private readonly string encryptionPassword = "TheDreamIsTooGoodToBeReal";
-    
-    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
+    private readonly string encryptionCodeWord = "word";
+
+    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption) 
     {
         this.dataDirPath = dataDirPath;
         this.dataFileName = dataFileName;
         this.useEncryption = useEncryption;
     }
 
-    public GameData Load()
+    public GameData Load(string profileId) 
     {
-        // Use Path.Combine to combine the dataDirPath and dataFileName
-        string fullFilePath = Path.Combine(dataDirPath, dataFileName);
-        GameData loadedData = null;
-        // Check if the file exists
-        if (File.Exists(fullFilePath))
+        // base case - if the profileId is null, return right away
+        if (profileId == null) 
         {
-            try
+            return null;
+        }
+
+        // use Path.Combine to account for different OS's having different path separators
+        string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+        GameData loadedData = null;
+        if (File.Exists(fullPath)) 
+        {
+            try 
             {
-                // Load the Serialized JSON from the file
+                // load the serialized data from the file
                 string dataToLoad = "";
-                using (FileStream stream = new FileStream(fullFilePath, FileMode.Open))
+                using (FileStream stream = new FileStream(fullPath, FileMode.Open))
                 {
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         dataToLoad = reader.ReadToEnd();
                     }
                 }
-                
-                // Decrypt the data if encryption is enabled
-                if (useEncryption)
+
+                // optionally decrypt the data
+                if (useEncryption) 
                 {
                     dataToLoad = EncryptDecrypt(dataToLoad);
                 }
-                
-                // Deserialize the JSON string to a GameData object
+
+                // deserialize the data from Json back into the C# object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
             }
-            catch (Exception e)
+            catch (Exception e) 
             {
-                Debug.LogError("Error loading data from file: " + fullFilePath + "\n" + e);
+                Debug.LogError("Error occured when trying to load data from file: " + fullPath + "\n" + e);
             }
         }
-
         return loadedData;
     }
 
-    public void Save(GameData data)
+    public void Save(GameData data, string profileId) 
     {
-        // Use Path.Combine to combine the dataDirPath and dataFileName
-        string fullFilePath = Path.Combine(dataDirPath, dataFileName);
-        try
+        // base case - if the profileId is null, return right away
+        if (profileId == null) 
         {
-            // Create the directory if it doesn't exist
-            Directory.CreateDirectory(Path.GetDirectoryName(fullFilePath));
-            
-            // Serialize the data to a JSON string
-            string jsonData = JsonUtility.ToJson(data, true);
-            
-            // Encrypt the data if encryption is enabled
-            if (useEncryption)
+            return;
+        }
+
+        // use Path.Combine to account for different OS's having different path separators
+        // (Windows, Mac, Linux. Each has different path separators)
+        string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+        try 
+        {
+            // create the directory the file will be written to if it doesn't already exist
+            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+
+            // serialize the C# game data object into Json
+            string dataToStore = JsonUtility.ToJson(data, true);
+
+            // optionally encrypt the data
+            if (useEncryption) 
             {
-                jsonData = EncryptDecrypt(jsonData);
+                dataToStore = EncryptDecrypt(dataToStore);
             }
-            
-            // Write the JSON string to the file
-            using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+
+            // write the serialized data to the file
+            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
             {
-                using (StreamWriter writer = new StreamWriter(stream))
+                using (StreamWriter writer = new StreamWriter(stream)) 
                 {
-                    writer.Write(jsonData);
+                    writer.Write(dataToStore);
                 }
             }
         }
-        catch (Exception e)
+        catch (Exception e) 
         {
-            Debug.LogError("Error saving data to file: " + e.Message);
+            Debug.LogError("Error occured when trying to save data to file: " + fullPath + "\n" + e);
         }
     }
-    
-    // Use XOR encryption to encrypt and decrypt the data
-    private string EncryptDecrypt(string data)
+
+    public Dictionary<string, GameData> LoadAllProfiles() 
     {
-        string result = string.Empty;
-        for (int i = 0; i < data.Length; i++)
+        Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
+
+        // loop over all directory names in the data directory path
+        IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirPath).EnumerateDirectories();
+        foreach (DirectoryInfo dirInfo in dirInfos) 
         {
-            result += (char)(data[i] ^ encryptionPassword[(i % encryptionPassword.Length)]);
+            string profileId = dirInfo.Name;
+
+            // defensive programming - check if the data file exists
+            // if it doesn't, then this folder isn't a profile and should be skipped
+            string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+            if (!File.Exists(fullPath))
+            {
+                Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data: "
+                    + profileId);
+                continue;
+            }
+
+            // load the game data for this profile and put it in the dictionary
+            GameData profileData = Load(profileId);
+            // defensive programming - ensure the profile data isn't null,
+            // because if it is then something went wrong and we should let ourselves know
+            if (profileData != null) 
+            {
+                profileDictionary.Add(profileId, profileData);
+            }
+            else 
+            {
+                Debug.LogError("Tried to load profile but something went wrong. ProfileId: " + profileId);
+            }
         }
-        return result;
+
+        return profileDictionary;
+    }
+
+    // the below is a simple implementation of XOR encryption
+    private string EncryptDecrypt(string data) 
+    {
+        string modifiedData = "";
+        for (int i = 0; i < data.Length; i++) 
+        {
+            modifiedData += (char) (data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
+        }
+        return modifiedData;
+    }
+
+    public string GetMostRecentlyUpdatedProfileID()
+    {
+        string mostRecentlyUpdatedProfileID = null;
+        Dictionary<string, GameData> allProfilesData = LoadAllProfiles();
+        foreach (KeyValuePair<string, GameData> pair in allProfilesData)
+        {
+            string profileId = pair.Key;
+            GameData gameData = pair.Value;
+
+            // Skip if the game data is null
+            if(gameData == null)
+            {
+                continue;
+            }
+
+            // if this is the first profile data we've seen, set it as the most recently updated
+            if (mostRecentlyUpdatedProfileID == null)
+            {
+                mostRecentlyUpdatedProfileID = profileId;
+            }
+            else
+            {
+                DateTime mostRecentDateTime = DateTime.FromBinary(allProfilesData[mostRecentlyUpdatedProfileID].saveTime);
+                DateTime currentDateTime = DateTime.FromBinary(gameData.saveTime);
+                // The greatest DateTime value is the most recent
+                if (DateTime.Compare(currentDateTime, mostRecentDateTime) > 0)
+                {
+                    mostRecentlyUpdatedProfileID = profileId;
+                }
+            }
+        }
+        return mostRecentlyUpdatedProfileID;
     }
 }

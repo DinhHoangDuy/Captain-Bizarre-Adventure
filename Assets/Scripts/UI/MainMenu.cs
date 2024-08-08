@@ -11,9 +11,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button firstSelectedMenuButton;
 
     [Header("Save Slot Menu")]
+    [SerializeField] private SaveSlotsMenu saveSlotsMenu;
     [SerializeField] private GameObject saveSlotMenuPanel;
     [SerializeField] private Button backButton;
-    // [SerializeField] private GameObject firstSelectedSaveSlotButton;
 
     private void Awake()
     {
@@ -34,9 +34,17 @@ public class MainMenu : MonoBehaviour
 
     private void StartGame()
     {
-        DisableMainMenuButtons();
-        //Load the game scene
-        SceneManager.LoadSceneAsync("Scenes/Stages/Maps/Map 1");
+        // if(!DataPersistenceManager.instance.HasGameData())
+        // {
+        //     Debug.Log("No game data found. Creating a new game data.");
+        //     DataPersistenceManager.instance.NewGame();
+        // }
+
+        // //Load the game scene
+        // SceneManager.LoadSceneAsync("Scenes/Stages/Maps/Map 1");
+        
+        // // Open the save slot menu
+        OpenSaveSlotMenu();
     }
     private void ExitGame()
     {
@@ -56,11 +64,25 @@ public class MainMenu : MonoBehaviour
     {
         mainMenuPanel.SetActive(true);
         saveSlotMenuPanel.SetActive(false);
+        EnableMainMenuButtons();   
+        firstSelectedMenuButton.Select();     
+    }
+    private void OpenSaveSlotMenu()
+    {
+        DisableMainMenuButtons();
+        mainMenuPanel.SetActive(false);
+        saveSlotMenuPanel.SetActive(true);
+        saveSlotsMenu.ActivateMenu();
     }
 
     private void DisableMainMenuButtons()
     {
         startGameButton.interactable = false;
         exitGameButton.interactable = false;
+    }
+    private void EnableMainMenuButtons()
+    {
+        startGameButton.interactable = true;
+        exitGameButton.interactable = true;
     }
 }

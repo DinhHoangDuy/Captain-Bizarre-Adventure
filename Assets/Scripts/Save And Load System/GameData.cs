@@ -9,7 +9,10 @@ public class GameData
     public int currentMaxHealth;
     public float currentSP;
     public Vector3 lastSavedLocation;
-    public string lastSavedScene;
+    public string lastLocationSaved;
+
+    // The time the game was saved
+    public long saveTime;
     
     // Character Skill Set unlocked
     public bool doubleJumpUnlocked;
@@ -25,6 +28,8 @@ public class GameData
         currentMaxHealth = 5;
         currentSP = 20f;
         lastSavedLocation = new Vector3(0, 0, 0);
+        lastLocationSaved = "Map 1";
+
         // Default character skill set
         doubleJumpUnlocked = false;
         dashUnlocked = false;

@@ -6,10 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class DataPersistenceManager : MonoBehaviour
 {
+    [Header("Debugging")]
+    [SerializeField] private bool disableDataPersistence = false;
+    [SerializeField] private bool initializeNewGameIfNull = false;
+    [SerializeField] private bool overrideProfileID = false;
+    [SerializeField] private string testProfileID = "test";
+
+
     [Header("File Storage Configuration")] [SerializeField]
     private string fileName;
 
     [SerializeField] private bool useEncryption = false;
+    public string selectedProfileID = "";
     
     private FileDataHandler fileDataHandler;
     public static DataPersistenceManager instance { get; private set; }
@@ -19,11 +27,24 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("Found more than one DataPersistentManager instance in the scene.");
+            Destroy(this.gameObject);
+            return;
         }
         instance = this;
+        DontDestroyOnLoad(this.gameObject);
+
+        if (disableDataPersistence)
+        {
+            Debug.LogWarning("Data persistence is disabled. No data will be saved or loaded.");
+        }
 
         this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+
+        if (overrideProfileID)
+        {
+            this.selectedProfileID = testProfileID;
+            Debug.LogWarning("Profile ID is overridden to " + testProfileID);
+        }
     }
 
     private void OnEnable()
@@ -51,12 +72,24 @@ public class DataPersistenceManager : MonoBehaviour
     public void NewGame()
     {
         this.gameData = new GameData();
+        SaveGame();
     }
 
     public void LoadGame()
     {
+        if(disableDataPersistence)
+        {
+            Debug.LogWarning("Data persistence is disabled. No data will be saved or loaded.");
+            return;
+        }
         // Load game data from file using a data handler
-        this.gameData = fileDataHandler.Load();
+        this.gameData = fileDataHandler.Load(selectedProfileID);
+
+        if(this.gameData == null && initializeNewGameIfNull)
+        {
+            Debug.Log("No game data found. Creating a new game data based on the initialization settings.");
+            NewGame();
+        }
 
         // if no data is found, stop the loading process
         if (this.gameData == null)
@@ -74,10 +107,16 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void SaveGame()
     {
+        if(disableDataPersistence)
+        {
+            Debug.LogWarning("Data persistence is disabled. No data will be saved or loaded.");
+            return;
+        }
+
         // if no data is found, stop the saving process
         if (this.gameData == null)
         {
-            Debug.Log("No game data found. A new game data needs to be created.");
+            Debug.LogWarning("No game data found. A new game data needs to be created.");
             return;
         }
         
@@ -86,26 +125,45 @@ public class DataPersistenceManager : MonoBehaviour
         {
             dataPersistenceObject.SaveData(ref gameData);
         }
+
+        // Set the timestamp for the save
+        gameData.saveTime = System.DateTime.Now.ToBinary();
         
         // Save the game data to a file using a data handler
-        fileDataHandler.Save(gameData);
+        fileDataHandler.Save(gameData, selectedProfileID);
         PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
         if (playerHealth != null)
         {
             playerHealth.FullyHealHP();
             Debug.Log("Player health fully healed after saving the game!");
         }
-        else Debug.LogError("PlayerHealth script not found in the scene."); 
+        else Debug.LogWarning("PlayerHealth script not found in the scene."); 
     }
-
-    // private void OnApplicationQuit()
-    // {
-    //     SaveGame();
-    // }
 
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
         IEnumerable<IDataPersistence> dataPersistencesObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistencesObjects);
+    }
+
+    public bool HasGameData()
+    {
+        return this.gameData != null;
+    }
+
+    public void ChangeSelectedProfileId(string newProfileId)
+    {
+        this.selectedProfileID = newProfileId;
+        LoadGame();
+    }
+
+    public Dictionary<string, GameData> GetAllProfilesGameData() 
+    {
+        return fileDataHandler.LoadAllProfiles();
+    }
+
+    public string GetMostRecentlyUpdatedProfileID()
+    {
+        return fileDataHandler.GetMostRecentlyUpdatedProfileID();
     }
 }
