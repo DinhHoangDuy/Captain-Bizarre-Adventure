@@ -3,7 +3,7 @@ using UnityEngine;
 public class ExpansionChipStatus : MonoBehaviour
 {
     public static ExpansionChipStatus instance;
-    // TODO: Add expansion chip effects here!!!
+    // TODO: Add more expansion chip effects here!!!
 
     #region Overclock state
     /*

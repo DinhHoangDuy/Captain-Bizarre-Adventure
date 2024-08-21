@@ -1183,7 +1183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1480477832
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1330,7 +1330,6 @@ MonoBehaviour:
   saveSlotsMenu: {fileID: 2056099561}
   saveSlotMenuPanel: {fileID: 2056099559}
   backButton: {fileID: 1728473297}
-  firstSelectedSaveSlotButton: {fileID: 976772441}
 --- !u!1 &1616312786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,7 +1919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2056099560
 Transform:
   m_ObjectHideFlags: 0

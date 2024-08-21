@@ -33,7 +33,8 @@ public class StaticSpikeTrap : MonoBehaviour
         if (player.CompareTag("Player"))
         {
             Debug.Log("Player hit the spike trap!");
-            player.GetComponent<TakeDMG>().HitPlayer(spikeTrapDamage);
+            player.GetComponent<PlayerHealth>().TakeDamage(spikeTrapDamage);
+            // player.GetComponent<TakeDMG>().HitPlayer(spikeTrapDamage);
         }
     }
 

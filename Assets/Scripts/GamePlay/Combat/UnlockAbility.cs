@@ -19,7 +19,23 @@ public class UnlockAbility : MonoBehaviour, IDataPersistence
             Debug.LogError("Character Skill Set is null");
         }
     }
-
+    
+    // If one of the character skill is already unlocked and applied, self-destroy immediately
+    private void Start()
+    {
+        if (skillToUnlock == SkillToUnlock.DoubleJump && characterSkillSet.DoubleJumpActive)
+        {
+            Destroy(gameObject);
+        }
+        else if (skillToUnlock == SkillToUnlock.WallJump && characterSkillSet.WallJumpActive)
+        {
+            Destroy(gameObject);
+        }
+        else if (skillToUnlock == SkillToUnlock.Dash && characterSkillSet.DashActive)
+        {
+            Destroy(gameObject);
+        }
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

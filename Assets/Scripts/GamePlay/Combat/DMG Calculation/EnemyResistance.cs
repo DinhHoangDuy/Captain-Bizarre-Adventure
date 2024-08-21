@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(TakeDMG))]
 [RequireComponent(typeof(EnemyNegativeStatus))]
 public class EnemyResistance : MonoBehaviour
 {
@@ -23,26 +22,20 @@ public class EnemyResistance : MonoBehaviour
     [SerializeField] private int basicAttackResistance;
     [SerializeField] private int ultimateSkillResistance;
     #endregion
-    private TakeDMG TakeDMGScript;
 
     #region Current Defensive Stats
     private float VunerableValue = 0; 
     //VunerableValue variable will be used to calculate the vunerability of the enemy, the higher the value, the more damage the enemy will take
     // (1 point of vunerability = 1% more damage taken)
     #endregion
-    
-    private void Awake()
-    {
-        // Get the Enemy script attached to the same GameObject
-        TakeDMGScript = GetComponent<TakeDMG>();
-        if (TakeDMGScript != null)
-        {
-            TakeDMGScript.OnHitDamageReceived += HandleHitDamage;
-        }
-    }
+
     private void Update()
     {
         VunerableValue = Mathf.Clamp(VunerableValue, 0, float.MaxValue); //Limit the VunerableValue as low as 0 and high as MaxValue
+    }
+    public void TakeDamage(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)
+    {
+        HandleHitDamage(damageTaken, DMGType, damageRange, skill);
     }
 
     private void HandleHitDamage(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)

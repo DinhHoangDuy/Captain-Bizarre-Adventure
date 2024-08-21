@@ -4,21 +4,33 @@ using Unity.Cinemachine;
 using System.Collections;
 // using System.Numerics;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : MonoBehaviour, IDataPersistence
 {
     public static CameraManager instance;
 
     [SerializeField] private CinemachineCamera[] _allVirtualCameras;
+
+    #region Current Camera and Position Composer
+    private CinemachineCamera _currentVirtualCamera;
+    private CinemachinePositionComposer _currentPositionComposer;
+
+    public CinemachineCamera lastSavedVirtualCamera;
+    public CinemachinePositionComposer lastSavedPositionComposer;
+    // Last Saved Camera when enter a temporary safe location
+
+    // Last Saved Camera when sit on a chair
+    public CinemachineCamera lastSavedChairVirtualCamera;
+    public CinemachinePositionComposer lastSavedChairPositionComposer;
     private float targetYDamping;
+    #endregion
+    
+
     [Tooltip("Adjust this value as needed for smoother or faster transitions")] 
     [SerializeField] private float lerpSpeed = 2f;
 
 
     [Header("Camera Settings")]
     public float _fallSpeedYDampingChangeThreshold = -15f;
-
-    private CinemachineCamera _currentVirtualCamera;
-    private CinemachinePositionComposer _PositionComposer;
 
     private float _normYPanAmount;
 
@@ -40,22 +52,22 @@ public class CameraManager : MonoBehaviour
                 _currentVirtualCamera = _allVirtualCameras[i];
 
                 // Set the current framing transposer
-                _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+                _currentPositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
             }
         }
         // Set the YDamping amound so it's base from the inspector value
-        _normYPanAmount = _PositionComposer.Damping.y;
+        _normYPanAmount = _currentPositionComposer.Damping.y;
 
         // Set the starting tracked object offset
-        _startingTrackedObjectOffset = _PositionComposer.TargetOffset;
+        _startingTrackedObjectOffset = _currentPositionComposer.TargetOffset;
     }
 
 
     private void Update()
     {
-        if (_PositionComposer.Damping.y != targetYDamping)
+        if (_currentPositionComposer.Damping.y != targetYDamping)
         {
-            _PositionComposer.Damping.y = Mathf.Lerp(_PositionComposer.Damping.y, targetYDamping, lerpSpeed * Time.deltaTime);
+            _currentPositionComposer.Damping.y = Mathf.Lerp(_currentPositionComposer.Damping.y, targetYDamping, lerpSpeed * Time.deltaTime);
         }
     }
 
@@ -102,13 +114,13 @@ public class CameraManager : MonoBehaviour
                 default: break;
             }
             endPos *= panDistance;
-            startPos = _PositionComposer.TargetOffset;
+            startPos = _currentPositionComposer.TargetOffset;
             endPos += startPos;
         }
         // handle pan back to starting position
         else
         {
-            startPos = _PositionComposer.TargetOffset;
+            startPos = _currentPositionComposer.TargetOffset;
             endPos = _startingTrackedObjectOffset;
         }
 
@@ -118,7 +130,7 @@ public class CameraManager : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             Vector3 panLerp = Vector3.Lerp(startPos, endPos, elapsedTime / panTime);
-            _PositionComposer.TargetOffset = panLerp;
+            _currentPositionComposer.TargetOffset = panLerp;
             yield return null;
         }
     }
@@ -137,7 +149,7 @@ public class CameraManager : MonoBehaviour
             // set the current camera to the right camera
             _currentVirtualCamera = rightCamera;
             // set the current framing transposer
-            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+            _currentPositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
         }
         else if (_currentVirtualCamera == rightCamera && triggerExitDirection.x < 0f)
         {
@@ -149,7 +161,7 @@ public class CameraManager : MonoBehaviour
             // set the current camera to the right camera
             _currentVirtualCamera = leftCamera;
             // set the current framing transposer
-            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+            _currentPositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
         }
         
     }
@@ -166,7 +178,7 @@ public class CameraManager : MonoBehaviour
             // set the current camera to the bottom camera
             _currentVirtualCamera = bottomCamera;
             // set the current framing transposer
-            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+            _currentPositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
         }
         else if (_currentVirtualCamera == bottomCamera && triggerExitDirection.y > 0f)
         {
@@ -178,9 +190,48 @@ public class CameraManager : MonoBehaviour
             // set the current camera to the top camera
             _currentVirtualCamera = topCamera;
             // set the current framing transposer
-            _PositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
+            _currentPositionComposer = _currentVirtualCamera.GetComponent<CinemachinePositionComposer>();
         }
         
+    }
+
+    public void SetTempCamera()
+    {
+        lastSavedVirtualCamera = _currentVirtualCamera;
+        lastSavedPositionComposer = _currentPositionComposer;
+    }
+    public void SetChairCamera()
+    {
+        lastSavedChairVirtualCamera = _currentVirtualCamera;
+        lastSavedChairPositionComposer = _currentPositionComposer;
+    }
+
+    public void ResetToLastSavedCamera()
+    {
+        lastSavedVirtualCamera.enabled = true;
+        _currentVirtualCamera.enabled = false;
+        _currentVirtualCamera = lastSavedVirtualCamera;
+        _currentPositionComposer = lastSavedPositionComposer;
+    }
+
+    public void LoadData(GameData data)
+    {
+        if(data.lastSavedVirtualCamera != null && data.lastSavedPositionComposer != null)
+        {
+            _currentVirtualCamera = data.lastSavedVirtualCamera;
+            _currentPositionComposer = data.lastSavedPositionComposer;
+        }
+        else 
+        {
+            Debug.LogWarning("Failed to load the last saved camera and position composer!" +
+                             "The scene will load the default camera and position composer which is set in the inspector");
+        }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.lastSavedVirtualCamera = _currentVirtualCamera;
+        data.lastSavedPositionComposer = _currentPositionComposer;
     }
     #endregion
 }

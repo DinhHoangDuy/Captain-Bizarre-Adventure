@@ -191,7 +191,6 @@ GameObject:
   - component: {fileID: 6378479614338835769}
   - component: {fileID: 7201850538215919687}
   - component: {fileID: 8460930798486986441}
-  - component: {fileID: 2704698798196703481}
   - component: {fileID: 9161213949794349923}
   - component: {fileID: 3961857234049573280}
   - component: {fileID: 9035116815877175140}
@@ -199,7 +198,7 @@ GameObject:
   - component: {fileID: 6975911404759449875}
   - component: {fileID: 4593632438534977704}
   - component: {fileID: 7501681640988338528}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: CaptainMoonBlade
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -270,7 +269,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 877855702, guid: e2654be0f8f7d2f4bbdd5dab9069695d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -389,18 +388,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc47257a0416bb94b93b2076a77dfae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2704698798196703481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855818143754167541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab5fd70a2fb92554792837206e7110a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &9161213949794349923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,8 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 0
-  characterHit: 0
-  knockbackForce: 10
+  knockbackForce: 5
 --- !u!114 &3961857234049573280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,15 +461,15 @@ MonoBehaviour:
   trailRenderer: {fileID: 1691375614550857047}
   movespeed: 0
   extraJumps: 1
-  doubleJumpAllowed: 0
+  doubleJumpUnlocked: 0
   dreamBuilderPlatform: {fileID: 7633789218336709396, guid: f1fbe33553f7329948a6b093d32258b4,
     type: 3}
   dreamBuilderPlatformSpawnPoint: {fileID: 2829359077726942525}
   blocked: 0
-  wallJumpAllowed: 0
+  wallJumpUnlocked: 0
   wallSlidingSpeed: 1
   wallJumpingPower: {x: 6, y: 16}
-  dashAllowed: 0
+  dashUnlocked: 0
   rb: {fileID: 0}
   groundLayer:
     serializedVersion: 2
@@ -505,11 +491,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basicATK: 100
-  damageType: 0
+  damageType: 3
   criticalRate: 20
   criticalDamageMultiplier: 150
   attackRate: 2
-  SPRegenRate: 1
+  SPRegenRate: 10
   SPRegenEfficiency: 100
   maxSP: 100
   basicAttackBaseDMG: 10
@@ -555,9 +541,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f105f304aec74e4cc83d8ecb0acb4749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoubleJumpActive: 0
-  WallJumpActive: 0
-  DashActive: 0
+  DoubleJumpActive: 1
+  WallJumpActive: 1
+  DashActive: 1
 --- !u!1 &7671879525921500279
 GameObject:
   m_ObjectHideFlags: 0

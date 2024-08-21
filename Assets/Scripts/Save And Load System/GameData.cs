@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 [System.Serializable]
@@ -10,6 +11,8 @@ public class GameData
     public float currentSP;
     public Vector3 lastSavedLocation;
     public string lastLocationSaved;
+    public CinemachineCamera lastSavedVirtualCamera;
+    public CinemachinePositionComposer lastSavedPositionComposer;
 
     // The time the game was saved
     public long saveTime;
@@ -29,11 +32,12 @@ public class GameData
         currentSP = 20f;
         lastSavedLocation = new Vector3(0, 0, 0);
         lastLocationSaved = "Map 1";
-
+        lastSavedVirtualCamera = null;
+        lastSavedPositionComposer = null;
         // Default character skill set
-        doubleJumpUnlocked = false;
-        dashUnlocked = false;
-        wallJumpUnlocked = false;
+        doubleJumpUnlocked = true;
+        dashUnlocked = true;
+        wallJumpUnlocked = true;
         unlockedSkills = new SerializableDictionary<string, bool>();
     }
 }

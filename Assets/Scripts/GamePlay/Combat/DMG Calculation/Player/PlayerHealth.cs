@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(TakeDMG))]
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth;
+    [HideInInspector] public int maxHealth;
     private CharacterStats characterStats;
     private Rigidbody2D rb2d;
     public int currentHealth { get; private set; }
 
-    [HideInInspector] public bool characterHit = false;
     public bool isDead { get { return currentHealth <= 0; } }
     private bool isInvincible = false;
     private int invincibilityTime = 1;
@@ -21,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
 
     // Respawn the player at the last checkpoint
     private Vector2 lastCheckpoint;
+    private Vector2 lastChairPosition;
 
     private void Awake()
     {
@@ -44,18 +43,10 @@ public class PlayerHealth : MonoBehaviour
         {
             Debug.LogError("Failed to set the last checkpoint upon spawning!");
         }
-
-        // Get the TakeDMG script attached to the same GameObject
-        TakeDMG TakeDMGScript = GetComponent<TakeDMG>();
-        if (TakeDMGScript != null)
-        {
-            TakeDMGScript.OnHitPlayerReceived += TakeDamage;
-        }
     }
 
 
-    private void TakeDamage(int damage)
-    // private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if(isInvincible)
         {
@@ -65,27 +56,34 @@ public class PlayerHealth : MonoBehaviour
         // Clamp the current health to be between 0 and max health
         if(ExpansionChipStatus.instance.isOverclocked)
         { 
-            // If the ExpansionChipStatuc is overclocked, the player will receive more damage
-            currentHealth = Mathf.Clamp(currentHealth - damage - 1, 0, maxHealth);
+            // If the ExpansionChipStatus is overclocked, the player will receive more damage
+            currentHealth = Mathf.Clamp(currentHealth - (damage * 2), 0, maxHealth);
         } 
         else currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
-        characterHit = true;
         
         if(currentHealth <= 0)
         {
             currentHealth = 0;
             Debug.Log("Player is Dead");
-            Respawn();
+            RespawnToChair();
         }
         else
         {
             GetComponent<Animator>().Play("Hit");
-            // Calculate the direction from the damage source to the player
+            
+            // Knock the player backwards and upwards
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            StartCoroutine(IFrame(invincibilityTime));
+            if (rb != null)
+            {
+                float pushDirection = GetComponent<PlatformerMovement2D>().IsLookingRight ? -1 : 1;
+                rb.AddForce(new Vector2(pushDirection * knockbackForce, knockbackForce), ForceMode2D.Impulse);
+            }
+            else Debug.LogError("Failed to get the Rigidbody2D component!");
+
+            Invincible(invincibilityTime);
         }
     }
-    public void SacrificiceHealth(int healthToSacrifice)
+    public void ReduceHealth(int healthToSacrifice)
     {
         currentHealth = Mathf.Clamp(currentHealth - healthToSacrifice, 0, maxHealth);
     }
@@ -94,21 +92,23 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + healthToAdd, 0, maxHealth);
         Debug.Log("Player's Health increased by " + healthToAdd);
     }
-    public void Invincible(int time)
+
+
+    public void Invincible(int IFrameTime)
     {
-        StartCoroutine(IFrame(time));
+        StartCoroutine(IFrame(IFrameTime));
     }
 
-    private IEnumerator IFrame(int time)
+    private IEnumerator IFrame(int IFrameTime)
     {
         isInvincible = true;
-        Debug.Log("Player is Invincible for " + time + " second");
+        Debug.Log("Player is Invincible for " + IFrameTime + " second");
 
         // Assuming you have a reference to the SpriteRenderer
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Flicker for 1 second
-        float endTime = Time.time + 1f;
+        // Flicker for a certain amount of time (IFrameTime)
+        float endTime = Time.time + IFrameTime;
         while (Time.time < endTime)
         {
             // Toggle visibility
@@ -120,35 +120,49 @@ public class PlayerHealth : MonoBehaviour
 
         // Ensure the sprite is enabled at the end
         spriteRenderer.enabled = true;
-        characterHit = false;
         isInvincible = false;
         Debug.Log("Player is no longer Invincible! Be careful!");
     }
 
-    // Check if the character hit the FallingZone
+    // Check if the character hit a collider
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("FallingZone"))
         {
             isInvincible = false;
-            TakeDamage(maxHealth);
+            ForceMoveToSafePosition();
+            ReduceHealth(1);
         }
 
-        if (collision.CompareTag("Checkpoint"))
+        if(collision.CompareTag("Checkpoint"))
         {
             lastCheckpoint = collision.transform.position;
-            Debug.Log("Checkpoint Reached!: " + lastCheckpoint);
+            CameraManager.instance.SetTempCamera();
+        }
+
+        if (collision.CompareTag("Enemy"))
+        {
+            TakeDamage(1);
         }
     }
-    private void Respawn()
+    private void RespawnToChair()
     {
         // Respawn the player at the last checkpoint
         transform.position = lastCheckpoint;
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
     }
+    private void ForceMoveToSafePosition()
+    {
+        transform.position = lastCheckpoint;
+    }
     public void FullyHealHP()
     {
         currentHealth = maxHealth;
+    }
+
+    private void SaveChairPosition(Vector2 chairPosition)
+    {
+        lastChairPosition = chairPosition;
     }
 }

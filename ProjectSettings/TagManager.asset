@@ -9,6 +9,7 @@ TagManager:
   - UltimateIcon
   - SPBar
   - PlayerUI
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,8 @@ TagManager:
   - Player
   - Ground
   - Destroyable
-  - 
-  - 
+  - EnemyHitbox
+  - EnemyProjectiles
   - 
   - 
   - 
@@ -45,6 +46,9 @@ TagManager:
   m_SortingLayers:
   - name: Character
     uniqueID: 728813579
+    locked: 0
+  - name: Enemy
+    uniqueID: 50198899
     locked: 0
   - name: Default
     uniqueID: 0

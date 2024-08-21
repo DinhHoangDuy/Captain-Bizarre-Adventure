@@ -76,11 +76,10 @@ public class MoonWaveProjectile : MonoBehaviour
             {
                 enemies = new GameObject[enemies.Length + 1];
                 enemies[enemies.Length - 1] = hitEnemy.gameObject;
-                hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType, DamageFromSkill.UltimateSkill);
+                // hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType, DamageFromSkill.UltimateSkill);
 
                 // Push the enemy back
                 float hitDirection = transform.right.x;
-                hitEnemy.GetComponent<EnemyHealth>().SetPushDirectionAndPower(hitDirection, waveHitForce);
             }
 
             return;

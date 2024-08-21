@@ -184,7 +184,8 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
         if (!isWallJumping)
         {
-            if (transform.localRotation.y < 0 && moveDirection > 0f || transform.localRotation.y >= 0 && horizontal < 0f)
+            // if (transform.localRotation.y < 0 && moveDirection > 0f || transform.localRotation.y >= 0 && horizontal < 0f)
+            if (!isFacingRight && moveDirection > 0f || isFacingRight && horizontal < 0f)
             {
                 Flip();
             }
@@ -214,7 +215,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             if(IsGrounded())
             {
                 canDash = true;
-                Debug.Log("Dash is Ready to Use when the player is on the ground"); 
             }
         }
 
@@ -252,14 +252,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         anim.SetBool("isFalling", rb.linearVelocity.y < 0f);
         anim.SetBool("isRunning", rb.linearVelocity.x != 0f);
         anim.SetBool("IsWallSliding", isWallSliding);
-        if (transform.localRotation.y < 0)
-        {
-            isFacingRight = false;
-        }
-        else if (transform.localRotation.y >= 0)
-        {
-            isFacingRight = true;
-        }
         #endregion
     }
 
@@ -267,9 +259,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     public bool IsGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.transform.position, 0.1f, groundLayer);
-        // Vector2 boxCastSize = new Vector2(boxCollider2D.bounds.size.x, 0.3f);
-        // RaycastHit2D hit = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCastSize, 0f, Vector2.down, 0.1f, groundLayer);
-        // return hit.collider != null;
     }
     #endregion
 
@@ -315,17 +304,15 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         {
             isWallJumping = false;
             // Wall Jumping Direction
-            if (transform.localRotation.y >= 0)
+            // if (transform.localRotation.y >= 0)
+            if(isFacingRight)
             {
                 wallJumpingDirection = -1f;
             }
-            else if (transform.localRotation.y < 0)
-            {
-                wallJumpingDirection = 1f;
-            }
+            // else if (transform.localRotation.y < 0)
             else
             {
-                Debug.LogError("WallJumpingDirection Error");
+                wallJumpingDirection = 1f;
             }
             // Wall Jumping Counter
             wallJumpingCounter = wallJumpingTime;
@@ -342,7 +329,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
-            transform.Rotate(0f, 180f, 0f);
+            Flip();
 
             Invoke(nameof(StopWallJumping), wallJumpingDuration);
         }
@@ -358,6 +345,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     
     private void Flip()
     {
+        isFacingRight = !isFacingRight;
         transform.Rotate(0f, 180f, 0f);
     }
     #region Dash
@@ -365,10 +353,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     {
         canDash = false;
         isDashing = true;
-        if(extraJumpsCounter == 0)
-        {
-            extraJumpsCounter = extraJumps;
-        }
 
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
@@ -384,19 +368,14 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         }
         else
         {
-            if(IsGrounded() && rb.linearVelocity.x == 0 )
-            {
-                dashDirection = isFacingRight ? -1f : 1f;
-            }
-            else
-            {
-                dashDirection = isFacingRight ? 1f : -1f;
-            }
+            dashDirection = isFacingRight ? 1f : -1f;
         }
         rb.linearVelocity = new Vector2(dashDirection * dashForce, 0f);
 
         trailRenderer.emitting = true;
-        if (transform.localRotation.y < 0 && dashDirection > 0f || transform.localRotation.y >= 0 && dashDirection < 0f)
+        // if (transform.localRotation.y < 0 && dashDirection > 0f || transform.localRotation.y >= 0 && dashDirection < 0f)
+        if (!isFacingRight && dashDirection > 0f || isFacingRight && dashDirection < 0f)
+
         {
             Flip();
         }

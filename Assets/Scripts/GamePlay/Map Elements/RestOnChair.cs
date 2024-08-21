@@ -58,6 +58,7 @@ public class RestOnChair : MonoBehaviour
     {
         if(playerInput.Player.Interact.WasReleasedThisFrame() && nearTheChair)
         {
+            CameraManager.instance.SetChairCamera();
             dataPersistenceManager.SaveGame();
             Debug.Log("Game saved");
         }

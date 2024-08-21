@@ -123,8 +123,7 @@ public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
     public static bool blocked = false;
     [SerializeField] private bool isUnbreakableWillActive = false;
     private float basicAttackDamage;
-    public bool fireTriggered;
-    public float currentSP;
+    [HideInInspector] public float currentSP;
 
     public bool ultimateTriggered;
     private float ultimateDamage;
@@ -235,7 +234,6 @@ public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
         // Sent the trigger to the animator coder
         if(Time.time >= nextAttackTime)
         {
-            fireTriggered = true;  
             nextAttackTime = Time.time + 1f / attackRate;
             anim.SetTrigger("Basic Attack");       
         }
@@ -366,31 +364,32 @@ public class CaptainMoonBlade : MonoBehaviour, IDataPersistence
             }          
 
             // Deal the damage to the enemy
-            enemy.GetComponent<TakeDMG>().TakeMeleeDamage(basicAttackDamage, damageType, DamageFromSkill.BasicAttack);
             // Reset the critical hit to false
             criticalHit = false;
-            // send push signal to the enemy health script
-            float hitDirection = enemy.transform.position.x - transform.position.x;
-            if(hitDirection > 0)
+            
+            // Calculate the push force and direction based on the player's direction and the enemy's position
+            float directionX = enemy.transform.position.x - transform.position.x;
+            float pushDirection = directionX > 0 ? 1 : -1;
+
+            // Push the enemy
+            if(!enemy.GetComponent<EnemyHealth>().unableToPush)
             {
-                hitDirection = 1;
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(pushDirection * basicAttackHitForce, 0), ForceMode2D.Impulse);
             }
-            else
-            {
-                hitDirection = -1;
-            }
-            enemy.GetComponent<EnemyHealth>().SetPushDirectionAndPower(hitDirection, basicAttackHitForce);
+
+            // Deal the damage to the enemy
+            enemy.GetComponent<EnemyResistance>().TakeDamage(basicAttackDamage, damageType, DamageRange.Melee, DamageFromSkill.BasicAttack);
         }   
         foreach (Collider2D destroyable in hitDestroyables)
         {
-            destroyable.GetComponent<TakeDMG>().TakeDestroyableDamage(1);
+            // destroyable.GetComponent<TakeDMG>().TakeDestroyableDamage(1);
+            destroyable.GetComponent<EnemyHealth>().DestroyableTakeDMG(1);
         }
         if(hitWall.Length > 0)
         {
             // Push the characters behind
             float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
             float force = basicAttackRecoilForce;
-            // rb.AddForce(new Vector2(pushDirection * force, 0), ForceMode2D.Impulse);
             rb.linearVelocity = new Vector2(pushDirection * force, rb.linearVelocity.y);
         }
     }
