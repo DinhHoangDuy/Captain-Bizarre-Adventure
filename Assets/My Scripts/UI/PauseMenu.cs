@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenuPanel;
+    [SerializeField] private string mainMenuScene = "My Scenes/MainMenu/Welcome";
     public static bool isPaused = false;
     [Header("Pause Menu Buttons")]
     [SerializeField] private Button resumeButton;
@@ -86,6 +87,6 @@ public class PauseMenu : MonoBehaviour
     public void ExitGame()
     {
         isPaused = false;
-        SceneManager.LoadSceneAsync("Scenes/MainMenu/Welcome");
+        SceneManager.LoadScene(mainMenuScene);
     }
 }

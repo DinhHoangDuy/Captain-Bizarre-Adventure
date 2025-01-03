@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,6 +6,7 @@ using UnityEngine.UI;
 
 public class SaveSlotsMenu : MonoBehaviour
 {
+    [SerializeField] private String mapSceneName;
     private SaveSlot[] saveSlots;
 
     private void Awake()
@@ -39,17 +41,6 @@ public class SaveSlotsMenu : MonoBehaviour
         // Case 2: if there's at least one slot with data...
         else
         {
-            // // select the first slot with data
-            // foreach (SaveSlot saveSlot in saveSlots)
-            // {
-            //     if (saveSlot.profileHasData)
-            //     {
-            //         Debug.Log("Data found in slot " + saveSlot.GetProfileId() + ". Selecting this slot.");
-            //         saveSlot.GetComponent<Button>().Select();
-            //         break;
-            //     }
-            // }
-
             // Step 1: remember the first slot with data, then count the number of slots with data
             SaveSlot firstSlotWithData = null;
             int numberOfSlotsWithData = 0;
@@ -100,7 +91,7 @@ public class SaveSlotsMenu : MonoBehaviour
             DataPersistenceManager.instance.NewGame();
         }
 
-        SceneManager.LoadSceneAsync("Scenes/Stages/Maps/Map 1");
+        SceneManager.LoadScene(mapSceneName);
     }
 
     // TODO: implement the "Delete" button

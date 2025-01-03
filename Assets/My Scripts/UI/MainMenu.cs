@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
+// TODO: Add a fade in animation for the main menu!!
 {
     [Header("Main Menu")]
     [SerializeField] private GameObject mainMenuPanel;
@@ -15,6 +16,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject saveSlotMenuPanel;
     [SerializeField] private Button backButton;
 
+    // private Animator mainMenuAnimator;
+    private bool quitGame = false;
+
     private void Awake()
     {
         //Main Menu Button
@@ -22,6 +26,8 @@ public class MainMenu : MonoBehaviour
         exitGameButton.onClick.AddListener(ExitGame);
         //Save Slot Menu Button
         backButton.onClick.AddListener(BackToMainMenu);
+        // Main Menu Animator
+        // mainMenuAnimator = GetComponent<Animator>();
     }
     private void Start()
     {
@@ -34,23 +40,14 @@ public class MainMenu : MonoBehaviour
 
     private void StartGame()
     {
-        // if(!DataPersistenceManager.instance.HasGameData())
-        // {
-        //     Debug.Log("No game data found. Creating a new game data.");
-        //     DataPersistenceManager.instance.NewGame();
-        // }
-
-        // //Load the game scene
-        // SceneManager.LoadSceneAsync("Scenes/Stages/Maps/Map 1");
-        
-        // // Open the save slot menu
+        // Open the save slot menu
         OpenSaveSlotMenu();
     }
     private void ExitGame()
     {
         DisableMainMenuButtons();
         DataPersistenceManager.instance.SaveGame();
-        //Quit the game if the game is running in the build, or stop the game view if the game is running in the editor
+        quitGame = true;
         if (Application.isEditor)
         {
             UnityEditor.EditorApplication.isPlaying = false;
@@ -59,13 +56,15 @@ public class MainMenu : MonoBehaviour
         {
             Application.Quit();
         }
+        // mainMenuAnimator.SetTrigger("Start"); // Trigger the fade out animation, then quit the game
+
     }
     private void BackToMainMenu()
     {
         mainMenuPanel.SetActive(true);
         saveSlotMenuPanel.SetActive(false);
-        EnableMainMenuButtons();   
-        firstSelectedMenuButton.Select();     
+        EnableMainMenuButtons();
+        firstSelectedMenuButton.Select();
     }
     private void OpenSaveSlotMenu()
     {

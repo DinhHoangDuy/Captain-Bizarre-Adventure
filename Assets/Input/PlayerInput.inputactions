@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Ultimate",
+                    "name": "Spell",
                     "type": "Button",
                     "id": "a31189bc-3db7-426d-abc4-644e77c54cb9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Heal",
+                    "type": "Button",
+                    "id": "00aa991e-a045-43ad-9e0d-bba6fb140613",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -273,7 +282,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Ultimate",
+                    "action": "Spell",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -329,6 +338,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "ExpansionChipPanel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3abda27a-2ec9-4ac9-a9f8-b063d3a779bd",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Heal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

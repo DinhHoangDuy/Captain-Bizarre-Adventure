@@ -33,15 +33,15 @@ public class EnemyResistance : MonoBehaviour
     {
         VunerableValue = Mathf.Clamp(VunerableValue, 0, float.MaxValue); //Limit the VunerableValue as low as 0 and high as MaxValue
     }
-    public void TakeDamage(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)
+    public void TakeDamage(float damageTaken)
     {
-        HandleHitDamage(damageTaken, DMGType, damageRange, skill);
+        HandleHitDamage(damageTaken);
     }
 
-    private void HandleHitDamage(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)
+    private void HandleHitDamage(float damageTaken)
     {
         // Call some methods to calculate the damage taken
-        damageTaken = TypeResistanceCalculator(damageTaken, DMGType, damageRange, skill);
+        // damageTaken = TypeResistanceCalculator(damageTaken);
         damageTaken = VunerabilityCalculator(damageTaken, VunerableValue);
 
         // Check if the GameObject has an EnemyHealth or Dummy script attached to it, then call the TakeDamage method
@@ -57,46 +57,46 @@ public class EnemyResistance : MonoBehaviour
         }
     }
 
-    #region Resistance Calculator
-    private float TypeResistanceCalculator(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)
-    {
-        //This part will calculate the damage taken based on the Elemental and Damage Range Resistance of the enemy
-        switch (DMGType)
-        {
-            case DamageType.Fire:
-                damageTaken = damageTaken * (1 - (fireResistance / 100));
-                break;
-            case DamageType.Ice:
-                damageTaken = damageTaken * (1 - (iceResistance / 100));
-                break;
-            case DamageType.Lightning:
-                damageTaken = damageTaken * (1 - (lightningResistance / 100));
-                break;
-            case DamageType.Physical:
-                damageTaken = damageTaken * (1 - (physicalResistance / 100));
-                break;
-        }
-        switch (damageRange)
-        {
-            case DamageRange.Melee:
-                damageTaken = damageTaken * (1 - (meleeResistance / 100));
-                break;
-            case DamageRange.Range:
-                damageTaken = damageTaken * (1 - (rangeResistance / 100));
-                break;
-        }
-        switch (skill)
-        {
-            case DamageFromSkill.BasicAttack:
-                damageTaken = damageTaken * (1 - (basicAttackResistance / 100));
-                break;
-            case DamageFromSkill.UltimateSkill:
-                damageTaken = damageTaken * (1 - (ultimateSkillResistance / 100));
-                break;
-        }
-        return damageTaken;
-    }
-    #endregion
+    // #region Resistance Calculator
+    // private float TypeResistanceCalculator(float damageTaken, DamageType DMGType, DamageRange damageRange, DamageFromSkill skill)
+    // {
+    //     //This part will calculate the damage taken based on the Elemental and Damage Range Resistance of the enemy
+    //     switch (DMGType)
+    //     {
+    //         case DamageType.Fire:
+    //             damageTaken = damageTaken * (1 - (fireResistance / 100));
+    //             break;
+    //         case DamageType.Ice:
+    //             damageTaken = damageTaken * (1 - (iceResistance / 100));
+    //             break;
+    //         case DamageType.Lightning:
+    //             damageTaken = damageTaken * (1 - (lightningResistance / 100));
+    //             break;
+    //         case DamageType.Physical:
+    //             damageTaken = damageTaken * (1 - (physicalResistance / 100));
+    //             break;
+    //     }
+    //     switch (damageRange)
+    //     {
+    //         case DamageRange.Melee:
+    //             damageTaken = damageTaken * (1 - (meleeResistance / 100));
+    //             break;
+    //         case DamageRange.Range:
+    //             damageTaken = damageTaken * (1 - (rangeResistance / 100));
+    //             break;
+    //     }
+    //     switch (skill)
+    //     {
+    //         case DamageFromSkill.BasicAttack:
+    //             damageTaken = damageTaken * (1 - (basicAttackResistance / 100));
+    //             break;
+    //         case DamageFromSkill.UltimateSkill:
+    //             damageTaken = damageTaken * (1 - (ultimateSkillResistance / 100));
+    //             break;
+    //     }
+    //     return damageTaken;
+    // }
+    // #endregion
 
     #region Vunerability Calculator
     private float VunerabilityCalculator(float damageTaken, float vunerableValue)

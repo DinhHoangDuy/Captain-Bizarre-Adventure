@@ -19,13 +19,11 @@ public class MoonWaveProjectile : MonoBehaviour
         private float speed;
         private float lifeTime;
         private float waveHitForce;
-        public DamageType damageType { get; private set;}
         private GameObject[] enemies = new GameObject[0];
 
-        public void SetWaveDamage(float damage, DamageType DMGType, float hitForce)
+        public void SetWaveDamage(float damage, float hitForce)
         {
             waveDamage = damage;
-            damageType = DMGType;
             waveHitForce = hitForce;
         }
         public void SetSpeed(float speed)
@@ -68,7 +66,6 @@ public class MoonWaveProjectile : MonoBehaviour
                 if (hitEnemy.gameObject == enemy)
                 {
                     isEnemyInList = true;
-                    Debug.Log("Enemy is in the list: " + hitEnemy.gameObject.name + ". The enemy did not take damage in this frame!.");
                     break;
                 }
             }
@@ -87,12 +84,7 @@ public class MoonWaveProjectile : MonoBehaviour
     }
     private IEnumerator DestroyProjectile()
     {
-        Debug.Log("Projectile's life time: " + lifeTime + " seconds.");
-        Debug.Log("Projectile's speed: " + speed + " units per second.");
-
-        yield return new WaitForSeconds(lifeTime);
-        
+        yield return new WaitForSeconds(lifeTime);        
         Destroy(gameObject);
-        Debug.Log("Projectile Destroyed!");
     }
 }

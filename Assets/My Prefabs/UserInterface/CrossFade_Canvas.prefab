@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8197113733994403655}
   - component: {fileID: 8623192972708314136}
   - component: {fileID: 5886111839294276245}
-  - component: {fileID: 231973590171947523}
+  - component: {fileID: 7591518147515632526}
   m_Layer: 5
   m_Name: CrossFade_Canvas
   m_TagString: Untagged
@@ -126,7 +126,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &231973590171947523
+--- !u!114 &7591518147515632526
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,9 +135,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4909144889577506543}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7b77bedf38ac855b9bba327978dce38, type: 3}
+  m_Script: {fileID: 11500000, guid: 3241f116518f86afa9c1afe89cf10330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useAnimation: 1
 --- !u!1 &7180852783486806660
 GameObject:
   m_ObjectHideFlags: 0

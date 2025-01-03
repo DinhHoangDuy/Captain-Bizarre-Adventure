@@ -405,7 +405,7 @@ GameObject:
   - component: {fileID: 5807998843804894406}
   - component: {fileID: 3578984411950672682}
   - component: {fileID: 8418777272078115974}
-  - component: {fileID: 4221033529922627098}
+  - component: {fileID: 1285702019116067470}
   m_Layer: 3
   m_Name: Walking Mushroom
   m_TagString: Untagged
@@ -634,7 +634,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.4375, y: 2.3125}
   m_EdgeRadius: 0
---- !u!114 &4221033529922627098
+--- !u!114 &1285702019116067470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -649,13 +649,12 @@ MonoBehaviour:
   speed: 3
   movementRoutineTime: 4
   damage: 1
-  projectileSpeed: 15
   projectilePrefab: {fileID: 1141497973592360065, guid: ab3ac9015fe8f2238b787fe6513d48df,
     type: 3}
   projectileSpawnPoint0: {fileID: 3843434198006827710}
   projectileSpawnPoint1: {fileID: 8151114782327329127}
   projectileSpawnPoint2: {fileID: 5265973557815444055}
-  attackDelay: 4
+  attackDelay: 2.5
   enemyFrontSight: {fileID: 3380486042826390765}
   enemyBackSight: {fileID: 2447984100770702928}
   groundLayer:

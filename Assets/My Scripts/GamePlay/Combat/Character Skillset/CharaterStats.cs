@@ -21,6 +21,14 @@ public class CharacterStats : MonoBehaviour, IDataPersistence
     public float DashForce { get { return dashForce; } }
     #endregion
 
+    #region Healing
+    [Header("Healing")]
+    [SerializeField] private int potionHealAmount = 3;
+    [SerializeField] private int requiredSPForHeal = 30;
+    public int _potionHealAmount { get { return potionHealAmount; } }
+    public int _requiredSPForHeal { get { return requiredSPForHeal; } }
+    #endregion
+
 
     #region Save and Load System
     public void LoadData(GameData data)

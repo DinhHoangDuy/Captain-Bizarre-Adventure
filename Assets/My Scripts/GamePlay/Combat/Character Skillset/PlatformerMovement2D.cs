@@ -36,6 +36,9 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     private bool isFacingRight = true;
     public bool IsLookingRight => isFacingRight;
 
+    private bool wallJumpAnimation = false;
+    private bool groundJumpAnimation = false;
+
     private float HoldPositionDelay;
 
     public bool inputBlocked = false;
@@ -44,7 +47,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #region Wall Slide & Wall Jump
     [Header("Wall Slide & Wall Jump")]
     public bool wallJumpUnlocked = false;
-    private bool isWallSliding;
+    public bool isWallSliding;
     [SerializeField] private float wallSlidingSpeed = 1f;
 
     private bool isWallJumping;
@@ -60,7 +63,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     private bool canDash = true;
     private bool isDashing = false;
     private float dashForce;
-    private float dashTime = 0.1f;
+    private float dashTime = 0.15f;
     private float dashCooldown = 1f;
     private float dashCurrentCooldown;
     #endregion
@@ -99,7 +102,10 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         stats = GetComponent<CharacterStats>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
+    }
 
+    private void Start()
+    {     
         moveSpeed = stats.MoveSpeed;
         jumpingPower = stats.JumpForce;
         characterGravityScale = stats.GravityScale;
@@ -109,13 +115,9 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         dashForce = stats.DashForce;
     }
 
-    private void Start()
-    {     
-
-    }
-
     private void Update()
     {
+        dashForce = stats.DashForce; // Remove this line after testing. 
         if (isDashing) return;
         horizontal = playerInput.Player.Move.ReadValue<Vector2>().x;
         if(horizontal < 0)
@@ -140,16 +142,21 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                     Instantiate(dreamBuilderPlatform, dreamBuilderPlatformSpawnPoint.position, Quaternion.identity);
                     expansionChipStatus.dreamBuilderPlatformCurrentCooldown = expansionChipStatus.dreamBuilderPlatformCooldown;
+                    groundJumpAnimation = true;
+                    wallJumpAnimation = false;
                 }
-                else if(extraJumpsCounter > 0)
+                else if(extraJumpsCounter > 0 && doubleJumpUnlocked)
                 {
                     extraJumpsCounter--;
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                    groundJumpAnimation = true;
                 }
             }
             else
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); 
+                groundJumpAnimation = true;
+                wallJumpAnimation = false;
             }
         }
         if(playerInput.Player.Jump.WasReleasedThisFrame() && rb.linearVelocity.y > 0 && !isTransitingFromTheBottomUp)
@@ -158,12 +165,19 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0f);
             coyoteTimeCounter = -1f;
         }
+
+        if (rb.linearVelocity.y < 0f)
+        {
+            wallJumpAnimation = false;
+            groundJumpAnimation = false;
+        }
         #endregion
 
         if(IsGrounded())
         {
             extraJumpsCounter  = extraJumps;
             coyoteTimeCounter = coyoteTime;
+            isTransitingFromTheBottomUp = false;
         }
         else
         {
@@ -182,7 +196,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         {
             HoldPositionDelay = 0.1f;
         }
-
         if (!isWallJumping)
         {
             // if (transform.localRotation.y < 0 && moveDirection > 0f || transform.localRotation.y >= 0 && horizontal < 0f)
@@ -246,7 +259,9 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         anim.SetBool("isJumping", rb.linearVelocity.y > 0f);
         anim.SetBool("isFalling", rb.linearVelocity.y < 0f);
         anim.SetBool("isRunning", rb.linearVelocity.x != 0f);
-        anim.SetBool("IsWallSliding", isWallSliding);
+        anim.SetBool("isWallSliding", isWallSliding);
+        anim.SetBool("isWallJumping", wallJumpAnimation);
+        anim.SetBool("isGroundJumping", groundJumpAnimation);
         #endregion
     }
 
@@ -322,6 +337,8 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         if (playerInput.Player.Jump.triggered && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
+            wallJumpAnimation = true;
+            groundJumpAnimation = false;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
             Flip();
@@ -338,7 +355,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #endregion
 
     
-    private void Flip()
+    public void Flip()
     {
         isFacingRight = !isFacingRight;
         transform.Rotate(0f, 180f, 0f);
@@ -346,6 +363,9 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #region Dash
     private IEnumerator Dash()
     {
+        anim.SetTrigger("Dash");
+        Debug.Log("Dash!");
+
         canDash = false;
         isDashing = true;
 
@@ -367,20 +387,26 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         }
         rb.linearVelocity = new Vector2(dashDirection * dashForce, 0f);
 
-        trailRenderer.emitting = true;
-        // if (transform.localRotation.y < 0 && dashDirection > 0f || transform.localRotation.y >= 0 && dashDirection < 0f)
         if (!isFacingRight && dashDirection > 0f || isFacingRight && dashDirection < 0f)
-
         {
             Flip();
         }
+
         yield return new WaitForSeconds(dashTime);
-        trailRenderer.emitting = false;
         rb.gravityScale = originalGravity;
         isDashing = false;
         dashCurrentCooldown = dashCooldown;
     }
     #endregion
+
+    // public void BlockInput()
+    // {
+    //     inputBlocked = true;
+    // }
+    // public void UnblockInput()
+    // {
+    //     inputBlocked = false;
+    // }
 
 
     #region Save and Load system

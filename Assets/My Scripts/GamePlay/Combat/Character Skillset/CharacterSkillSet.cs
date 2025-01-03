@@ -6,17 +6,14 @@ public class CharacterSkillSet : MonoBehaviour
 
     #region Soaring Wing (Double Jump skill tree)
     [Tooltip("This skill enables double jump")] public bool DoubleJumpActive = false;
-    private bool isDoubleJumpApplied = false;
     #endregion
 
     #region Wall Jump (Wall Jump skill tree)
     [Tooltip("This skill enables wall jump")] public bool WallJumpActive = false;
-    private bool isWallJumpApplied = false;
     #endregion
 
     #region Dash (Dash skill tree)
     [Tooltip("This skill enables dash")] public bool DashActive = false;
-    private bool isDashApplied = false;
     #endregion
 
     private void Awake()
@@ -29,47 +26,41 @@ public class CharacterSkillSet : MonoBehaviour
     private void Update()
     {
         // Check if Double Jump skill is active
-        if(DoubleJumpActive && !isDoubleJumpApplied)
+        if(DoubleJumpActive)
         {
             // Apply Double Jump skill
             PlatformerMovement2D.instance.doubleJumpUnlocked = true;
-            isDoubleJumpApplied = true;
         }
-        else if(!DoubleJumpActive && isDoubleJumpApplied)
+        else
         {
             // Remove Double Jump skill 
             PlatformerMovement2D.instance.doubleJumpUnlocked = false;
-            isDoubleJumpApplied = false;
         }
 
         // Check if Wall Jump skill is active
-        if(WallJumpActive && !isWallJumpApplied)
+        if(WallJumpActive)
         {
             PlatformerMovement2D.instance.wallJumpUnlocked = true;
-            isWallJumpApplied = true;
         }
-        else if(!WallJumpActive && isWallJumpApplied)
+        else
         {
             // Remove Wall Jump skill
             // Disable wall jump
             PlatformerMovement2D.instance.wallJumpUnlocked = false;
-            isWallJumpApplied = false;
         }
 
         // Check if Dash skill is active
-        if(DashActive && !isDashApplied)
+        if(DashActive)
         {
             // Apply Dash skill
             // Dash
             PlatformerMovement2D.instance.dashUnlocked = true;
-            isDashApplied = true;
         }
-        else if(!DashActive && isDashApplied)
+        else 
         {
             // Remove Dash skill
             // Disable dash
             PlatformerMovement2D.instance.dashUnlocked = false;
-            isDashApplied = false;
         }
     }
 }
