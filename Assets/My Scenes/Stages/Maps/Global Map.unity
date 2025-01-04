@@ -28281,6 +28281,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2764015981984639303, guid: bff6a6abe5eec8adba6f43e051e61b67,
+        type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 3578984411950672682, guid: bff6a6abe5eec8adba6f43e051e61b67,
         type: 3}
       propertyPath: isPushed
@@ -28359,7 +28364,7 @@ PrefabInstance:
     - target: {fileID: 7704872690783764178, guid: bff6a6abe5eec8adba6f43e051e61b67,
         type: 3}
       propertyPath: m_Name
-      value: Mushroom
+      value: Walking Mushroom
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 317168677406674725, guid: bff6a6abe5eec8adba6f43e051e61b67, type: 3}
@@ -30535,12 +30540,12 @@ PrefabInstance:
     - target: {fileID: 7962801199719056906, guid: 32660922bee375a4196b518304e37c56,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -755.6231
       objectReference: {fileID: 0}
     - target: {fileID: 7962801199719056906, guid: 32660922bee375a4196b518304e37c56,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 34.612
       objectReference: {fileID: 0}
     - target: {fileID: 8333884473081631599, guid: 32660922bee375a4196b518304e37c56,
         type: 3}

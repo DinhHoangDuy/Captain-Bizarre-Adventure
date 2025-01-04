@@ -111,7 +111,6 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         [SerializeField] private Transform attackPoint;
         [SerializeField] private float attackRange = 1f;
         [SerializeField] private LayerMask enemyLayers;
-        [SerializeField] private LayerMask destroyableLayers;
         [SerializeField] private LayerMask dummyLayers;
         private DamageOutCalculator dmgCalulator;
         private PlatformerMovement2D platformerMovement;
@@ -326,12 +325,10 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     {
         //Detect enemies in range of attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-        Collider2D[] hitDestroyables = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, destroyableLayers);
-        Collider2D[] hitDummies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, dummyLayers);
         Collider2D[] hitWall = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, PlatformerMovement2D.instance.wallLayer);
         bool criticalHit = false;
 
-        if(hitEnemies.Length > 0 || hitDestroyables.Length > 0 || hitDummies.Length > 0)
+        if(hitEnemies.Length > 0)
         {
             //Critical Rate calculation
             if (UnityEngine.Random.Range(0, 100) <= criticalRate)
@@ -384,15 +381,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
 
             // Deal the damage to the enemy
             enemy.GetComponent<EnemyResistance>().TakeDamage(basicAttackDamage);
-        }   
-        foreach (Collider2D destroyable in hitDestroyables)
-        {
-            // destroyable.GetComponent<TakeDMG>().TakeDestroyableDamage(1);
-            destroyable.GetComponent<EnemyHealth>().DestroyableTakeDMG(1);
-        }
-        foreach (Collider2D dummy in hitDummies)
-        {
-            dummy.GetComponent<Dummy>().TakeDamage(basicAttackDamage);
+            enemy.GetComponent<EnemyHealth>().DestroyableTakeDMG(1);
         }
         if(hitWall.Length > 0)
         {

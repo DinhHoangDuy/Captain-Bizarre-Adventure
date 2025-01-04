@@ -10,14 +10,43 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyResistance))]
 public class Dummy : MonoBehaviour
 { 
-    [SerializeField] private float DamageTaken = 0f;
+    public float damageTaken = 0f;
+
+    private float timeToReset = 5f;
+    private Coroutine resetCoroutine;
 
     public void TakeDamage(float damage)
     {
         RecordDamage(damage);
+        Debug.Log("Dummy took " + damage + " damage.");
+
+        if (resetCoroutine != null)
+        {
+            StopCoroutine(resetCoroutine);
+        }
+        resetCoroutine = StartCoroutine(ResetDamageAfterTime());
     }
+
     public void RecordDamage(float damage)
     {
-        DamageTaken += damage;
+        damageTaken += damage;
+        Debug.Log("Dummy has taken " + damageTaken + " damage.");
+    }
+
+    public void ResetDamage()
+    {
+        damageTaken = 0f;
+        Debug.Log("Dummy has reset its damage.");
+    }
+
+    private IEnumerator ResetDamageAfterTime()
+    {
+        yield return new WaitForSeconds(timeToReset);
+        ResetDamage();
+    }
+
+    void Update()
+    {
+
     }
 }

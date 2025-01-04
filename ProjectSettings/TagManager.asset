@@ -20,8 +20,8 @@ TagManager:
   - Player
   - Ground
   - Destroyable
-  - EnemyHitbox
   - EnemyProjectiles
+  - 
   - 
   - 
   - 

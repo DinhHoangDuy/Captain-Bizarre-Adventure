@@ -15,7 +15,9 @@ public class EnemyNegativeStatus : MonoBehaviour
     #endregion
 
     #region Enemy Unique Negative Status
-    //This is a unique negative status that can be applied to the enemy, come from the player's Ultimate skills
+    // Each negative status (let's call that debuff) will have a unique effect on the enemy. Each of them requires a different variable to store the value of the debuff, and a coroutine to handle the duration of the debuff.
+
+    // This debuff will increase the damage taken by the enemy for a certain amount of time. This comes from the Samurai Captain's Ultimate Skill
     private bool isCursedByTheRules = false;
     private Coroutine CursedByTheRulesCoroutine;
     #endregion

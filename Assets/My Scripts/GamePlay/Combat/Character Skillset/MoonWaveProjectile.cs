@@ -9,31 +9,31 @@ public class MoonWaveProjectile : MonoBehaviour
     private Rigidbody2D rb;
 
     //Variables
-    [SerializeField] private  LayerMask wallLayer;
-    [SerializeField] private  LayerMask enemyLayer;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private LayerMask enemyLayer;
 
 
     #region Wave Damage
-        //Wave Damage
-        public float waveDamage { get; private set;}
-        private float speed;
-        private float lifeTime;
-        private float waveHitForce;
-        private GameObject[] enemies = new GameObject[0];
+    //Wave Damage
+    public float waveDamage { get; private set; }
+    private float speed;
+    private float lifeTime;
+    private float waveHitForce;
+    private GameObject[] enemies = new GameObject[0];
 
-        public void SetWaveDamage(float damage, float hitForce)
-        {
-            waveDamage = damage;
-            waveHitForce = hitForce;
-        }
-        public void SetSpeed(float speed)
-        {
-            this.speed = speed;
-        }
-        public void SetDuration(float duration)
-        {
-            lifeTime = duration;
-        }
+    public void SetWaveDamage(float damage, float hitForce)
+    {
+        waveDamage = damage;
+        waveHitForce = hitForce;
+    }
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+    public void SetDuration(float duration)
+    {
+        lifeTime = duration;
+    }
     #endregion
 
     private void Awake()
@@ -48,7 +48,7 @@ public class MoonWaveProjectile : MonoBehaviour
         StartCoroutine(DestroyProjectile());
     }
     private void Update()
-    {        
+    {
         RaycastHit2D hitWall = Physics2D.Raycast(transform.position, transform.right, 0.5f, wallLayer);
         if (hitWall)
         {
@@ -69,14 +69,14 @@ public class MoonWaveProjectile : MonoBehaviour
                     break;
                 }
             }
-            if(!isEnemyInList)
+            if (!isEnemyInList)
             {
                 enemies = new GameObject[enemies.Length + 1];
                 enemies[enemies.Length - 1] = hitEnemy.gameObject;
-                // hitEnemy.GetComponent<TakeDMG>().TakeRangeDamage(waveDamage, damageType, DamageFromSkill.UltimateSkill);
+                hitEnemy.GetComponent<EnemyResistance>().TakeDamage(waveDamage);
+                hitEnemy.GetComponent<EnemyHealth>().DestroyableTakeDMG(1);
 
-                // Push the enemy back
-                float hitDirection = transform.right.x;
+                Debug.Log("The wave hit the enemy!!!");
             }
 
             return;
@@ -84,7 +84,7 @@ public class MoonWaveProjectile : MonoBehaviour
     }
     private IEnumerator DestroyProjectile()
     {
-        yield return new WaitForSeconds(lifeTime);        
+        yield return new WaitForSeconds(lifeTime);
         Destroy(gameObject);
     }
 }

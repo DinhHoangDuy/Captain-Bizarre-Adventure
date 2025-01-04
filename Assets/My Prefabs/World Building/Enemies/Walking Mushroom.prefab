@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3621125407692940441}
   m_Layer: 0
-  m_Name: Clif Check
+  m_Name: Cliff Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ Transform:
   m_GameObject: {fileID: 1405327862470805446}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.7, y: -1.2, z: -0.012767545}
+  m_LocalPosition: {x: 0.578, y: -1.149, z: -0.012767545}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2261039031841980094}
   m_Layer: 3
-  m_Name: Front Check
+  m_Name: Wall Check
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,116 +134,7 @@ Transform:
   m_GameObject: {fileID: 2448495971400270972}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.185, y: -0.25586438, z: -0.005488524}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5031640312539628054}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2652156252839550994
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1197692096950685176}
-  - component: {fileID: 5050478638764384431}
-  m_Layer: 9
-  m_Name: Hitbox
-  m_TagString: Enemy
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1197692096950685176
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2652156252839550994}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5031640312539628054}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &5050478638764384431
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2652156252839550994}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4375, y: 2.3125}
-    newSize: {x: 0.71875, y: 1.15625}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1.4375, y: 2.3125}
-  m_EdgeRadius: 0
---- !u!1 &3753328912667951019
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6478030651278194031}
-  m_Layer: 0
-  m_Name: Ground Check
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6478030651278194031
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3753328912667951019}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04118347, y: -1.2, z: -0.012767545}
+  m_LocalPosition: {x: 0.7, y: -0.78, z: -0.005488524}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -405,7 +296,8 @@ GameObject:
   - component: {fileID: 5807998843804894406}
   - component: {fileID: 3578984411950672682}
   - component: {fileID: 8418777272078115974}
-  - component: {fileID: 1285702019116067470}
+  - component: {fileID: 2764015981984639303}
+  - component: {fileID: 2410995283984774952}
   m_Layer: 3
   m_Name: Walking Mushroom
   m_TagString: Untagged
@@ -427,9 +319,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2261039031841980094}
-  - {fileID: 6478030651278194031}
   - {fileID: 3621125407692940441}
-  - {fileID: 1197692096950685176}
   - {fileID: 2690818808547681331}
   - {fileID: 5851960016956519962}
   - {fileID: 3843434198006827710}
@@ -565,14 +455,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba7881254b1b13f448344df989cde6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireResistance: 0
-  iceResistance: 0
-  lightningResistance: 0
-  physicalResistance: 0
-  meleeResistance: 0
-  rangeResistance: 0
-  basicAttackResistance: 0
-  ultimateSkillResistance: 0
 --- !u!114 &3578984411950672682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,7 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd26a049f8ecba4e9841056c3a272c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 500
+  maxHealth: 210
+  isDummy: 0
   invincibleAlwaysOn: 0
   unableToPush: 0
 --- !u!61 &8418777272078115974
@@ -634,7 +517,26 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.4375, y: 2.3125}
   m_EdgeRadius: 0
---- !u!114 &1285702019116067470
+--- !u!114 &2764015981984639303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7704872690783764178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 414cda354714be7b58f705a4e1859f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  movementRoutineTime: 2.5
+  cliffCheck: {fileID: 1405327862470805446}
+  wallCheck: {fileID: 2448495971400270972}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!114 &2410995283984774952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -646,25 +548,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97e39a6790124a97594176e177039729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  movementRoutineTime: 4
-  damage: 1
-  projectilePrefab: {fileID: 1141497973592360065, guid: ab3ac9015fe8f2238b787fe6513d48df,
+  attackDamage: 1
+  enemyProjectile: {fileID: 1141497973592360065, guid: ab3ac9015fe8f2238b787fe6513d48df,
     type: 3}
-  projectileSpawnPoint0: {fileID: 3843434198006827710}
-  projectileSpawnPoint1: {fileID: 8151114782327329127}
-  projectileSpawnPoint2: {fileID: 5265973557815444055}
-  attackDelay: 2.5
-  enemyFrontSight: {fileID: 3380486042826390765}
-  enemyBackSight: {fileID: 2447984100770702928}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  wallCheck: {fileID: 2448495971400270972}
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  CliffCheck: {fileID: 1405327862470805446}
+  projectileType: 0
+  projectileGravityScale: 1.5
+  projectileSpawnPoint1: {fileID: 3843434198006827710}
+  throwPowerFromSpawnPoint1: {x: 10, y: 5}
+  projectileSpawnPoint2: {fileID: 8151114782327329127}
+  throwPowerFromSpawnPoint2: {x: 10, y: 7}
+  projectileSpawnPoint3: {fileID: 5265973557815444055}
+  throwPowerFromSpawnPoint3: {x: 10, y: 9}
 --- !u!1 &8665050371013333555
 GameObject:
   m_ObjectHideFlags: 0
