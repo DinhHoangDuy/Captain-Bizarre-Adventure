@@ -1,9 +1,12 @@
 using UnityEngine;
 
+[RequireComponent(typeof(EnemyHealth))]
 public class EnemyGroundMovement : MonoBehaviour
 {
     private Animator anim;
     internal Rigidbody2D rb;
+    private EnemyHealth enemyHealth;
+
     [SerializeField] private float speed = 3f;
     [SerializeField] private float movementRoutineTime = 2.5f;
 
@@ -23,6 +26,8 @@ public class EnemyGroundMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        enemyHealth = GetComponent<EnemyHealth>();
+
         movementRoutineTimer = movementRoutineTime;
 
         enemyFrontSight = gameObject.transform.Find("EnemyFrontSight").GetComponent<BoxCollider2D>();
@@ -43,6 +48,11 @@ public class EnemyGroundMovement : MonoBehaviour
     void Update()
     {
         int direction = isLookingRight ? 1 : -1;
+        anim.SetBool("isWalking", rb.linearVelocityX != 0);
+        if (enemyHealth.isDummy)
+        {
+            return; // If the enemy is a dummy, it will not move.
+        }
 
         if (!EnemyFound())
         {
@@ -55,6 +65,7 @@ public class EnemyGroundMovement : MonoBehaviour
             {
                 movementRoutineTimer -= Time.deltaTime;
                 rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
+                // rb.AddForce(new Vector2(direction * speed, 0), ForceMode2D.Force);
                 MovingCheck();
             }
         }
@@ -66,16 +77,17 @@ public class EnemyGroundMovement : MonoBehaviour
             }
             else
             {
-                if(IsEnemyBehind())
+                if (IsEnemyBehind())
                 {
                     Flip();
                 }
-                rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
+                // rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
+                float targetSpeed = direction * speed;
+                MoveWithForce(targetSpeed);
             }
         }
 
         // Update Animation
-        anim.SetBool("isWalking", rb.linearVelocityX != 0);
     }
 
     void Flip()
@@ -83,6 +95,20 @@ public class EnemyGroundMovement : MonoBehaviour
         isLookingRight = !isLookingRight;
         transform.Rotate(0f, 180f, 0f);
         movementRoutineTimer = movementRoutineTime;
+    }
+
+    void MoveWithForce(float targetSpeed)
+    {
+        // Set desired speed (velocity) based on input.
+        // float targetSpeed = moveDirection * moveSpeed;
+        // Calculate the difference between current velocity and target velocity.
+        float speedChange = targetSpeed - rb.linearVelocityX;
+        // Change acceleration based on the difference.
+        float accelRate = (Mathf.Abs(speedChange) > 0.1f) ? 10 : -10;
+
+        float movement = Mathf.Pow(Mathf.Abs(speedChange) * accelRate, 1) * Mathf.Sign(speedChange);
+
+        rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
     }
 
     void MovingCheck()

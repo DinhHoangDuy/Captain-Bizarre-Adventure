@@ -28136,6 +28136,21 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2791965336337402899, guid: 65619c1c7db553348a9b9356bf2ba003,
+        type: 3}
+      propertyPath: acceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791965336337402899, guid: 65619c1c7db553348a9b9356bf2ba003,
+        type: 3}
+      propertyPath: deceleration
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791965336337402899, guid: 65619c1c7db553348a9b9356bf2ba003,
+        type: 3}
+      propertyPath: velocityPower
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3961857234049573280, guid: 65619c1c7db553348a9b9356bf2ba003,
         type: 3}
       propertyPath: spBar
@@ -28145,6 +28160,21 @@ PrefabInstance:
         type: 3}
       propertyPath: startSP
       value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4593632438534977704, guid: 65619c1c7db553348a9b9356bf2ba003,
+        type: 3}
+      propertyPath: basicAttackHitForce
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4593632438534977704, guid: 65619c1c7db553348a9b9356bf2ba003,
+        type: 3}
+      propertyPath: basicAttackRecoilForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4593632438534977704, guid: 65619c1c7db553348a9b9356bf2ba003,
+        type: 3}
+      propertyPath: criticalDamageMultiplier
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 5485901073725064786, guid: 65619c1c7db553348a9b9356bf2ba003,
         type: 3}
@@ -28271,6 +28301,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 438170698874906039, guid: bff6a6abe5eec8adba6f43e051e61b67,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 3d17ad023d084d78e9c8701da44a2561, type: 2}
     - target: {fileID: 1405327862470805446, guid: bff6a6abe5eec8adba6f43e051e61b67,
         type: 3}
       propertyPath: m_Name
@@ -28285,6 +28320,11 @@ PrefabInstance:
         type: 3}
       propertyPath: groundLayer.m_Bits
       value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3578984411950672682, guid: bff6a6abe5eec8adba6f43e051e61b67,
+        type: 3}
+      propertyPath: isDummy
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3578984411950672682, guid: bff6a6abe5eec8adba6f43e051e61b67,
         type: 3}
@@ -30540,12 +30580,12 @@ PrefabInstance:
     - target: {fileID: 7962801199719056906, guid: 32660922bee375a4196b518304e37c56,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -755.6231
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7962801199719056906, guid: 32660922bee375a4196b518304e37c56,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 34.612
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8333884473081631599, guid: 32660922bee375a4196b518304e37c56,
         type: 3}

@@ -399,6 +399,11 @@ MonoBehaviour:
   wallSlideSpeed: 3
   gravityScale: 3
   dashForce: 40
+  acceleration: 10
+  deceleration: -100
+  velocityPower: 1
+  potionHealAmount: 3
+  requiredSPForHeal: 30
 --- !u!114 &6975911404759449875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +429,7 @@ MonoBehaviour:
   inputBlocked: 0
   isTransitingFromTheBottomUp: 0
   wallJumpUnlocked: 0
+  isWallSliding: 0
   wallSlidingSpeed: 1
   wallJumpingPower: {x: 6, y: 16}
   dashUnlocked: 0
@@ -473,13 +479,10 @@ MonoBehaviour:
   isWarthChipEquipped: 0
   WarthCritDMGBuffValue: 0
   attackPoint: {fileID: 5593513566568407175}
-  attackRange: 0.8
+  attackRange: 1
   enemyLayers:
     serializedVersion: 2
     m_Bits: 8
-  destroyableLayers:
-    serializedVersion: 2
-    m_Bits: 128
   dummyLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -712,7 +715,7 @@ Transform:
   m_GameObject: {fileID: 9021783603922858408}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.039, y: -0.939, z: 0}
+  m_LocalPosition: {x: 1.52, y: -0.939, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -13,6 +13,10 @@ public class CharacterStats : MonoBehaviour, IDataPersistence
     [SerializeField] private float wallSlideSpeed = 3f;
     [SerializeField] private float gravityScale = 1f;
     [SerializeField] private float dashForce = 10f;
+    [Tooltip("Character moving acceleration")] public float acceleration;
+    [Tooltip("Character moving deceleration")] public float deceleration;
+    public float velocityPower;
+
     public float MoveSpeed { get { return moveSpeed; } }
     public float JumpForce { get { return jumpForce; } }
     public float WallJumpForce { get { return wallJumpForce; } }
@@ -27,6 +31,7 @@ public class CharacterStats : MonoBehaviour, IDataPersistence
     [SerializeField] private int requiredSPForHeal = 30;
     public int _potionHealAmount { get { return potionHealAmount; } }
     public int _requiredSPForHeal { get { return requiredSPForHeal; } }
+
     #endregion
 
 

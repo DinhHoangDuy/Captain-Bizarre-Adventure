@@ -31,6 +31,8 @@ public class Mushroom : MonoBehaviour
     }
     void Update()
     {
+        if (enemyHealth.isDummy) return; // If the enemy is a dummy, it will not attack.
+
         if (!enemyGroundMovement.EnemyFound()) return;
         if (attackTimer <= 0 && !enemyGroundMovement.isAttacking)
         {

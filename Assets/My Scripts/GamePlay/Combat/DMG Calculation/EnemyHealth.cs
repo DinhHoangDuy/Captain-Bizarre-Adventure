@@ -9,17 +9,23 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Enemy Health")]
     private EnemyResistance enemyResistance;
-    [SerializeField] private float maxHealth;
-    [SerializeField] private bool isDummy = false;
-    private float force;
-    private int pushDirection;
-    private float currentHealth;
+    private Rigidbody2D rb;
     
+    [Header("Enemy Health Settings")]
+    [SerializeField] private float maxHealth;
+    [Tooltip("If the enemt is a dummy object, it will not take damage. Their damage taken will be recorded instead.")]
+    [SerializeField] internal bool isDummy = false;
+    public float damageTaken = 0;
+
     [Header("Developer Settings")]
     public bool invincibleAlwaysOn = false;
     public bool unableToPush = false;
 
-    private Rigidbody2D rb;
+    private float force;
+    private int pushDirection;
+    private float currentHealth;
+    
+
 
     private void Awake()
     {
@@ -49,10 +55,12 @@ public class EnemyHealth : MonoBehaviour
             return;
         }
 
-        // Check if the GameObject has an Dummy script attached to it, if yes, sent the damage value to the script instead of reducing Health point.
-        if (GetComponent<Dummy>() == null && isDummy)
+        // Check if the GameObject is a dummy object. If yes, record the damage taken instead of applying it.
+        if (isDummy)
         {
-            GetComponent<Dummy>().TakeDamage(damage);
+            damageTaken += damage;
+            Debug.Log("Dummy object took " + damage + " damage. Total damage taken: " + damageTaken);
+            return;
         }        
         else
         {

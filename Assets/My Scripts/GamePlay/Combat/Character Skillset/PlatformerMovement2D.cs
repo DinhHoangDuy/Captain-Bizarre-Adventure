@@ -20,7 +20,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     public float characterGravityScale;
     private float coyoteTime = 0.2f;
     private float coyoteTimeCounter;
-    
+
     #region Extra Jumps
     public int extraJumps = 1;
     private int extraJumpsCounter;
@@ -67,7 +67,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     private float dashCooldown = 1f;
     private float dashCurrentCooldown;
     #endregion
-    
+
     private float _fallSpeedYDampingChangeThreshold;
 
     [HideInInspector] public Rigidbody2D rb;
@@ -78,6 +78,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     [SerializeField] public LayerMask wallLayer;
 
     // Only for Debugging
+    private float currentVelocityX;
     private float currentVelocityY;
 
     private void OnEnable()
@@ -105,26 +106,31 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     }
 
     private void Start()
-    {     
+    {
+        coyoteTimeCounter = coyoteTime;
+    }
+
+    private void Update()
+    {
+        #region Frequent Update the Movement Stats.
+        // TODO: Move all stats below to the start method after final testing.
         moveSpeed = stats.MoveSpeed;
         jumpingPower = stats.JumpForce;
         characterGravityScale = stats.GravityScale;
         rb.gravityScale = characterGravityScale;
         extraJumpsCounter = extraJumps;
-        coyoteTimeCounter = coyoteTime;
         dashForce = stats.DashForce;
-    }
+        dashForce = stats.DashForce;
+        #endregion
 
-    private void Update()
-    {
-        dashForce = stats.DashForce; // Remove this line after testing. 
+
         if (isDashing) return;
         horizontal = playerInput.Player.Move.ReadValue<Vector2>().x;
-        if(horizontal < 0)
+        if (horizontal < 0)
         {
             moveDirection = -1f;
         }
-        else if(horizontal > 0)
+        else if (horizontal > 0)
         {
             moveDirection = 1f;
         }
@@ -133,33 +139,37 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             moveDirection = 0f;
         }
         #region Vertical Jumping
-        if(playerInput.Player.Jump.triggered && !isWallSliding)
+        if (playerInput.Player.Jump.triggered && !isWallSliding)
         {
-            if(coyoteTimeCounter <= 0f)
+            if (coyoteTimeCounter <= 0f)
             {
-                if(expansionChipStatus.isDreamBuilderAvailable)
+                if (expansionChipStatus.isDreamBuilderAvailable)
                 {
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                    // rb.AddForce(new Vector2(rb.linearVelocity.x, jumpingPower), ForceMode2D.Impulse);
                     Instantiate(dreamBuilderPlatform, dreamBuilderPlatformSpawnPoint.position, Quaternion.identity);
                     expansionChipStatus.dreamBuilderPlatformCurrentCooldown = expansionChipStatus.dreamBuilderPlatformCooldown;
                     groundJumpAnimation = true;
                     wallJumpAnimation = false;
                 }
-                else if(extraJumpsCounter > 0 && doubleJumpUnlocked)
+                else if (extraJumpsCounter > 0 && doubleJumpUnlocked)
                 {
                     extraJumpsCounter--;
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                    // rb.AddForce(new Vector2(rb.linearVelocity.x, jumpingPower), ForceMode2D.Impulse);
                     groundJumpAnimation = true;
+                    wallJumpAnimation = false;
                 }
             }
             else
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower); 
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+                // rb.AddForce(new Vector2(rb.linearVelocity.x, jumpingPower), ForceMode2D.Impulse);
                 groundJumpAnimation = true;
                 wallJumpAnimation = false;
             }
         }
-        if(playerInput.Player.Jump.WasReleasedThisFrame() && rb.linearVelocity.y > 0 && !isTransitingFromTheBottomUp)
+        if (playerInput.Player.Jump.WasReleasedThisFrame() && rb.linearVelocity.y > 0 && !isTransitingFromTheBottomUp)
         {
             // Stop Moving Upwards immediately when Jump Button is released
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0f);
@@ -173,9 +183,9 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         }
         #endregion
 
-        if(IsGrounded())
+        if (IsGrounded())
         {
-            extraJumpsCounter  = extraJumps;
+            extraJumpsCounter = extraJumps;
             coyoteTimeCounter = coyoteTime;
             isTransitingFromTheBottomUp = false;
         }
@@ -184,7 +194,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        if(rb.linearVelocity.y < -20f)
+        if (rb.linearVelocity.y < -20f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -20f);
         }
@@ -192,7 +202,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
         WallSlide();
         WallJump();
-        if(!isWallSliding)
+        if (!isWallSliding)
         {
             HoldPositionDelay = 0.1f;
         }
@@ -205,47 +215,68 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             }
         }
 
-        if(dashUnlocked && playerInput.Player.Dash.triggered && canDash)
+        if (dashUnlocked && playerInput.Player.Dash.triggered && canDash)
         {
             StartCoroutine(Dash());
         }
 
-        if(dashCurrentCooldown > 0f)
+        if (dashCurrentCooldown > 0f)
         {
             dashCurrentCooldown -= Time.deltaTime;
             canDash = false;
         }
         else
         {
-            if(IsGrounded())
+            if (IsGrounded())
             {
                 canDash = true;
             }
         }
 
         // Debug Only
-        currentVelocityY = rb.linearVelocity.y;
+        currentVelocityY = rb.linearVelocityY;
+        currentVelocityX = rb.linearVelocityX;
+        // Debug.Log("Velocity X: " + currentVelocityX + ". Velocity Y: " + currentVelocityY);
     }
 
     private void FixedUpdate()
     {
-        if(inputBlocked || isDashing)
+        if (inputBlocked || isDashing)
         {
             return;
-        } 
-            
+        }
+
         if (!isWallJumping)
         {
             // Horizontal Movement
-            if(!inputBlocked)
+            if (!inputBlocked)
             {
-                rb.linearVelocity = new Vector2(moveDirection * moveSpeed, rb.linearVelocity.y);
+                if (horizontal == 0 && Mathf.Abs(rb.linearVelocityX) <= 2f)
+                {
+                    rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+                }
+                else
+                {
+                    // Set desired speed (velocity) based on input.
+                    float targetSpeed = moveDirection * moveSpeed;
+                    // Calculate the difference between current velocity and target velocity.
+                    float speedChange = targetSpeed - rb.linearVelocityX;
+                    // Change acceleration based on the difference.
+                    float accelRate = (Mathf.Abs(speedChange) > 0.1f) ? stats.acceleration : stats.deceleration;
+
+                    float movement = Mathf.Pow(Mathf.Abs(speedChange) * accelRate, stats.velocityPower) * Mathf.Sign(speedChange);
+
+                    rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+                }
+
+                // Drafts
+                // rb.linearVelocity = new Vector2(moveDirection * moveSpeed, rb.linearVelocity.y);
+                // rb.AddForce(new Vector2(moveDirection * moveSpeed, 0), ForceMode2D.Force);
             }
-            // rb.linearVelocity = new Vector2(moveDirection * moveSpeed, rb.linearVelocity.y);
         }
 
 
-        if(rb.linearVelocity.y < 0)
+        if (rb.linearVelocity.y < 0)
         {
             rb.gravityScale = characterGravityScale * 1.5f;
         }
@@ -280,25 +311,27 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void WallSlide()
     {
-        if(!wallJumpUnlocked) return; //Skip Wall Slide if Wall Jump is not Unlocked
+        if (!wallJumpUnlocked) return; //Skip Wall Slide if Wall Jump is not Unlocked
 
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
 
-            if(extraJumpsCounter == 0)
+            if (extraJumpsCounter == 0)
             {
                 extraJumpsCounter = extraJumps;
             }
 
-            if(HoldPositionDelay >= 0f)
+            if (HoldPositionDelay >= 0f)
             {
                 HoldPositionDelay -= Time.deltaTime;
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+                // rb.AddForce(new Vector2(rb.linearVelocity.x, 0f), ForceMode2D.Force);
             }
             else
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue));
+                // rb.AddForce(new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue)), ForceMode2D.Force);
             }
         }
         else
@@ -309,13 +342,13 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void WallJump()
     {
-        if(!wallJumpUnlocked) return; //Skip Wall Jump if Wall Jump is not Unlocked
+        if (!wallJumpUnlocked) return; //Skip Wall Jump if Wall Jump is not Unlocked
         if (isWallSliding)
         {
             isWallJumping = false;
             // Wall Jumping Direction
             // if (transform.localRotation.y >= 0)
-            if(isFacingRight)
+            if (isFacingRight)
             {
                 wallJumpingDirection = -1f;
             }
@@ -340,6 +373,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             wallJumpAnimation = true;
             groundJumpAnimation = false;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            // rb.AddForce(new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y), ForceMode2D.Impulse); 
             wallJumpingCounter = 0f;
             Flip();
 
@@ -354,7 +388,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     }
     #endregion
 
-    
+
     public void Flip()
     {
         isFacingRight = !isFacingRight;
@@ -364,7 +398,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     private IEnumerator Dash()
     {
         anim.SetTrigger("Dash");
-        Debug.Log("Dash!");
+        // Debug.Log("Dash!");
 
         canDash = false;
         isDashing = true;
@@ -373,11 +407,11 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         rb.gravityScale = 0f;
 
         float dashDirection;
-        if(horizontal < 0)
+        if (horizontal < 0)
         {
             dashDirection = -1f;
         }
-        else if(horizontal > 0)
+        else if (horizontal > 0)
         {
             dashDirection = 1f;
         }
