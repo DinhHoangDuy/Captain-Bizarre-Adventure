@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6870217922723163676}
   - component: {fileID: 1942170209520036831}
   m_Layer: 0
-  m_Name: Unlock Double Jump
+  m_Name: Unlock Ultimate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,6 +219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff941abd885023dc4bd2d8bcc496ea83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillToUnlock: 1
+  skillToUnlock: 0
   particleSystem: {fileID: 3030651958510780131, guid: ab1149396d0c13a90bc150b82ba2145d,
     type: 3}

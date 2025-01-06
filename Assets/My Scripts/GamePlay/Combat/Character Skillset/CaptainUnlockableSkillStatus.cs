@@ -1,19 +1,32 @@
 using UnityEngine;
 
-public class CharacterSkillSet : MonoBehaviour
+public class CaptainUnlockableSkillStatus: MonoBehaviour, IDataPersistence
 {
-    public static CharacterSkillSet instance;
 
-    #region Soaring Wing (Double Jump skill tree)
-    [Tooltip("This skill enables double jump")] public bool DoubleJumpActive = false;
-    #endregion
+    // This script is attached to the player character, which will be used to check if the unlockable skills are active or not
+    public static CaptainUnlockableSkillStatus instance;
 
-    #region Wall Jump (Wall Jump skill tree)
-    [Tooltip("This skill enables wall jump")] public bool WallJumpActive = false;
-    #endregion
-
-    #region Dash (Dash skill tree)
+    [Tooltip("This skill enables using Ultimate")] public bool UltimateActive = false;
     [Tooltip("This skill enables dash")] public bool DashActive = false;
+    [Tooltip("This skill enables wall jump")] public bool WallJumpActive = false;
+    [Tooltip("This skill enables double jump")] public bool DoubleJumpActive = false;
+
+    #region Game Data
+    public void LoadData(GameData data)
+    {
+        UltimateActive = data.ultimateUnlocked;
+        DashActive = data.dashUnlocked;
+        WallJumpActive = data.wallJumpUnlocked;
+        DoubleJumpActive = data.doubleJumpUnlocked;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.ultimateUnlocked = UltimateActive;
+        data.dashUnlocked = DashActive;
+        data.wallJumpUnlocked = WallJumpActive;
+        data.doubleJumpUnlocked = DoubleJumpActive;
+    }
     #endregion
 
     private void Awake()
@@ -25,6 +38,8 @@ public class CharacterSkillSet : MonoBehaviour
     }
     private void Update()
     {
+        // No need to check Ultimate skill, because it is checked frequently in the CaptainSkillSet script
+
         // Check if Double Jump skill is active
         if(DoubleJumpActive)
         {

@@ -21,6 +21,7 @@ public class GameData
     public bool doubleJumpUnlocked;
     public bool wallJumpUnlocked;
     public bool dashUnlocked;
+    public bool ultimateUnlocked;
     public SerializableDictionary<string, bool> unlockedSkills;
 
     
@@ -34,10 +35,12 @@ public class GameData
         lastLocationSaved = "Map 1";
         lastSavedChairVirtualCamera = null;
         lastSavedChairPositionComposer = null;
+        
         // Default character skill set
-        doubleJumpUnlocked = true;
-        dashUnlocked = true;
-        wallJumpUnlocked = true;
-        unlockedSkills = new SerializableDictionary<string, bool>();
+        doubleJumpUnlocked  = false;
+        dashUnlocked        = false;
+        wallJumpUnlocked    = false;
+        ultimateUnlocked    = false;
+        unlockedSkills      = new SerializableDictionary<string, bool>();
     }
 }

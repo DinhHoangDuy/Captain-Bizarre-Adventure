@@ -2,19 +2,17 @@ using System;
 using TMPro;
 using UnityEngine;
 
+// The backend for interaction with the player
 public class InteractionBackend : MonoBehaviour
 {
     [SerializeField] private TextMeshPro interactionText;
     private bool isInTheZone = false;
     private PlayerInput _inputAction;
-    
-    // Vending Machine
-    private VendingMachine vendingMachine;
+    internal bool interactionTriggered = false;
     
     void Awake()
     {
         _inputAction = new PlayerInput();
-        vendingMachine = GetComponent<VendingMachine>();
     }
 
     private void OnEnable()
@@ -36,14 +34,7 @@ public class InteractionBackend : MonoBehaviour
         if(_inputAction.Player.Interact.triggered && isInTheZone)
         {
             Debug.Log("Interaction Triggered by player");
-            if (vendingMachine != null)
-            {
-                vendingMachine.UseVendingMachine();
-            }
-            else
-            {
-                Debug.LogWarning("Vending Machine is not attached to the object. This might not be a vending machine");
-            }
+            interactionTriggered = true;
         }
     }
 

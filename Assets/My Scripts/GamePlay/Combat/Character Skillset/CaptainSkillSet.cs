@@ -20,6 +20,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     - Damage type: Physical
     - Blood Moon Blade: Captain's basic attack is a 2-hit in a single button. Each hit deals 10 + 60%/70%/80% of Captain's basic attack damage as physical damage.
     - Ultimate skill "The Vow under the Moon":
+        + Is locked at the start of the game. The skill will be unlocked after finding the "Moonlight Blade" in the game.
         + Shoots a wave of energy in a straight line, dealing 150/170 (+ 105% of physical attack) as physical damage to the first enemy hit. This attack can't crit.
         + "The Vow under the Moon" will grant the "Unbreakable Will" for 10 seconds if the buff is not active.
     - Passive "Unbreakable Will": 
@@ -29,94 +30,94 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     #endregion
 
     #region Captain's Skill Set Attributes
-        [Header("Captain's Skill Set Attributes")]
-        [Header("Captain's Basic Attributes")]
-            public float basicATK = 100;
-            [SerializeField] private float criticalRate = 20f;
-            [SerializeField] private float criticalDamageMultiplier = 150f;
-            [SerializeField] private float attackRate = 2f;
-            float nextAttackTime = 0f;
-            
-            [SerializeField] private float SPRegenRate = 1;
-            [SerializeField] private int SPRegenEfficiency = 100;
-            [SerializeField] private int maxSP = 70;
-            public int _maxSP { get { return maxSP; } }
+    [Header("Captain's Skill Set Attributes")]
+    [Header("Captain's Basic Attributes")]
+    public float basicATK = 100;
+    [SerializeField] private float criticalRate = 20f;
+    [SerializeField] private float criticalDamageMultiplier = 150f;
+    [SerializeField] private float attackRate = 2f;
+    float nextAttackTime = 0f;
 
-        [Header("Captain's Basic Attack Attributes")]
-            [SerializeField] private int basicAttackBaseDMG = 10;
-            [SerializeField] private float basicAttackMultiplier = 60f;
-            // [SerializeField] private float basicAttackUWTriggerChance = 20f;
-            [SerializeField] private float basicAttackHitForce = 20f;
-            [SerializeField] private float basicAttackRecoilForce = 5f;
+    [SerializeField] private float SPRegenRate = 1;
+    [SerializeField] private int SPRegenEfficiency = 100;
+    [SerializeField] private int maxSP = 70;
+    public int _maxSP { get { return maxSP; } }
 
-        [Header("Captain's Ultimate Attributes")]
-            [SerializeField] private GameObject waveOfEnergyPrefab;
-            [SerializeField] private float ultimateBaseDamage = 150;
-            [SerializeField] private float ultimateDamageMultiplier = 105f;
-            [SerializeField] private float waveHitForce = 30f;
-            [SerializeField] private float waveSpeed = 30f;
-            [SerializeField] private float waveLifeTime = 0.2f;
+    [Header("Captain's Basic Attack Attributes")]
+    [SerializeField] private int basicAttackBaseDMG = 10;
+    [SerializeField] private float basicAttackMultiplier = 60f;
+    // [SerializeField] private float basicAttackUWTriggerChance = 20f;
+    [SerializeField] private float basicAttackHitForce = 20f;
+    [SerializeField] private float basicAttackRecoilForce = 5f;
 
-            [Tooltip("Ultimate Boost when passive is available")]
-            [SerializeField] private float ultimateUWPassiveBonus = 10f;
+    [Header("Captain's Ultimate Attributes")]
+    [SerializeField] private GameObject waveOfEnergyPrefab;
+    [SerializeField] private float ultimateBaseDamage = 150;
+    [SerializeField] private float ultimateDamageMultiplier = 105f;
+    [SerializeField] private float waveHitForce = 30f;
+    [SerializeField] private float waveSpeed = 30f;
+    [SerializeField] private float waveLifeTime = 0.2f;
+    private bool isUltimateUnlocked = false;
 
-            [SerializeField] private float ultimateCooldown = 10f;
-            [SerializeField] private int requiredSP = 60;
-            public int _requiredSP { get { return requiredSP; } }          
+    [Tooltip("Ultimate Boost when passive is available")]
+    [SerializeField] private float ultimateUWPassiveBonus = 10f;
+    [SerializeField] private float ultimateCooldown = 10f;
+    [SerializeField] private int requiredSP = 60;
+    public int _requiredSP { get { return requiredSP; } }
 
-        //Passive
-        [Header("Captain's Passive Attributes")]
-        [SerializeField] private float passiveDuration = 5f;
-        [SerializeField] private int passiveDMGBoost = 30;
-        private float originalGravityScale = 0;
-       
+    //Passive
+    [Header("Captain's Passive Attributes")]
+    [SerializeField] private float passiveDuration = 5f;
+    [SerializeField] private int passiveDMGBoost = 30;
+    private float originalGravityScale = 0;
+
     #endregion
 
     #region Expansion Chip System
-        // Hammer Expansion Chip: Increase the required SP by 10, and the ultimate damage by 40%
-        // Swiftness Expansion Chip: Decrease the required SP by 10, and decrease the cooldown by 20%
-        private bool isRequiredSPIncreased = false;
-        // private bool isRequiredSPDecreased = false;
-        private int originalRequiredSP;
-        private float originalUltimateCooldown;
-        public void IncreaseRequiredSP(int value)
-        {
-            requiredSP += value;
-        }
-        public void DecreaseRequiredSP(int value)
-        {
-            requiredSP -= value;
-        }
-        public void RestoreTheOriginalSPRequirement()
-        {
-            requiredSP = originalRequiredSP;
-        }
-        public void DecreaseUltimateCooldown(int value)
-        {
-            ultimateCooldown -= (originalUltimateCooldown * value) / 100;
-        }
-        public void RestoreOriginalUltimateCooldown()
-        {
-            ultimateCooldown = originalUltimateCooldown;
-        }
+    // Hammer Expansion Chip: Increase the required SP by 10, and the ultimate damage by 40%
+    // Swiftness Expansion Chip: Decrease the required SP by 10, and decrease the cooldown by 20%
+    private bool isRequiredSPIncreased = false;
+    // private bool isRequiredSPDecreased = false;
+    private int originalRequiredSP;
+    private float originalUltimateCooldown;
+    public void IncreaseRequiredSP(int value)
+    {
+        requiredSP += value;
+    }
+    public void DecreaseRequiredSP(int value)
+    {
+        requiredSP -= value;
+    }
+    public void RestoreTheOriginalSPRequirement()
+    {
+        requiredSP = originalRequiredSP;
+    }
+    public void DecreaseUltimateCooldown(int value)
+    {
+        ultimateCooldown -= (originalUltimateCooldown * value) / 100;
+    }
+    public void RestoreOriginalUltimateCooldown()
+    {
+        ultimateCooldown = originalUltimateCooldown;
+    }
 
-        // Wrath Chip Buff: If passive "Unbreakable Will" is active, Captain deals 20% bonus Crit DMG.
-        public bool isWarthChipEquipped = false;
-        [HideInInspector] public float WarthCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
-    #endregion 
+    // Wrath Chip Buff: If passive "Unbreakable Will" is active, Captain deals 20% bonus Crit DMG.
+    public bool isWarthChipEquipped = false;
+    [HideInInspector] public float WarthCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
+    #endregion
 
     #region Script Dependencies
-        [Header("Script Dependencies")]
-        private PlatformerMovement2D platformerMovement2D;
-        [SerializeField] private Transform attackPoint;
-        [SerializeField] private float attackRange = 1f;
-        [SerializeField] private LayerMask enemyLayers;
-        [SerializeField] private LayerMask dummyLayers;
-        private DamageOutCalculator dmgCalulator;
-        private PlatformerMovement2D platformerMovement;
-        private ExpansionChipStatus expansionChipStatus;
-        private Rigidbody2D rb;
-        private Animator anim;
+    [Header("Script Dependencies")]
+    private PlatformerMovement2D platformerMovement2D;
+    [SerializeField] private Transform attackPoint;
+    [SerializeField] private float attackRange = 1f;
+    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] private LayerMask dummyLayers;
+    private DamageOutCalculator dmgCalulator;
+    private PlatformerMovement2D platformerMovement;
+    private ExpansionChipStatus expansionChipStatus;
+    private Rigidbody2D rb;
+    private Animator anim;
     #endregion
 
     #region Current Status 
@@ -128,22 +129,13 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     private float ultimateDamage;
     public static float currentUltimateCooldown = 0f;
     public float _ultimateCooldown { get { return ultimateCooldown; } }
-    
-    public void LoadData(GameData data)
-    {
-        this.currentSP = data.currentSP;
-    }
-    public void SaveData(ref GameData data)
-    {
-        data.currentSP = this.currentSP;
-    }
     #endregion   
 
     #region New Input System
     private PlayerInput playerInput;
     private InputAction FireInput;
     private InputAction UltimateInput;
-    
+
 
     private void OnEnable()
     {
@@ -169,34 +161,36 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         rb = GetComponent<Rigidbody2D>();
         expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
     }
-    private void Start()    
+    private void Start()
     {
         originalRequiredSP = requiredSP;
         originalUltimateCooldown = ultimateCooldown;
         originalGravityScale = PlatformerMovement2D.instance.characterGravityScale;
-        
+
         //Get a Warning if the wave of energy prefab is not assigned
-        if(waveOfEnergyPrefab == null)
+        if (waveOfEnergyPrefab == null)
         {
             Debug.LogWarning("Wave of Energy Prefab is not assigned to the Captain's Skill Set");
         }
     }
     private void Update()
     {
+        // Update the Ultimate Unlock Status
+        isUltimateUnlocked = CaptainUnlockableSkillStatus.instance.UltimateActive;
         // Limit the SP to the maxSP
         currentSP = Mathf.Clamp(currentSP, 0, maxSP);
 
         // Limite the SP regen efficiency as low as 0
         SPRegenEfficiency = Mathf.Clamp(SPRegenEfficiency, 100, int.MaxValue);
-        
+
         //Update the Ultimate Cooldown
-        if(currentUltimateCooldown > 0)
+        if (currentUltimateCooldown > 0)
         {
             currentUltimateCooldown -= Time.deltaTime;
         }
 
         // Check if the player is attacking
-        if(!isAttacking)
+        if (!isAttacking)
         {
             if (playerInput.Player.Fire.triggered)
             {
@@ -205,7 +199,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         }
 
         #region Hammer Expansion Chip
-        if(expansionChipStatus.isHammerChipEquipped && !isRequiredSPIncreased)
+        if (expansionChipStatus.isHammerChipEquipped && !isRequiredSPIncreased)
         {
             IncreaseRequiredSP(25);
             isRequiredSPIncreased = true;
@@ -217,7 +211,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         }
         #endregion
 
-        if(expansionChipStatus.isWarthChipEquipped)
+        if (expansionChipStatus.isWarthChipEquipped)
         {
             Debug.Log("Warth Chip is equipped. Crit DMG Bonus: " + WarthCritDMGBuffValue + "%");
         }
@@ -226,16 +220,16 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
 
     #region Captain Skill Set Methods
     public void BasicAttack()
-    {   
+    {
         //Calculate the Basic Attack Damage
         basicAttackDamage = basicAttackBaseDMG + (basicATK * basicAttackMultiplier / 100);
         basicAttackDamage = dmgCalulator.BoostDamage(basicAttackDamage);
 
         // Sent the trigger to the animator coder
-        if(Time.time >= nextAttackTime)
+        if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + 1f / attackRate;
-            anim.SetTrigger("Basic Attack");       
+            anim.SetTrigger("Basic Attack");
         }
     }
     public void UltimateAttack()
@@ -244,7 +238,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         ultimateDamage = ultimateBaseDamage + (basicATK * ultimateDamageMultiplier / 100);
         ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
         // Check if the Unbreakable Will is active
-        if(isUnbreakableWillActive)
+        if (isUnbreakableWillActive)
         {
             ultimateDamage += ultimateDamage * ultimateUWPassiveBonus / 100;
         }
@@ -258,31 +252,31 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         {
             criticalHit = false;
         }
-        if(criticalHit)
+        if (criticalHit)
         {
             ultimateDamage = ultimateDamage * (criticalDamageMultiplier / 100);
-            if(isUnbreakableWillActive && criticalHit)
+            if (isUnbreakableWillActive && criticalHit)
             {
                 ultimateDamage += ultimateDamage * WarthCritDMGBuffValue / 100;
             }
             criticalHit = false;
         }
 
-        if(expansionChipStatus.isHammerChipEquipped)
+        if (expansionChipStatus.isHammerChipEquipped)
         {
             ultimateDamage += ultimateDamage * HammerChip.hammerChipBuffValue / 100;
         }
         //Check if Captain has enough SP and one stack to cast the ultimate
-        if(CanCastUltimate() && !isAttacking)
+        if (CanCastUltimate() && !isAttacking)
         {
-            if(PlatformerMovement2D.instance.isWallSliding)
+            if (PlatformerMovement2D.instance.isWallSliding)
             {
                 PlatformerMovement2D.instance.Flip();
             }
             anim.SetTrigger("Ultimate");
             ultimateTriggered = true;
             CostSP(requiredSP);
-            
+
             //Set the Ultimate Cooldown
             currentUltimateCooldown = ultimateCooldown;
 
@@ -300,23 +294,23 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         bool hasEnoughSP = currentSP >= requiredSP;
         bool isCooldownOver = currentUltimateCooldown <= 0;
 
-        bool canCast = hasEnoughSP && isCooldownOver;
+        bool canCast = hasEnoughSP && isCooldownOver && isUltimateUnlocked;
         return canCast;
     }
     //Passive
     private Coroutine passiveCoroutine;
     public bool isAttacking = false;
-        
+
     private IEnumerator ActivatePassive()
     {
-        if(!isUnbreakableWillActive)
+        if (!isUnbreakableWillActive)
         {
             isUnbreakableWillActive = true;
             dmgCalulator.IncreaseDMGBoost(passiveDMGBoost);
         }
         yield return new WaitForSeconds(passiveDuration);
         dmgCalulator.DecreaseDMGBoost(passiveDMGBoost);
-        isUnbreakableWillActive = false;        
+        isUnbreakableWillActive = false;
     }
     #endregion
 
@@ -328,7 +322,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         Collider2D[] hitWall = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, PlatformerMovement2D.instance.wallLayer);
         bool criticalHit = false;
 
-        if(hitEnemies.Length > 0)
+        if (hitEnemies.Length > 0)
         {
             //Critical Rate calculation
             if (UnityEngine.Random.Range(0, 100) <= criticalRate)
@@ -341,11 +335,11 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
             }
 
             //SP Regen
-            if(currentSP < maxSP)
+            if (currentSP < maxSP)
             {
                 currentSP += SPRegenRate * (SPRegenEfficiency / 100);
             }
-            
+
             // Push the characters behind
             float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
             float force = basicAttackRecoilForce;
@@ -354,27 +348,27 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
 
         //Damage them
         foreach (Collider2D enemy in hitEnemies)
-        {    
+        {
             // Calculate the damage taken only when enemy is found in the range      
-            if(criticalHit)
-            {        
+            if (criticalHit)
+            {
                 basicAttackDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
-                if(expansionChipStatus.isWarthChipEquipped)
+                if (expansionChipStatus.isWarthChipEquipped)
                 {
                     basicAttackDamage += basicAttackDamage * WarthCritDMGBuffValue / 100;
                 }
-            }          
+            }
 
             // Deal the damage to the enemy
             // Reset the critical hit to false
             criticalHit = false;
-            
+
             // Calculate the push force and direction based on the player's direction and the enemy's position
             float directionX = enemy.transform.position.x - transform.position.x;
             float pushDirection = directionX > 0 ? 1 : -1;
 
             // Push the enemy
-            if(!enemy.GetComponent<EnemyHealth>().unableToPush)
+            if (!enemy.GetComponent<EnemyHealth>().unableToPush)
             {
                 enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(pushDirection * basicAttackHitForce, 0), ForceMode2D.Impulse);
             }
@@ -383,7 +377,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
             enemy.GetComponent<EnemyResistance>().TakeDamage(basicAttackDamage);
             enemy.GetComponent<EnemyHealth>().DestroyableTakeDMG(1);
         }
-        if(hitWall.Length > 0)
+        if (hitWall.Length > 0)
         {
             // Push the characters behind
             float pushDirection = platformerMovement2D.IsLookingRight ? -1 : 1;
@@ -395,7 +389,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     {
         //Calculate the wave direction (left or right) only
         Quaternion waveRotation;
-        if(!platformerMovement2D.IsLookingRight)
+        if (!platformerMovement2D.IsLookingRight)
         {
             waveRotation = Quaternion.Euler(0, 0, 180);
         }
@@ -432,10 +426,21 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
-    
+
     // Cost SP
     public void CostSP(int cost)
     {
         currentSP -= cost;
     }
+
+    #region Game Data
+    public void LoadData(GameData data)
+    {
+        this.currentSP = data.currentSP;
+    }
+    public void SaveData(ref GameData data)
+    {
+        data.currentSP = this.currentSP;
+    }
+    #endregion
 }

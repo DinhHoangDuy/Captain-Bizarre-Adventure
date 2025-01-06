@@ -404,8 +404,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         isDashing = true;
 
         float originalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
-
         float dashDirection;
         if (horizontal < 0)
         {
@@ -419,6 +417,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         {
             dashDirection = isFacingRight ? 1f : -1f;
         }
+
         rb.linearVelocity = new Vector2(dashDirection * dashForce, 0f);
 
         if (!isFacingRight && dashDirection > 0f || isFacingRight && dashDirection < 0f)
@@ -433,14 +432,16 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     }
     #endregion
 
-    // public void BlockInput()
-    // {
-    //     inputBlocked = true;
-    // }
-    // public void UnblockInput()
-    // {
-    //     inputBlocked = false;
-    // }
+    #region Animation Events
+    public void StartDash()
+    {
+        rb.gravityScale = 0f;
+    }
+    public void EndDash()
+    {
+        rb.gravityScale = characterGravityScale;
+    }
+    #endregion
 
 
     #region Save and Load system

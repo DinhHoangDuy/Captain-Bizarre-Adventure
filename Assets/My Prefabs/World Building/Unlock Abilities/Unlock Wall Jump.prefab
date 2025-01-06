@@ -219,7 +219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff941abd885023dc4bd2d8bcc496ea83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillNameID: WallJump
-  skillToUnlock: 1
+  skillToUnlock: 2
   particleSystem: {fileID: 3030651958510780131, guid: ab1149396d0c13a90bc150b82ba2145d,
     type: 3}

@@ -106,6 +106,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -113,10 +126,10 @@ TextureImporter:
       name: Attack3_0
       rect:
         serializedVersion: 2
-        x: 62
-        y: 49
-        width: 25
-        height: 37
+        x: 0
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,10 +148,10 @@ TextureImporter:
       name: Attack3_1
       rect:
         serializedVersion: 2
-        x: 212
-        y: 49
-        width: 23
-        height: 38
+        x: 150
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,10 +170,10 @@ TextureImporter:
       name: Attack3_2
       rect:
         serializedVersion: 2
-        x: 362
-        y: 49
-        width: 25
-        height: 37
+        x: 300
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,12 +192,12 @@ TextureImporter:
       name: Attack3_3
       rect:
         serializedVersion: 2
-        x: 516
-        y: 49
-        width: 27
-        height: 31
-      alignment: 9
-      pivot: {x: 0.4, y: 0.6}
+        x: 450
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -201,12 +214,12 @@ TextureImporter:
       name: Attack3_4
       rect:
         serializedVersion: 2
-        x: 667
-        y: 50
-        width: 27
-        height: 32
-      alignment: 9
-      pivot: {x: 0.35, y: 0.58}
+        x: 600
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -223,12 +236,12 @@ TextureImporter:
       name: Attack3_5
       rect:
         serializedVersion: 2
-        x: 816
-        y: 49
-        width: 27
-        height: 31
-      alignment: 9
-      pivot: {x: 0.4, y: 0.6}
+        x: 750
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -245,12 +258,12 @@ TextureImporter:
       name: Attack3_6
       rect:
         serializedVersion: 2
-        x: 966
-        y: 49
-        width: 27
-        height: 32
-      alignment: 9
-      pivot: {x: 0.4, y: 0.58}
+        x: 900
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -267,12 +280,12 @@ TextureImporter:
       name: Attack3_7
       rect:
         serializedVersion: 2
-        x: 1109
-        y: 49
-        width: 47
-        height: 44
-      alignment: 9
-      pivot: {x: 0.38, y: 0.42}
+        x: 1050
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -289,12 +302,12 @@ TextureImporter:
       name: Attack3_9
       rect:
         serializedVersion: 2
-        x: 1258
-        y: 49
-        width: 47
-        height: 45
-      alignment: 9
-      pivot: {x: 0.4, y: 0.41}
+        x: 1350
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -308,45 +321,45 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attack3_18
+      name: Attack3_8
       rect:
         serializedVersion: 2
-        x: 1557
-        y: 49
-        width: 48
-        height: 52
-      alignment: 9
-      pivot: {x: 0.42, y: 0.35}
+        x: 1200
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3da23039dbb495babb24f151a47ce443
-      internalID: -881455185
+      spriteID: 7d3bf09a873128fcebf82c24e4aed661
+      internalID: -1936900830
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attack3_19
+      name: Attack3_10
       rect:
         serializedVersion: 2
-        x: 1405
-        y: 49
-        width: 51
-        height: 48
-      alignment: 9
-      pivot: {x: 0.43, y: 0.38}
+        x: 1500
+        y: 0
+        width: 150
+        height: 150
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a6219ebe6694ffd1b915103eecf3227
-      internalID: 1431243551
+      spriteID: 4c4ffb99d108cb65a877af96388ab459
+      internalID: 1478563881
       vertices: []
       indices: 
       edges: []
@@ -368,17 +381,7 @@ TextureImporter:
       Attack3_0: -48541499
       Attack3_1: 754548777
       Attack3_10: 1478563881
-      Attack3_11: 1263324496
-      Attack3_12: -970065864
-      Attack3_13: -1515987549
-      Attack3_14: 40214562
-      Attack3_15: 732238964
-      Attack3_16: 2051770095
-      Attack3_17: -2009292726
-      Attack3_18: -881455185
-      Attack3_19: 1431243551
       Attack3_2: -530291841
-      Attack3_20: 917508249
       Attack3_3: -273034580
       Attack3_4: -1575452169
       Attack3_5: 307803031

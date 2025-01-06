@@ -1,20 +1,21 @@
 using System;
 using UnityEngine;
 
+// This script is attached to the unlockable skills GameObject in the game, which will be dropped after a certain condition is met (defeating a boss, found on the ground, etc.)
 public class UnlockAbility : MonoBehaviour, IDataPersistence
 {
     private string skillNameID;
     [SerializeField] private SkillToUnlock skillToUnlock;
-    private CharacterSkillSet characterSkillSet;
+    private CaptainUnlockableSkillStatus skillUnlockStatus;
     [SerializeField] private ParticleSystem particleSystem;
     private bool isCollected = false;
 
     void Awake()
     {
-        characterSkillSet = FindAnyObjectByType<CharacterSkillSet>();
+        skillUnlockStatus = FindAnyObjectByType<CaptainUnlockableSkillStatus>();
         // Get the name of the skill to unlock
         skillNameID = Enum.GetName(typeof(SkillToUnlock), skillToUnlock);
-        if (characterSkillSet == null)
+        if (skillUnlockStatus == null)
         {
             Debug.LogError("Character Skill Set is null");
         }
@@ -23,15 +24,19 @@ public class UnlockAbility : MonoBehaviour, IDataPersistence
     // If one of the character skill is already unlocked and applied, self-destroy immediately
     private void Start()
     {
-        if (skillToUnlock == SkillToUnlock.DoubleJump && characterSkillSet.DoubleJumpActive)
+        if (skillToUnlock == SkillToUnlock.DoubleJump && skillUnlockStatus.DoubleJumpActive)
         {
             Destroy(gameObject);
         }
-        else if (skillToUnlock == SkillToUnlock.WallJump && characterSkillSet.WallJumpActive)
+        else if (skillToUnlock == SkillToUnlock.WallJump && skillUnlockStatus.WallJumpActive)
         {
             Destroy(gameObject);
         }
-        else if (skillToUnlock == SkillToUnlock.Dash && characterSkillSet.DashActive)
+        else if (skillToUnlock == SkillToUnlock.Dash && skillUnlockStatus.DashActive)
+        {
+            Destroy(gameObject);
+        }
+        else if (skillToUnlock == SkillToUnlock.Ultimate && skillUnlockStatus.UltimateActive)
         {
             Destroy(gameObject);
         }
@@ -54,13 +59,16 @@ public class UnlockAbility : MonoBehaviour, IDataPersistence
         switch (skill)
         {
             case SkillToUnlock.Dash:
-                characterSkillSet.DashActive = true;
+                skillUnlockStatus.DashActive = true;
                 break;
             case SkillToUnlock.WallJump:
-                characterSkillSet.WallJumpActive = true;
+                skillUnlockStatus.WallJumpActive = true;
                 break;
             case SkillToUnlock.DoubleJump:
-                characterSkillSet.DoubleJumpActive = true;
+                skillUnlockStatus.DoubleJumpActive = true;
+                break;
+            case SkillToUnlock.Ultimate:
+                skillUnlockStatus.UltimateActive = true;
                 break;
         }
     }
@@ -87,6 +95,7 @@ public class UnlockAbility : MonoBehaviour, IDataPersistence
 
 public enum SkillToUnlock
 {
+    Ultimate,
     DoubleJump,
     WallJump,
     Dash

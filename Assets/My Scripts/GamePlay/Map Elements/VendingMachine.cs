@@ -1,14 +1,31 @@
 using UnityEngine;
 
-[RequireComponent(typeof(InteractionBackend))]     
+
+// The frontend for interaction with the player.
+[RequireComponent(typeof(InteractionBackend))]
 public class VendingMachine : MonoBehaviour
 {
     [SerializeField] private VendingMachineType vendingMachineType;
     [SerializeField] private int vendingMachineValue;
 
+    private InteractionBackend interactionBackend;
+    void Start()
+    {
+        interactionBackend = GetComponent<InteractionBackend>();
+    }
+
+    void Update()
+    {
+        if (interactionBackend.interactionTriggered)
+        {
+            UseVendingMachine();
+        }
+    }
+
     public void UseVendingMachine()
     {
-        if(vendingMachineType == VendingMachineType.Health)
+        interactionBackend.interactionTriggered = false;
+        if (vendingMachineType == VendingMachineType.Health)
         {
             Debug.Log("Health Vending Machine used");
             var playerHealth = GameObject.FindWithTag("Player").GetComponent<PlayerHealth>();
@@ -18,7 +35,7 @@ public class VendingMachine : MonoBehaviour
             }
             else
             {
-                if(playerHealth.currentHealth == playerHealth.maxHealth)
+                if (playerHealth.currentHealth == playerHealth.maxHealth)
                 {
                     Debug.Log("Health is already full");
                 }
@@ -26,7 +43,7 @@ public class VendingMachine : MonoBehaviour
                 playerHealth.IncreaseHealth(vendingMachineValue);
             }
         }
-        else if(vendingMachineType == VendingMachineType.SP)
+        else if (vendingMachineType == VendingMachineType.SP)
         {
             Debug.Log("Energy Vending Machine used");
             var playerSP = GameObject.FindWithTag("Player").GetComponent<PlayerSP>();
@@ -36,7 +53,7 @@ public class VendingMachine : MonoBehaviour
             }
             else
             {
-                if(playerSP._currentSP == playerSP._maxSP)
+                if (playerSP._currentSP == playerSP._maxSP)
                 {
                     Debug.Log("SP is already full");
                 }
