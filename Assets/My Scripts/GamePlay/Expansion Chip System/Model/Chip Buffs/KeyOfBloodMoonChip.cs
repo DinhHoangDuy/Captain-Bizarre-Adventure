@@ -6,15 +6,12 @@ public class KeyOfBloodMoonChip : MonoBehaviour, IChip
 {
     public bool isBuffActive { get; set; }
     [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
-    ExpansionChipStatus IChip.expansionChipStatus { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    private ExpansionChipStatus expansionChipStatus;
 
     void Start()
     {
         expansionChipSlot = GetComponent<ExpansionChipSlot>();
-        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();    }
-
+    }
     void Update()
     {
         if(expansionChipSlot.isEquipped && !isBuffActive)
@@ -29,16 +26,16 @@ public class KeyOfBloodMoonChip : MonoBehaviour, IChip
     public void ApplyBuff()
     {
         Debug.Log("Applying Buff: Key of Blood Moon Chip");
-        expansionChipStatus.isKeyOfBloodMoonEquipped = true;
-        Debug.Log("Key of Blood Moon Chip is active: " + expansionChipStatus.isKeyOfBloodMoonEquipped.ToString() + ")");
+        ExpansionChipStatus.instance.isKeyOfBloodMoonEquipped = true;
+        Debug.Log("Key of Blood Moon Chip is active: " + ExpansionChipStatus.instance.isKeyOfBloodMoonEquipped.ToString() + ")");
         isBuffActive = true;
     }
 
     public void RemoveBuff()
     {
         Debug.Log("Removing Buff: Key of Blood Moon Chip");
-        expansionChipStatus.isKeyOfBloodMoonEquipped = false;
-        Debug.Log("Key of Blood Moon Chip is active: " + expansionChipStatus.isKeyOfBloodMoonEquipped.ToString() + ")");
+        ExpansionChipStatus.instance.isKeyOfBloodMoonEquipped = false;
+        Debug.Log("Key of Blood Moon Chip is active: " + ExpansionChipStatus.instance.isKeyOfBloodMoonEquipped.ToString() + ")");
         isBuffActive = false;
     }    
 }

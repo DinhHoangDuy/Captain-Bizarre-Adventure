@@ -7,22 +7,16 @@ public class SharpenedSwordChip : MonoBehaviour, IChip
     /*
         Increase 5% of Basic attack value when equipped
     */
-    [Header("Buff Value")]
-    [Tooltip("Use % to determine the buff value)")]
-    public float buffValue = 5f;
-    private float originalDamage;
 
     #region Dependencies
     public bool isBuffActive { get; set; }
     [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
-    public ExpansionChipStatus expansionChipStatus { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     private CaptainSkillSet skillset;
 
     private void Start()
     {
         expansionChipSlot = GetComponent<ExpansionChipSlot>();
         skillset = GameObject.FindGameObjectWithTag("Player").GetComponent<CaptainSkillSet>();
-        originalDamage = skillset.basicATK;
     }
     #endregion
     private void Update()
@@ -40,13 +34,13 @@ public class SharpenedSwordChip : MonoBehaviour, IChip
     public void ApplyBuff()
     {
         Debug.Log("Applying Buff: Sharpened Sword Chip");
-        skillset.basicATK += originalDamage * (buffValue / 100);
         isBuffActive = true;
+        ExpansionChipStatus.instance.isSharpenedSwordChipEquipped = true;
     }
     public void RemoveBuff()
     {
         Debug.Log("Removing Buff: Sharpened Sword Chip");
-        skillset.basicATK = originalDamage;
         isBuffActive = false;
+        ExpansionChipStatus.instance.isSharpenedSwordChipEquipped = false;
     }    
 }

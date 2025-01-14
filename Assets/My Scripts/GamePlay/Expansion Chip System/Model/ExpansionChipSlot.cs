@@ -29,20 +29,14 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
     [HideInInspector] public bool isEquipped = false;
     [HideInInspector] public bool isSelected = false;
 
-    // Dependencies
-    private ExpansionChipManager expansionChipManager;
 
-    void Awake()
-    {
-        expansionChipManager = GameObject.Find("/Player UI").GetComponent<ExpansionChipManager>();
-    }
 
     void Start()
     {
         if (chipData == null)
         {
             isLocked = true;
-            chipIconData = expansionChipManager.blankChipIcon;
+            chipIconData = ExpansionChipManager.instance.blankChipIcon;
             return;
         }
 
@@ -103,7 +97,7 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
     {
         if(!isSelected)
         {
-            expansionChipManager.DeselectAllSlots();
+            ExpansionChipManager.instance.DeselectAllSlots();
             isSelected = true;
 
             // Sent data to the Description Panel
@@ -114,7 +108,7 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
         else
         {
             isSelected = false;
-            expansionChipManager.DeleteDescription();
+            ExpansionChipManager.instance.DeleteDescription();
         }
     }
     #endregion

@@ -8,23 +8,23 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [Header("Enemy Health")]
-    private EnemyResistance enemyResistance;
     private Rigidbody2D rb;
-    
+
     [Header("Enemy Health Settings")]
+    [SerializeField] private EnemyType enemyType;
     [SerializeField] private float maxHealth;
+
+    [Header("Developer Settings")]
     [Tooltip("If the enemt is a dummy object, it will not take damage. Their damage taken will be recorded instead.")]
     [SerializeField] internal bool isDummy = false;
     public float damageTaken = 0;
-
-    [Header("Developer Settings")]
     public bool invincibleAlwaysOn = false;
     public bool unableToPush = false;
+    internal bool isDead = false;
 
     private float force;
     private int pushDirection;
     private float currentHealth;
-    
 
 
     private void Awake()
@@ -32,56 +32,61 @@ public class EnemyHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    /// <summary>
-    /// Initializes the enemy's current health to the maximum health value.
-    /// </summary>
     private void Start()
     {
-        enemyResistance = GetComponent<EnemyResistance>();
         currentHealth = maxHealth;
     }
 
-    /// <summary>
-    /// Reduces the enemy's current health by the specified damage amount.
-    /// </summary>
-    /// <param name="damage">The amount of damage to be taken.</param>
     public void TakeDamage(float damage)
     {
-        if (invincibleAlwaysOn)
+        if (enemyType == EnemyType.Destroyable)
         {
-            Debug.Log("Enemy is invincible and cannot take damage");
-            Vector2 pushDirection = new Vector2(this.pushDirection * force, 0);
-            rb.AddForce(pushDirection, ForceMode2D.Impulse);
             return;
         }
 
-        // Check if the GameObject is a dummy object. If yes, record the damage taken instead of applying it.
         if (isDummy)
         {
+            // Record the damage taken by the dummy object.
             damageTaken += damage;
             Debug.Log("Dummy object took " + damage + " damage. Total damage taken: " + damageTaken);
             return;
-        }        
+        }
         else
         {
-            currentHealth -= damage;
-            Debug.Log("Enemy took " + damage + " damage. Current Health: " + currentHealth);
-        }       
+            // Calculate the damage taken by the enemy. Ignore the resistance if the enemy is invincible.
+            if (!invincibleAlwaysOn)
+            {
+                currentHealth -= damage;
+                Debug.Log("Enemy took " + damage + " damage. Current Health: " + currentHealth);
+            }
+            else
+            {
+                Debug.Log("Enemy is invincible and cannot take damage");
+            }
+        }
 
         if (currentHealth <= 0)
         {
-            // TODO: add death animation.
-            // GetComponent<Animator>().Play("Death");
+            // Run death animation
             Die();
         }
         else
         {
-            Vector2 pushDirection = new Vector2(this.pushDirection * force, 0);
-            rb.AddForce(pushDirection, ForceMode2D.Impulse);
+            // Push the enemy back
+            if (!unableToPush)
+            {
+                Vector2 pushDirection = new Vector2(this.pushDirection * force, 0);
+                rb.AddForce(pushDirection, ForceMode2D.Impulse);
+            }
         }
     }
     public void DestroyableTakeDMG(int damage)
     {
+        if (enemyType != EnemyType.Destroyable)
+        {
+            return;
+        }
+
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -92,10 +97,30 @@ public class EnemyHealth : MonoBehaviour
     /// <summary>
     /// Performs the death logic for the enemy and destroys the game object.
     /// </summary>
-    public void Die()
+    private void Die()
     {
-        // Add death logic here
-        // Destroy(gameObject);
+        isDead = true;
+        GetComponent<Animator>().SetTrigger("Die");
+    }
+
+    // If the enemy is an animating creature (e.g. a slime), the death animation will call this function to DEACTIVATE the game object.
+    public void Deactivate()
+    {
         gameObject.SetActive(false);
     }
+    // If the enemy is a destroyable object (e.g. a crate), the death animation will call this function to DESTROY the game object.
+    public void Destroy()
+    {
+        Destroy(gameObject);
+    }
+    // If the enemy is a boss, which can only be defeated once, the death animation will call this function to DEACTIVATE the game object.
+    // TODO: Add the logic to prevent the boss from being reactivated.
+
+}
+
+enum EnemyType
+{
+    Normal,
+    Boss,
+    Destroyable
 }

@@ -47,6 +47,8 @@ public class EnemyGroundMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(GetComponent<EnemyHealth>().isDead) return;
+        
         int direction = isLookingRight ? 1 : -1;
         anim.SetBool("isWalking", rb.linearVelocityX != 0);
         if (enemyHealth.isDummy)

@@ -25,7 +25,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         + "The Vow under the Moon" will grant the "Unbreakable Will" for 10 seconds if the buff is not active.
     - Passive "Unbreakable Will": 
         + When "Unbreakable Will" is active, Captain will gain 30% total Damage Boost.
-        + "The Vow under the Moon" will deal 10% more damage if "Unbreakable Will" is active.
+        + Ultimate will deal 10% more damage if "Unbreakable Will" is active.
     */
     #endregion
 
@@ -34,7 +34,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     [Header("Captain's Basic Attributes")]
     public float basicATK = 100;
     [SerializeField] private float criticalRate = 20f;
-    [SerializeField] private float criticalDamageMultiplier = 150f;
+    public float criticalDamageMultiplier = 150f;
     [SerializeField] private float attackRate = 2f;
     float nextAttackTime = 0f;
 
@@ -102,8 +102,9 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     }
 
     // Wrath Chip Buff: If passive "Unbreakable Will" is active, Captain deals 20% bonus Crit DMG.
-    public bool isWarthChipEquipped = false;
-    [HideInInspector] public float WarthCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
+    public bool isWrathChipEquipped = false;
+    private bool isWarthCritDMGBuffActive = false;
+    // [HideInInspector] public float WarthCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
     #endregion
 
     #region Script Dependencies
@@ -115,7 +116,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     [SerializeField] private LayerMask dummyLayers;
     private DamageOutCalculator dmgCalulator;
     private PlatformerMovement2D platformerMovement;
-    private ExpansionChipStatus expansionChipStatus;
+    // private ExpansionChipStatus.instance ExpansionChipStatus.instance;
     private Rigidbody2D rb;
     private Animator anim;
     #endregion
@@ -159,7 +160,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         anim = GetComponent<Animator>();
         platformerMovement = GetComponent<PlatformerMovement2D>();
         rb = GetComponent<Rigidbody2D>();
-        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
+        // ExpansionChipStatus.instance = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus.instance>();
     }
     private void Start()
     {
@@ -199,21 +200,29 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         }
 
         #region Hammer Expansion Chip
-        if (expansionChipStatus.isHammerChipEquipped && !isRequiredSPIncreased)
+        if (ExpansionChipStatus.instance.isHammerChipEquipped && !isRequiredSPIncreased)
         {
             IncreaseRequiredSP(25);
             isRequiredSPIncreased = true;
         }
-        else if (!expansionChipStatus.isHammerChipEquipped && isRequiredSPIncreased)
+        else if (!ExpansionChipStatus.instance.isHammerChipEquipped && isRequiredSPIncreased)
         {
             RestoreTheOriginalSPRequirement();
             isRequiredSPIncreased = false;
         }
         #endregion
 
-        if (expansionChipStatus.isWarthChipEquipped)
+        if (ExpansionChipStatus.instance.isWrathChipEquipped && !isWarthCritDMGBuffActive)
         {
-            Debug.Log("Warth Chip is equipped. Crit DMG Bonus: " + WarthCritDMGBuffValue + "%");
+            Debug.Log("Warth Chip is equipped. Crit DMG Bonus: " + ExpansionChipStatus.instance.wrathCritDMGBuffValue + "%");
+            isWarthCritDMGBuffActive = true;
+            criticalDamageMultiplier += ExpansionChipStatus.instance.wrathCritDMGBuffValue;
+        }
+        else if (!ExpansionChipStatus.instance.isWrathChipEquipped && isWarthCritDMGBuffActive)
+        {
+            Debug.Log("Warth Chip is removed. Crit DMG Bonus: " + ExpansionChipStatus.instance.wrathCritDMGBuffValue + "%");
+            isWarthCritDMGBuffActive = false;
+            criticalDamageMultiplier -= ExpansionChipStatus.instance.wrathCritDMGBuffValue;
         }
     }
 
@@ -255,14 +264,10 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         if (criticalHit)
         {
             ultimateDamage = ultimateDamage * (criticalDamageMultiplier / 100);
-            if (isUnbreakableWillActive && criticalHit)
-            {
-                ultimateDamage += ultimateDamage * WarthCritDMGBuffValue / 100;
-            }
             criticalHit = false;
         }
 
-        if (expansionChipStatus.isHammerChipEquipped)
+        if (ExpansionChipStatus.instance.isHammerChipEquipped)
         {
             ultimateDamage += ultimateDamage * HammerChip.hammerChipBuffValue / 100;
         }
@@ -353,10 +358,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
             if (criticalHit)
             {
                 basicAttackDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
-                if (expansionChipStatus.isWarthChipEquipped)
-                {
-                    basicAttackDamage += basicAttackDamage * WarthCritDMGBuffValue / 100;
-                }
+
             }
 
             // Deal the damage to the enemy

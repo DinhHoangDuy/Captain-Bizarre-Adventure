@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterStats : MonoBehaviour, IDataPersistence
+public class MovementStats : MonoBehaviour, IDataPersistence
 {
     public int maxHealth;
     #region Movement

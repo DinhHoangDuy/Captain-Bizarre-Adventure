@@ -21,14 +21,15 @@ public class DialogueVisualCueTrigger : MonoBehaviour
 
     private void Update() 
     {
-        if (!isUsed && playerInRange && !DialogueManager.GetInstance().DialogueIsPlaying) 
+        if (!isUsed && playerInRange && !DialogueManager.instance.DialogueIsPlaying) 
         {
             visualCue.SetActive(true);
             //if(Input.GetKeyDown(KeyCode.F))
             //if (InputManager.GetInstance().GetInteractPressed())
             if(Input.GetButtonDown("Interact"))
             {
-                ExternalDialogueManager.GetInstance().EnterDialogueMode(inkJSON);
+                // ExternalDialogueManager.instance.EnterDialogueMode(inkJSON);
+                DialogueManager.instance.EnterDialogueMode(inkJSON);
                 isUsed = true;
             }
         }

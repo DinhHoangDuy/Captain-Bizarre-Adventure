@@ -24,7 +24,8 @@ public class DialogueOnCollideTrigger : MonoBehaviour
             if(!isUsed)
             {
                 // PlatformerMovement2D.instance.inputBlocked = true;
-                ExternalDialogueManager.GetInstance().EnterDialogueMode(inkJSON);
+                // ExternalDialogueManager.instance.EnterDialogueMode(inkJSON);
+                DialogueManager.instance.EnterDialogueMode(inkJSON);
                 isUsed = true;
             }
         }

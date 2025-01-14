@@ -7,32 +7,19 @@ public class InteractionBackend : MonoBehaviour
 {
     [SerializeField] private TextMeshPro interactionText;
     private bool isInTheZone = false;
-    private PlayerInput _inputAction;
-    internal bool interactionTriggered = false;
+    internal bool interactionTriggered = false;  
+
     
-    void Awake()
-    {
-        _inputAction = new PlayerInput();
-    }
-
-    private void OnEnable()
-    {
-        _inputAction.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _inputAction.Disable();
-    }
-
     void Start()
     {
         interactionText.gameObject.SetActive(false);
     }
     private void Update()
     {
-        if(_inputAction.Player.Interact.triggered && isInTheZone)
+        // if(_inputAction.Player.Interact.triggered && isInTheZone)
+        if (InputManager.instance.interactionInputTriggered && isInTheZone)
         {
+            InputManager.instance.interactionInputTriggered = false;
             Debug.Log("Interaction Triggered by player");
             interactionTriggered = true;
         }

@@ -25,23 +25,27 @@ public class RoomTransitionAutoTrigger : MonoBehaviour
         // Check both Cinemachine Cameras are not null
         if (cinemachineCameraRoomA == null || cinemachineCameraRoomB == null)
         {
-            Debug.LogError("Cinemachine Cameras are not assigned!");
+            Debug.LogError("One of the Cinemachine Cameras are not assigned! Check game object: " + gameObject.name);
+        }
+        else
+        {
+            // Check if the Cinemachine Cameras are active or not
+            if (cinemachineCameraRoomA.enabled)
+            {
+                Debug.Log("Cinemachine Camera Room A is active");
+            }
+            if (cinemachineCameraRoomB.enabled)
+            {
+                Debug.Log("Cinemachine Camera Room B is active");
+            }
+            // Export an error if both cameras are active
+            if (cinemachineCameraRoomA.enabled && cinemachineCameraRoomB.enabled)
+            {
+                Debug.LogError("Both Cinemachine Cameras are active! This is not allowed.");
+            }
         }
 
-        // Check if the Cinemachine Cameras are active or not
-        if (cinemachineCameraRoomA.enabled)
-        {
-            Debug.Log("Cinemachine Camera Room A is active");
-        }
-        if (cinemachineCameraRoomB.enabled)
-        {
-            Debug.Log("Cinemachine Camera Room B is active");
-        }
-        // Export an error if both cameras are active
-        if (cinemachineCameraRoomA.enabled && cinemachineCameraRoomB.enabled)
-        {
-            Debug.LogError("Both Cinemachine Cameras are active! This is not allowed.");
-        }
+
 
     }
 

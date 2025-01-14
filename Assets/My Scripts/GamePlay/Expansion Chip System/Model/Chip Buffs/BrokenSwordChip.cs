@@ -6,7 +6,6 @@ public class BrokenSwordChip : MonoBehaviour, IChip
 {
     [Header("Debuff Value")]
     [Tooltip("Use % to determine the debuff value)")]
-    public float debuffValue = 50f;
 
     #region Dependencies
     public bool isBuffActive { get; set; }
@@ -39,15 +38,13 @@ public class BrokenSwordChip : MonoBehaviour, IChip
     public void ApplyBuff()
     {
         Debug.Log("Applying Buff: Broken Sword Chip");
-        damageOutCalculator.DecreaseDMGBoost(debuffValue);
-        Debug.Log("Current DMG Boost: " + damageOutCalculator._totalDMGBoost);
+        ExpansionChipStatus.instance.isBrokenSwordChipEquipped = true;
         isBuffActive = true;
     }
     public void RemoveBuff()
     {
         Debug.Log("Removing Buff: Broken Sword Chip");
-        damageOutCalculator.IncreaseDMGBoost(debuffValue);
-        Debug.Log("Current DMG Boost: " + damageOutCalculator._totalDMGBoost);
+        ExpansionChipStatus.instance.isBrokenSwordChipEquipped = false;
         isBuffActive = false;
     }
 }

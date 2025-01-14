@@ -10,7 +10,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     [SerializeField] private TrailRenderer trailRenderer;
 
     private PlayerInput playerInput;
-    private ExpansionChipStatus expansionChipStatus;
     private BoxCollider2D boxCollider2D;
 
     private float horizontal;
@@ -72,7 +71,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     [HideInInspector] public Rigidbody2D rb;
     private Animator anim;
-    private CharacterStats stats;
+    private MovementStats stats;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
     [SerializeField] public LayerMask wallLayer;
@@ -100,27 +99,26 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        stats = GetComponent<CharacterStats>();
+        stats = GetComponent<MovementStats>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
     }
 
     private void Start()
     {
         coyoteTimeCounter = coyoteTime;
+        moveSpeed = stats.MoveSpeed;
+        jumpingPower = stats.JumpForce;
+        characterGravityScale = stats.GravityScale;
+        rb.gravityScale = characterGravityScale;
+        dashForce = stats.DashForce;
+        dashForce = stats.DashForce;
+        extraJumpsCounter = extraJumps;
     }
 
     private void Update()
     {
         #region Frequent Update the Movement Stats.
         // TODO: Move all stats below to the start method after final testing.
-        moveSpeed = stats.MoveSpeed;
-        jumpingPower = stats.JumpForce;
-        characterGravityScale = stats.GravityScale;
-        rb.gravityScale = characterGravityScale;
-        extraJumpsCounter = extraJumps;
-        dashForce = stats.DashForce;
-        dashForce = stats.DashForce;
         #endregion
 
 
@@ -143,16 +141,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         {
             if (coyoteTimeCounter <= 0f)
             {
-                if (expansionChipStatus.isDreamBuilderAvailable)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-                    // rb.AddForce(new Vector2(rb.linearVelocity.x, jumpingPower), ForceMode2D.Impulse);
-                    Instantiate(dreamBuilderPlatform, dreamBuilderPlatformSpawnPoint.position, Quaternion.identity);
-                    expansionChipStatus.dreamBuilderPlatformCurrentCooldown = expansionChipStatus.dreamBuilderPlatformCooldown;
-                    groundJumpAnimation = true;
-                    wallJumpAnimation = false;
-                }
-                else if (extraJumpsCounter > 0 && doubleJumpUnlocked)
+                if (extraJumpsCounter > 0 && doubleJumpUnlocked)
                 {
                     extraJumpsCounter--;
                     rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
@@ -417,7 +406,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         {
             dashDirection = isFacingRight ? 1f : -1f;
         }
-
+        rb.gravityScale = 0f;
         rb.linearVelocity = new Vector2(dashDirection * dashForce, 0f);
 
         if (!isFacingRight && dashDirection > 0f || isFacingRight && dashDirection < 0f)

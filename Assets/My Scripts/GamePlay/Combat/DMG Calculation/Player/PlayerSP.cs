@@ -2,12 +2,21 @@ using UnityEngine;
 
 public class PlayerSP : MonoBehaviour
 {
+    public static PlayerSP instance;
     private SPBar spBar;
     private CaptainSkillSet skillset;
     private float currentSP;
     public float _currentSP => currentSP;
     private int maxSP;
     public int _maxSP => maxSP;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     private void Start()
     {

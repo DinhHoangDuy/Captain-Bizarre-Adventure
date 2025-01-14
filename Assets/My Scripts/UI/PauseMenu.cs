@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
 {
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenuPanel;
+    [SerializeField] private Button firstSelectedMenuButton;
     [SerializeField] private string mainMenuScene = "My Scenes/MainMenu/Welcome";
     public static bool isPaused = false;
     [Header("Pause Menu Buttons")]
@@ -74,6 +75,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void PauseGame()
     {
+        firstSelectedMenuButton.Select();
         isPaused = true;
         Time.timeScale = 0f;
         PlatformerMovement2D.instance.inputBlocked = true;       

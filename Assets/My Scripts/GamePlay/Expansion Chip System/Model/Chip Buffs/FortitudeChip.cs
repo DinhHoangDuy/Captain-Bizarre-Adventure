@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class FortitudeChip : MonoBehaviour, IChip
 {
-    [Header("Buff Value")]
-    [Tooltip("This value will be added to character's max health")]
-    public int buffValue = 1;
 
     public bool isBuffActive { get; set; }
-        [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
-    public ExpansionChipStatus expansionChipStatus { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
+    [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
     private PlayerHealth playerHealth;
 
     // Start is called before the first frame update
@@ -36,16 +31,14 @@ public class FortitudeChip : MonoBehaviour, IChip
     public void ApplyBuff()
     {
         Debug.Log("Applying Buff: Fortitude Chip");
-        playerHealth.maxHealth += buffValue;
-        Debug.Log("Current Max Health: " + playerHealth.maxHealth);
+        ExpansionChipStatus.instance.isFortitudeChipEquipped = true;
         isBuffActive = true;
     }
 
     public void RemoveBuff()
     {
         Debug.Log("Removing Buff: Fortitude Chip");
-        playerHealth.maxHealth -= buffValue;
-        Debug.Log("Current Max Health: " + playerHealth.maxHealth);
+        ExpansionChipStatus.instance.isFortitudeChipEquipped = false;
         isBuffActive = false;
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class HammerChip : MonoBehaviour, IChip
 {
     public ExpansionChipSlot expansionChipSlot { get; set; }
-    public ExpansionChipStatus expansionChipStatus { get; set; }
     public bool isBuffActive { get; set; }
     [SerializeField] private float buffValue = 40f;
     public static float hammerChipBuffValue;
@@ -14,8 +13,6 @@ public class HammerChip : MonoBehaviour, IChip
     void Start()
     {
         expansionChipSlot = GetComponent<ExpansionChipSlot>();
-        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
-
         hammerChipBuffValue = buffValue;
     }
 
@@ -33,12 +30,12 @@ public class HammerChip : MonoBehaviour, IChip
     }
     public void ApplyBuff()
     {
-        expansionChipStatus.isHammerChipEquipped = true;
+        ExpansionChipStatus.instance.isHammerChipEquipped = true;
         isBuffActive = true;
     }
     public void RemoveBuff()
     {
-        expansionChipStatus.isHammerChipEquipped = false;
+        ExpansionChipStatus.instance.isHammerChipEquipped = false;
         isBuffActive = false;
     }
 }

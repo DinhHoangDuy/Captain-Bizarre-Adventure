@@ -8,7 +8,10 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager instance;
+
     [Header("Dialogue UI")]
+    [SerializeField] private Canvas dialogueCanvas;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI dialogueText;
     //[SerializeField] private GameObject continueIcon;
@@ -74,7 +77,6 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     public bool DialogueIsPlaying { get; private set; }
 
-    private static DialogueManager instance;
     private void Awake()
     {
         if (instance != null)
@@ -84,14 +86,11 @@ public class DialogueManager : MonoBehaviour
         instance = this;
     }
 
-    public static DialogueManager GetInstance()
-    {
-        return instance;
-    }
 
     private void Start()
     {
         //Make sure the character can still move when this script is active
+        dialogueCanvas.gameObject.SetActive(false);
         DialogueIsPlaying = false;
         PlatformerMovement2D.instance.inputBlocked = false;
 
@@ -134,14 +133,14 @@ public class DialogueManager : MonoBehaviour
         if (!DialogueIsPlaying)
         {
             PlatformerMovement2D.instance.inputBlocked = false;
-            Debug.Log("Dialogue is not playing");
+            // Debug.Log("Dialogue is not playing");
             return;
         }
         else
         {
             PlatformerMovement2D.instance.inputBlocked = true;
             PlatformerMovement2D.instance.rb.linearVelocity = Vector2.zero; 
-            Debug.Log("Dialogue is playing");       
+            // Debug.Log("Dialogue is playing");       
         }
 
         if(Input.GetButtonDown("Submit"))
@@ -161,6 +160,8 @@ public class DialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(TextAsset inkJSON)
     {
+        dialogueCanvas.gameObject.SetActive(true);
+        
         currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
         PlatformerMovement2D.instance.inputBlocked = true;
@@ -182,7 +183,10 @@ public class DialogueManager : MonoBehaviour
         DialogueIsPlaying = false;    
         dialogueText.text = "";
         PlatformerMovement2D.instance.inputBlocked = false;
-        ExternalDialogueManager.GetInstance().ExitDialogueMode();
+        // ExternalDialogueManager.instance.ExitDialogueMode();
+
+        dialogueCanvas.gameObject.SetActive(false);
+        Debug.Log("Dialogue Exited");
     }
     private void ClickToContinue()
     {

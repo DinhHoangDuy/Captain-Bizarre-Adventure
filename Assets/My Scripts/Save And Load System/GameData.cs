@@ -31,7 +31,8 @@ public class GameData
         // Default state and location
         currentMaxHealth = 5;
         currentSP = 20f;
-        lastSavedLocation = new Vector3(0, 0, 0);
+        lastSavedLocation = new Vector3(-30, 20f, 0);
+        
         lastLocationSaved = "Map 1";
         lastSavedChairVirtualCamera = null;
         lastSavedChairPositionComposer = null;

@@ -7,8 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerHealth : MonoBehaviour
 {
     [HideInInspector] public int maxHealth;
-    private CharacterStats characterStats;
-    private InputAction healInput;
+    private MovementStats characterStats;
 
 
     // private 
@@ -30,17 +29,11 @@ public class PlayerHealth : MonoBehaviour
     // Respawn the player at the last checkpoint
     private Vector2 lastCheckpoint;
     private Vector2 lastChairPosition;
-
-    private void OnEnable()
-    {
-        PlayerInput playerInput = new PlayerInput();
-        healInput = playerInput.Player.Heal;
-    }
-
+    
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        characterStats = GetComponent<CharacterStats>();
+        characterStats = GetComponent<MovementStats>();
     }
 
     private void Start()
@@ -127,7 +120,7 @@ public class PlayerHealth : MonoBehaviour
     }
     private bool CanUseHealingPotion()
     {
-        bool enoughSP = GetComponent<CaptainSkillSet>().currentSP >= GetComponent<CharacterStats>()._requiredSPForHeal;
+        bool enoughSP = GetComponent<CaptainSkillSet>().currentSP >= GetComponent<MovementStats>()._requiredSPForHeal;
         bool isCooldownOver = potionHealTimer <= 0;
         bool isGrounded = GetComponent<PlatformerMovement2D>().IsGrounded();
 
@@ -138,7 +131,7 @@ public class PlayerHealth : MonoBehaviour
     #region Animation Event
     public void HealingPotionEffect()
     {
-        GetComponent<CaptainSkillSet>().CostSP(GetComponent<CharacterStats>()._requiredSPForHeal);
+        GetComponent<CaptainSkillSet>().CostSP(GetComponent<MovementStats>()._requiredSPForHeal);
         IncreaseHealth(potionHealAmount);
     }
     #endregion
@@ -201,7 +194,7 @@ public class PlayerHealth : MonoBehaviour
     private void RespawnToChair()
     {
         // Respawn the player at the last checkpoint
-        transform.position = lastCheckpoint;
+        transform.position = lastChairPosition;
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
     }
@@ -226,10 +219,11 @@ public class PlayerHealth : MonoBehaviour
 
         // if (healInput.triggered)
         // TODO: Fix the input system, it's not working properly with the new input system, it's not detecting the input.
-        if(Input.GetKeyDown(KeyCode.L) && CanUseHealingPotion())
+        // if(Input.GetKeyDown(KeyCode.L) && CanUseHealingPotion())
+        if (InputManager.instance.healInputTriggered && CanUseHealingPotion())
         {
-            Debug.Log("Heal Input Triggered!");
             HealingPotionAnimation();
+            InputManager.instance.healInputTriggered = false;
         }
     }
 }

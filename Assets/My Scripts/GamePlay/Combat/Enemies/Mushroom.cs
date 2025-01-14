@@ -5,6 +5,7 @@ using UnityEngine;
 public class Mushroom : MonoBehaviour
 {
     private Animator anim;
+    private BoxCollider2D enemyBoxCollider2D;
     private EnemyHealth enemyHealth;
     private EnemyGroundMovement enemyGroundMovement;
 
@@ -26,6 +27,7 @@ public class Mushroom : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        enemyBoxCollider2D = GetComponent<BoxCollider2D>();
         enemyHealth = GetComponent<EnemyHealth>();
         enemyGroundMovement = GetComponent<EnemyGroundMovement>();
     }
@@ -42,7 +44,17 @@ public class Mushroom : MonoBehaviour
         else
         {
             attackTimer -= Time.deltaTime;
-        }        
+        }
+
+        // Check if the box collider is touching the game object with tag "Player"
+        Collider2D[] hitPlayer = Physics2D.OverlapBoxAll(enemyBoxCollider2D.bounds.center, enemyBoxCollider2D.bounds.size, 0f, LayerMask.GetMask("Player"));
+        if (hitPlayer.Length > 0)
+        {
+            foreach (Collider2D player in hitPlayer)
+            {
+                player.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
+            }
+        }     
     }
 
     // Animation events
@@ -80,13 +92,22 @@ public class Mushroom : MonoBehaviour
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
         rb.linearVelocity = throwPower;
     }
+
+    // void OnTriggerEnter2D(Collider2D other)
+    // {
+    //     if (other.CompareTag("Player"))
+    //     {
+    //         other.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
+    //     }
+    // }
     
     // Debugging
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(projectileSpawnPoint1.position, 0.5f);
-        Gizmos.DrawWireSphere(projectileSpawnPoint2.position, 0.5f);
-        Gizmos.DrawWireSphere(projectileSpawnPoint3.position, 0.5f);
+        Gizmos.DrawWireSphere(projectileSpawnPoint1.position, 0.1f);
+        Gizmos.DrawWireSphere(projectileSpawnPoint2.position, 0.1f);
+        Gizmos.DrawWireSphere(projectileSpawnPoint3.position, 0.1f);
+        Gizmos.DrawWireCube(enemyBoxCollider2D.bounds.center, enemyBoxCollider2D.bounds.size);
     }
 }

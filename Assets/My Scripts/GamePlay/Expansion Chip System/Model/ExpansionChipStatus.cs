@@ -3,7 +3,13 @@ using UnityEngine;
 public class ExpansionChipStatus : MonoBehaviour
 {
     public static ExpansionChipStatus instance;
+    private CaptainSkillSet skillSet;
+    private DamageOutCalculator damageOutCalculator;
+    private PlayerHealth playerHealth;
+
     // TODO: Add more expansion chip effects here!!!
+
+    [Header("Positive Buffs")]
 
     #region Overclock state
     /*
@@ -22,37 +28,74 @@ public class ExpansionChipStatus : MonoBehaviour
     private bool overloadDebuffApplied = false;
     #endregion
 
+    #region Sharpened Sword Chip
+    /*
+        Sharpened Sword Chip Effect: Increase 10 Basic attack value when equipped
+    */
+    [Header("Sharpened Sword Chip Buff")]
+    public bool isSharpenedSwordChipEquipped = false;
+    private bool isSharpenedSwordBuffActive = false;
+    public float sharpenedSwordChipBuffValue = 10;
+    #endregion
+
     #region Energy Generator
     /*
         Chip Effect: If the character has less than 60 SP, gain 1 SP per second
     */
-    private PlayerSP playerSP;
+    [Header("Energy Generator Chip Buff")]
     public bool isEnergyGeneratorEquipped = false;
     private float energyGeneratorSPGainDelay = 1;
-    private float energyGeneratorThresshold;
-    public void SetEnergyGeneratorThresshold(int value)
-    {
-        energyGeneratorThresshold = value;
-        Debug.Log("Energy Generator Thresshold: " + energyGeneratorThresshold);
-    }
+
+    [Tooltip("The SP thresshold to stop gaining more SP")]
+    public float energyGeneratorThresshold = 60;
+    #endregion
+
+    #region Fortitude Chip
+    /*
+        Fortitude Chip Effect: If the Fortitude Chip is equipped, the player has +1 Max Health
+    */
+    [Header("Fortitude Chip Buff")]
+    public bool isFortitudeChipEquipped = false;
+    public int fortitudeChipBuffValue = 1;
+    private bool isFortitudeBuffActive = false;
     #endregion
 
     #region "Hammer" Chip
+    /*
+        Hammer Chip Effect: If the Hammer Chip is equipped, Ultimate will cost more SP, but the damage will deal 30% bonus DMG
+    */
+    [Header("Hammer Chip Buff")]
     public bool isHammerChipEquipped = false;
     #endregion
 
-    #region Dream Builder Chip
-    public bool isDreamBuilderChipEquipped = false;
-    public bool isDreamBuilderAvailable;
-    public float dreamBuilderPlatformDuration;
-    public float dreamBuilderPlatformCooldown;
-    public float dreamBuilderPlatformCurrentCooldown;
+    #region Wraith Chip
+    /*
+        Wraith Chip Equipped: If passive "Unbreakable Will" is active, Captain has +20% Crit DMG.
+    */
+    [Header("Wrath Chip Buff")]
+    public bool isWrathChipEquipped;
+    public float wrathCritDMGBuffValue = 20f;
     #endregion
 
-    #region Wraith Chip
-    public bool isWarthChipEquipped;
+    #region Speed Boot Chip
+    /*
+        Speed Boot Chip Effect: Increase 15% Speed
+    */
+    [Header("Speed Boot Chip Buff")]
+    public bool isSpeedBootChipEquipped = false;
+    private bool isSpeedBootBuffActive = false;
+    public float speedBootChipBuffValue = 15.0f;
+    private float originalSpeed;
+    private float speedDifference;
     #endregion
-    
+
+    [Header("Negative Buffs")]
+    #region Broken Sword Chip
+    [Header("Broken Sword Chip")]
+    public bool isBrokenSwordChipEquipped = false;
+    private bool isBrokenSwordDebuffActive = false;
+    public float brokenSwordChipDebuffValue = 50f;
+    #endregion
 
     private void Awake()
     {
@@ -64,20 +107,51 @@ public class ExpansionChipStatus : MonoBehaviour
 
     private void Start()
     {
-        playerSP = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerSP>(); 
-        dreamBuilderPlatformCurrentCooldown = 0;
+        skillSet = GameObject.FindGameObjectWithTag("Player").GetComponent<CaptainSkillSet>();
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
+        damageOutCalculator = GameObject.FindGameObjectWithTag("Player").GetComponent<DamageOutCalculator>();
 
+        // For speed boots chip
+        originalSpeed = PlatformerMovement2D.instance.moveSpeed;
+        speedDifference = originalSpeed * (speedBootChipBuffValue / 100);
     }
 
     private void Update()
     {
+        //===============Positive Buffs================
+        #region Sharpened Sword Chip Effect
+        if (isSharpenedSwordChipEquipped && !isSharpenedSwordBuffActive)
+        {
+            skillSet.basicATK += sharpenedSwordChipBuffValue;
+            isSharpenedSwordBuffActive = true;
+        }
+        else if (!isSharpenedSwordChipEquipped && isSharpenedSwordBuffActive)
+        {
+            skillSet.basicATK -= sharpenedSwordChipBuffValue;
+            isSharpenedSwordBuffActive = false;
+        }
+        #endregion
+
+        #region Fortitude Chip Effect
+        if (isFortitudeChipEquipped && !isFortitudeBuffActive)
+        {
+            playerHealth.maxHealth += fortitudeChipBuffValue;
+            isFortitudeBuffActive = true;
+        }
+        else if (!isFortitudeChipEquipped && isFortitudeBuffActive)
+        {
+            playerHealth.maxHealth -= fortitudeChipBuffValue;
+            isFortitudeBuffActive = false;
+        }
+        #endregion
+
         #region Energy Generator Chip Effect
-        if(isEnergyGeneratorEquipped)
+        if (isEnergyGeneratorEquipped)
         {
             // If the Energy Generator Chip is equipped, and the character has less than 60 SP, gain 1 SP per second
-            if(playerSP._currentSP < energyGeneratorThresshold && energyGeneratorSPGainDelay <= 0)
+            if (PlayerSP.instance._currentSP < energyGeneratorThresshold && energyGeneratorSPGainDelay <= 0)
             {
-                playerSP.IncreaseSPByValue(1);
+                PlayerSP.instance.IncreaseSPByValue(1);
                 energyGeneratorSPGainDelay = 1;
             }
             else
@@ -87,24 +161,36 @@ public class ExpansionChipStatus : MonoBehaviour
         }
         #endregion
 
-        #region Dream Builder Chip Effect
-        if(isDreamBuilderChipEquipped)
+        #region Speed Boot Chip Effect
+        if (isSpeedBootChipEquipped && !isSpeedBootBuffActive)
         {
-            if(dreamBuilderPlatformCurrentCooldown > 0)
-            {
-                dreamBuilderPlatformCurrentCooldown -= Time.deltaTime;
-                isDreamBuilderAvailable = false;
-            }
-            else
-            {
-                isDreamBuilderAvailable = true;
-            }
+            PlatformerMovement2D.instance.moveSpeed += speedDifference;
+            Debug.Log("Current Moving Speed: " + PlatformerMovement2D.instance.moveSpeed);
+            isSpeedBootBuffActive = true;
         }
-        else
+        else if (!isSpeedBootChipEquipped && isSpeedBootBuffActive)
         {
-            isDreamBuilderAvailable = false;
+            PlatformerMovement2D.instance.moveSpeed -= speedDifference;
+            Debug.Log("Current Moving Speed: " + PlatformerMovement2D.instance.moveSpeed);
+            isSpeedBootBuffActive = false;
         }
+        #endregion
 
+        //===============Negative Buffs================
+        #region Broken Sword Chip Effect
+        // Broken Sword Chip Effect: When equipped, reduce the total DMG Boost by 50%
+        if (isBrokenSwordChipEquipped && !isBrokenSwordDebuffActive)
+        {
+            damageOutCalculator.DecreaseDMGBoost(brokenSwordChipDebuffValue);
+            isBrokenSwordDebuffActive = true;
+            Debug.Log("Current DMG Boost: " + damageOutCalculator._totalDMGBoost);
+        }
+        else if (!isBrokenSwordChipEquipped && isBrokenSwordDebuffActive)
+        {
+            damageOutCalculator.IncreaseDMGBoost(brokenSwordChipDebuffValue);
+            isBrokenSwordDebuffActive = false;
+            Debug.Log("Current DMG Boost: " + damageOutCalculator._totalDMGBoost);
+        }
         #endregion
     }
 }

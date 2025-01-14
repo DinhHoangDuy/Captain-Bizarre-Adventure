@@ -11,6 +11,7 @@ public class ExpansionChipManager : MonoBehaviour
     private ExpansionChipStatus expansionChipStatus;
 
     [Header("Panel Components")]
+    [SerializeField] private GameObject expansionChipPanel;
     [SerializeField] private ExpansionChipSlot[] expansionChipSlots;
     [SerializeField] private Button equipButton;
     [SerializeField] private TextMeshProUGUI loadIndicatorNumber;
@@ -41,7 +42,8 @@ public class ExpansionChipManager : MonoBehaviour
 
     private void Start()
     {
-        expansionChipStatus = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus>();
+        expansionChipStatus = GetComponent<ExpansionChipStatus>();
+        expansionChipPanel.SetActive(false);
 
         DeselectAllSlots();
         DeleteDescription();
@@ -49,6 +51,12 @@ public class ExpansionChipManager : MonoBehaviour
     }
     private void Update()
     {
+        if (InputManager.instance.expansionChipPanelInputTriggered)
+        {
+            expansionChipPanel.SetActive(!expansionChipPanel.activeSelf);
+            InputManager.instance.expansionChipPanelInputTriggered = false;
+        }
+
         // Update Button Text based on the selected Chip
         for (int i = 0; i < expansionChipSlots.Length; i++)
         {
