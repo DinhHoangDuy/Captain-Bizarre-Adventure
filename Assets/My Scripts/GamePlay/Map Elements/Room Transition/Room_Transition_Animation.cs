@@ -57,14 +57,15 @@ public class RoomTransitionAnimation : MonoBehaviour
         // Transitioning the player to the target room
         PlatformerMovement2D.instance.transform.position = targetTransform.position;
         // Switching the Cinemachine Cameras
-        cinemachineCameraRoomA.enabled = !cinemachineCameraRoomA.enabled;
-        cinemachineCameraRoomB.enabled = !cinemachineCameraRoomB.enabled;
+        CameraManager.instance.SwitchCamera(cinemachineCameraRoomA, cinemachineCameraRoomB);
+        // CameraManager.instance.UseThisCamera(cinemachineCameraRoomB);
 
         // Delete all the informations
         targetTransform = null;
         cinemachineCameraRoomA = null;
         cinemachineCameraRoomB = null;
-        
+
+
         if (autoMoveDirection == AutoMoveDirection.BottomUp)
         {
             // Shoot the character upwards and horizontally
@@ -72,6 +73,24 @@ public class RoomTransitionAnimation : MonoBehaviour
             PlatformerMovement2D.instance.rb.linearVelocity = new Vector2(0, 0);
             PlatformerMovement2D.instance.rb.AddForce(new Vector2(0, PlatformerMovement2D.instance.jumpingPower * 1f), ForceMode2D.Impulse);
             // TODO: Try to throw the character horizontally, too. Make it throw the character upwards and horizontally based on the direction the character is facing.
+            PlatformerMovement2D.instance.inputBlocked = false;
+        }
+        else if (autoMoveDirection == AutoMoveDirection.LeftToRight)
+        {
+            PlatformerMovement2D.instance.rb.gravityScale = characterGravityScale;
+            PlatformerMovement2D.instance.rb.linearVelocity = new Vector2(PlatformerMovement2D.instance.rb.linearVelocityX, PlatformerMovement2D.instance.rb.linearVelocity.y);
+            // PlatformerMovement2D.instance.inputBlocked = false;
+        }
+        else if (autoMoveDirection == AutoMoveDirection.RightToLeft)
+        {
+            PlatformerMovement2D.instance.rb.gravityScale = characterGravityScale;
+            PlatformerMovement2D.instance.rb.linearVelocity = new Vector2(-PlatformerMovement2D.instance.rb.linearVelocityX, PlatformerMovement2D.instance.rb.linearVelocity.y);
+            // PlatformerMovement2D.instance.inputBlocked = false;
+        }
+        else if (autoMoveDirection == AutoMoveDirection.TopDown)
+        {
+            PlatformerMovement2D.instance.rb.gravityScale = characterGravityScale;
+            PlatformerMovement2D.instance.rb.linearVelocity = new Vector2(0, 0);
             PlatformerMovement2D.instance.inputBlocked = false;
         }
 

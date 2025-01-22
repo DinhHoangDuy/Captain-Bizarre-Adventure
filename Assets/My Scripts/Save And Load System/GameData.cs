@@ -9,13 +9,15 @@ public class GameData
     // Current state and location
     public int currentMaxHealth;
     public float currentSP;
-    public Vector3 lastSavedLocation;
+    // public Vector3 lastCheckpoint;
+    public Vector3 lastChairLocation;
     public string lastLocationSaved;
-    public CinemachineCamera lastSavedChairVirtualCamera;
-    public CinemachinePositionComposer lastSavedChairPositionComposer;
 
     // The time the game was saved
     public long saveTime;
+
+    // Cameras
+    public SerializableDictionary<string, bool> cameras;
     
     // Character Skill Set unlocked
     public bool doubleJumpUnlocked;
@@ -31,12 +33,12 @@ public class GameData
         // Default state and location
         currentMaxHealth = 5;
         currentSP = 20f;
-        lastSavedLocation = new Vector3(-30, 20f, 0);
-        
+        // lastCheckpoint = new Vector3(-30, 20f, 0);
+        lastChairLocation = new Vector3(-30, 20f, 0);
+        // Default location saved        
         lastLocationSaved = "Map 1";
-        lastSavedChairVirtualCamera = null;
-        lastSavedChairPositionComposer = null;
-        
+        // Default Camera
+        cameras = new SerializableDictionary<string, bool>();
         // Default character skill set
         doubleJumpUnlocked  = false;
         dashUnlocked        = false;

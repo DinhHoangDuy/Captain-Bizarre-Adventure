@@ -10,10 +10,12 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     [SerializeField] private TrailRenderer trailRenderer;
 
     private PlayerInput playerInput;
-    private BoxCollider2D boxCollider2D;
+    // private BoxCollider2D boxCollider2D;
 
     private float horizontal;
     private float moveDirection;
+    public Vector3 lastChairLocation;
+    public Vector3 lastCheckpoint;
     [HideInInspector] public float moveSpeed;
     public float jumpingPower;
     public float characterGravityScale;
@@ -99,7 +101,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<MovementStats>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     private void Start()
@@ -288,7 +289,15 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     #region Is Grounded
     public bool IsGrounded()
     {
+        // Switch between BoxCast and OverlapCircle to check if the player is grounded.
+        
+        // Use Boxcast to check if the player is grounded
+        // RaycastHit2D hit = Physics2D.BoxCast(boxCollider2D.bounds.center, boxCollider2D.bounds.size, 0f, Vector2.down, 0.1f, groundLayer);
+        // return hit.collider != null;
+
+        // or use OverlapCircle instead.
         return Physics2D.OverlapCircle(groundCheck.transform.position, 0.1f, groundLayer);
+
     }
     #endregion
 
@@ -432,6 +441,15 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     }
     #endregion
 
+    #region Respawn
+    public void RespawnToChair()
+    {
+        // Respawn the player at the last checkpoint
+        transform.position = lastChairLocation;
+        rb.linearVelocity = Vector2.zero;
+    }
+    #endregion
+
 
     #region Save and Load system
     public void LoadData(GameData data)
@@ -440,7 +458,10 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         this.wallJumpUnlocked = data.wallJumpUnlocked;
         this.dashUnlocked = data.dashUnlocked;
 
-        this.transform.position = data.lastSavedLocation;
+        // this.transform.position = data.lastSavedLocation;
+        this.lastChairLocation = data.lastChairLocation;
+        this.lastCheckpoint = data.lastChairLocation;
+        this.transform.position = data.lastChairLocation;
     }
 
     public void SaveData(ref GameData data)
@@ -448,7 +469,8 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         data.doubleJumpUnlocked = this.doubleJumpUnlocked;
         data.wallJumpUnlocked = this.wallJumpUnlocked;
         data.dashUnlocked = this.dashUnlocked;
-        data.lastSavedLocation = this.transform.position;
+        data.lastChairLocation = this.transform.position;
+        // data.lastCheckpoint = this.transform.position;
     }
     #endregion
     #region  Gizmos
@@ -456,7 +478,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
-        Gizmos.DrawWireSphere(groundCheck.transform.position, 0.1f);
+        // Gizmos.DrawWireSphere(groundCheck.transform.position, 0.1f);
     }
     #endregion
 }

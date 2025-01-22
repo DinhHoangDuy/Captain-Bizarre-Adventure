@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class DialogueVisualCueTrigger : MonoBehaviour
 {
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
+    [SerializeField] private bool oneTimeUseOnly = false;
 
     [Header("Ink JSON")]
     [SerializeField] private TextAsset inkJSON;
@@ -26,11 +28,12 @@ public class DialogueVisualCueTrigger : MonoBehaviour
             visualCue.SetActive(true);
             //if(Input.GetKeyDown(KeyCode.F))
             //if (InputManager.GetInstance().GetInteractPressed())
-            if(Input.GetButtonDown("Interact"))
+            // if(Input.GetButtonDown("Interact"))
+            if (InputManager.instance.interactionInputTriggered)
             {
                 // ExternalDialogueManager.instance.EnterDialogueMode(inkJSON);
                 DialogueManager.instance.EnterDialogueMode(inkJSON);
-                isUsed = true;
+                if(oneTimeUseOnly) isUsed = true;
             }
         }
         else 
@@ -53,6 +56,7 @@ public class DialogueVisualCueTrigger : MonoBehaviour
         if (collider.gameObject.CompareTag("Player"))
         {
             playerInRange = false;
+            if (!oneTimeUseOnly) isUsed = false; // Fallback in case the player leaves the trigger area
         }
     }
 }

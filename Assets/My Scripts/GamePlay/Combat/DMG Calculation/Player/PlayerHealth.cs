@@ -8,10 +8,6 @@ public class PlayerHealth : MonoBehaviour
 {
     [HideInInspector] public int maxHealth;
     private MovementStats characterStats;
-
-
-    // private 
-    private Rigidbody2D rb2d;
     public int currentHealth { get; private set; }
 
     public bool isDead { get { return currentHealth <= 0; } }
@@ -25,14 +21,9 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Player Health Settings")]
     [SerializeField] private float knockbackForce = 5.0f;
-
-    // Respawn the player at the last checkpoint
-    private Vector2 lastCheckpoint;
-    private Vector2 lastChairPosition;
     
     private void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
         characterStats = GetComponent<MovementStats>();
     }
 
@@ -50,13 +41,6 @@ public class PlayerHealth : MonoBehaviour
 
         // Set the amount of health the potion will heal
         potionHealAmount = characterStats._potionHealAmount;
-
-        // Set the last checkpoint to the player's current position
-        lastCheckpoint = transform.position;
-        if (lastCheckpoint == null)
-        {
-            Debug.LogError("Failed to set the last checkpoint upon spawning!");
-        }
     }
 
     #region Update health
@@ -89,7 +73,7 @@ public class PlayerHealth : MonoBehaviour
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                float pushDirection = GetComponent<PlatformerMovement2D>().IsLookingRight ? -1 : 1;
+                float pushDirection = PlatformerMovement2D.instance.IsLookingRight ? -1 : 1;
                 rb.AddForce(new Vector2(pushDirection * knockbackForce, knockbackForce), ForceMode2D.Impulse);
             }
             else Debug.LogError("Failed to get the Rigidbody2D component!");
@@ -122,7 +106,7 @@ public class PlayerHealth : MonoBehaviour
     {
         bool enoughSP = GetComponent<CaptainSkillSet>().currentSP >= GetComponent<MovementStats>()._requiredSPForHeal;
         bool isCooldownOver = potionHealTimer <= 0;
-        bool isGrounded = GetComponent<PlatformerMovement2D>().IsGrounded();
+        bool isGrounded = PlatformerMovement2D.instance.IsGrounded();
 
         return enoughSP && isCooldownOver && isGrounded;
     }
@@ -172,6 +156,7 @@ public class PlayerHealth : MonoBehaviour
     // Check if the character hit a collider
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Check if the player hit a falling zone. If yes, reduce the health by 1 and respawn the player to the last checkpoint
         if (collision.CompareTag("FallingZone"))
         {
             isInvincible = false;
@@ -179,9 +164,10 @@ public class PlayerHealth : MonoBehaviour
             ReduceHealth(1);
         }
 
+        // Check if the player hit a checkpoint. If yes, set the last checkpoint to the current checkpoint
         if (collision.CompareTag("Checkpoint"))
         {
-            lastCheckpoint = collision.transform.position;
+            PlatformerMovement2D.instance.lastCheckpoint = collision.transform.position;
         }
 
         if (collision.CompareTag("Enemy"))
@@ -194,22 +180,20 @@ public class PlayerHealth : MonoBehaviour
     private void RespawnToChair()
     {
         // Respawn the player at the last checkpoint
-        transform.position = lastChairPosition;
+        transform.position = PlatformerMovement2D.instance.lastChairLocation;
         currentHealth = maxHealth;
         GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+
+        // Switch back to the last saved chair virtual camera
+        CameraManager.instance.LoadLastChairVirtualCamera();
     }
     private void ForceMoveToSafePosition()
     {
-        transform.position = lastCheckpoint;
+        transform.position = PlatformerMovement2D.instance.lastCheckpoint;
     }
     public void FullyHealHP()
     {
         currentHealth = maxHealth;
-    }
-
-    private void SaveChairPosition(Vector2 chairPosition)
-    {
-        lastChairPosition = chairPosition;
     }
     #endregion
 

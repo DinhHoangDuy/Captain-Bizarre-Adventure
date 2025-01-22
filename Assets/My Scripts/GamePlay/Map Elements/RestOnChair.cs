@@ -58,6 +58,9 @@ public class RestOnChair : MonoBehaviour
     {
         if(playerInput.Player.Interact.WasReleasedThisFrame() && nearTheChair)
         {
+            // Save the last chair Cinemachine Camera
+            CameraManager.instance.SetLastSavedChairVirtualCamera();
+            // Save the game
             dataPersistenceManager.SaveGame();
             Debug.Log("Game saved");
         }
