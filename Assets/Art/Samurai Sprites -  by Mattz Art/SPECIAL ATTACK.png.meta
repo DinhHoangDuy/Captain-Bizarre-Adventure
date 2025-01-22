@@ -148,6 +148,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -155,10 +168,10 @@ TextureImporter:
       name: SPECIAL ATTACK_0
       rect:
         serializedVersion: 2
-        x: 36
-        y: 14
-        width: 21
-        height: 36
+        x: 0
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,10 +190,10 @@ TextureImporter:
       name: SPECIAL ATTACK_1
       rect:
         serializedVersion: 2
-        x: 131
-        y: 14
-        width: 21
-        height: 33
+        x: 96
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -199,10 +212,10 @@ TextureImporter:
       name: SPECIAL ATTACK_2
       rect:
         serializedVersion: 2
-        x: 231
-        y: 14
-        width: 23
-        height: 31
+        x: 192
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,10 +234,10 @@ TextureImporter:
       name: SPECIAL ATTACK_3
       rect:
         serializedVersion: 2
-        x: 327
-        y: 14
-        width: 23
-        height: 31
+        x: 288
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -243,10 +256,10 @@ TextureImporter:
       name: SPECIAL ATTACK_4
       rect:
         serializedVersion: 2
-        x: 423
-        y: 14
-        width: 24
-        height: 30
+        x: 384
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,10 +278,10 @@ TextureImporter:
       name: SPECIAL ATTACK_5
       rect:
         serializedVersion: 2
-        x: 517
-        y: 15
-        width: 45
-        height: 81
+        x: 480
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -287,10 +300,10 @@ TextureImporter:
       name: SPECIAL ATTACK_6
       rect:
         serializedVersion: 2
-        x: 614
-        y: 42
-        width: 43
-        height: 54
+        x: 576
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -309,10 +322,10 @@ TextureImporter:
       name: SPECIAL ATTACK_7
       rect:
         serializedVersion: 2
-        x: 711
-        y: 43
-        width: 27
-        height: 43
+        x: 672
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -331,10 +344,10 @@ TextureImporter:
       name: SPECIAL ATTACK_8
       rect:
         serializedVersion: 2
-        x: 807
-        y: 41
-        width: 27
-        height: 43
+        x: 768
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -353,10 +366,10 @@ TextureImporter:
       name: SPECIAL ATTACK_9
       rect:
         serializedVersion: 2
-        x: 903
-        y: 24
-        width: 25
-        height: 39
+        x: 864
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -375,10 +388,10 @@ TextureImporter:
       name: SPECIAL ATTACK_10
       rect:
         serializedVersion: 2
-        x: 987
-        y: 14
-        width: 51
-        height: 32
+        x: 960
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -397,10 +410,10 @@ TextureImporter:
       name: SPECIAL ATTACK_11
       rect:
         serializedVersion: 2
-        x: 1081
-        y: 14
-        width: 55
-        height: 30
+        x: 1056
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -419,10 +432,10 @@ TextureImporter:
       name: SPECIAL ATTACK_12
       rect:
         serializedVersion: 2
-        x: 1175
-        y: 14
-        width: 59
-        height: 31
+        x: 1152
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -441,10 +454,10 @@ TextureImporter:
       name: SPECIAL ATTACK_13
       rect:
         serializedVersion: 2
-        x: 1270
-        y: 14
-        width: 61
-        height: 31
+        x: 1248
+        y: 0
+        width: 96
+        height: 96
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -463,7 +476,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 09179b08e338c6e43808ff8665f25de1
     internalID: 0
     vertices: []
     indices: 

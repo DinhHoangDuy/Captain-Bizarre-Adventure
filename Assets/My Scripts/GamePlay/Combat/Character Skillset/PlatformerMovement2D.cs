@@ -70,7 +70,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     private float _fallSpeedYDampingChangeThreshold;
 
     [HideInInspector] public Rigidbody2D rb;
-    private Animator anim;
+    [SerializeField] private Animator anim;
     private MovementStats stats;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform wallCheck;
@@ -98,7 +98,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
         playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
         stats = GetComponent<MovementStats>();
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
@@ -117,11 +116,6 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void Update()
     {
-        #region Frequent Update the Movement Stats.
-        // TODO: Move all stats below to the start method after final testing.
-        #endregion
-
-
         if (isDashing) return;
         horizontal = playerInput.Player.Move.ReadValue<Vector2>().x;
         if (horizontal < 0)
@@ -230,7 +224,13 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
 
     private void FixedUpdate()
     {
-        if (inputBlocked || isDashing)
+        // if (GetComponent<CaptainSkillSet>().isAttacking || GetComponent<CaptainSkillSet>().isChargingAttack)
+        if (GetComponent<CaptainSkillSet>().isAttacking)
+        {
+            rb.linearVelocityX = 0f; 
+            return;
+        }
+        if (inputBlocked || isDashing || GetComponent<CaptainSkillSet>().isAttacking)
         {
             return;
         }

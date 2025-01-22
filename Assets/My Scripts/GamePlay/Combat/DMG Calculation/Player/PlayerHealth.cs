@@ -216,10 +216,6 @@ public class PlayerHealth : MonoBehaviour
     private void Update()
     {
         potionHealTimer -= Time.deltaTime;
-
-        // if (healInput.triggered)
-        // TODO: Fix the input system, it's not working properly with the new input system, it's not detecting the input.
-        // if(Input.GetKeyDown(KeyCode.L) && CanUseHealingPotion())
         if (InputManager.instance.healInputTriggered && CanUseHealingPotion())
         {
             HealingPotionAnimation();

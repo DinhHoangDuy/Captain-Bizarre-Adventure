@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(FloatingPlatform))]
 public class MovingPlatform : MonoBehaviour
 {
     // The list of points that the platform will move between
-    [SerializeField] private Transform[] points;
+    [Header("Points: Put all the points the platform will move between. If none are assigned, the platform will not move.")]
+    public Transform[] points;
 
     // The speed at which the platform moves
+    [Header("Speed: The speed at which the platform moves.")]
     [SerializeField] private float speed;
     [SerializeField] private float delayTime;
 
@@ -18,18 +21,29 @@ public class MovingPlatform : MonoBehaviour
 
     void Start()
     {
-        if(points.Length <= 1)
+        if (points.Length <= 1)
         {
             Debug.Log("No points assigned to the moving platform. This platform will not move.");
             return;
         }
-        // Set the target to the first point
-        target = points[0].position;
+        else if (speed <= 0 || delayTime <= 0)
+        {
+            Debug.LogError("Speed or delay time is less than or equal to 0, while the platform is set to move. Please set a speed and delay time greater than 0.");
+            return;
+        }
+
+        else
+        {
+            // Set the target to the first point
+            target = points[0].position;
+            // Move the platform to the first point by changing the position
+            transform.position = target;
+        }
     }
 
     void Update()
     {
-        if(!isMoving)
+        if (!isMoving)
         {
             return;
         }
@@ -38,7 +52,7 @@ public class MovingPlatform : MonoBehaviour
             currentPoint++;
             if (currentPoint >= points.Length)
             {
-                currentPoint = 0;   
+                currentPoint = 0;
             }
             target = points[currentPoint].position;
             StartCoroutine(DelayMovement(delayTime));

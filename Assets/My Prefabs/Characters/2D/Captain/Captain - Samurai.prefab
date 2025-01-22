@@ -434,6 +434,7 @@ MonoBehaviour:
   wallJumpingPower: {x: 6, y: 16}
   dashUnlocked: 0
   rb: {fileID: 0}
+  anim: {fileID: 7201850538215919687}
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -476,8 +477,7 @@ MonoBehaviour:
   requiredSP: 30
   passiveDuration: 5
   passiveDMGBoost: 30
-  isWarthChipEquipped: 0
-  WarthCritDMGBuffValue: 0
+  isWrathChipEquipped: 0
   attackPoint: {fileID: 5593513566568407175}
   attackRange: 1
   enemyLayers:
@@ -486,6 +486,7 @@ MonoBehaviour:
   dummyLayers:
     serializedVersion: 2
     m_Bits: 8
+  anim: {fileID: 7201850538215919687}
   isUnbreakableWillActive: 0
   currentSP: 0
   ultimateTriggered: 0
@@ -502,9 +503,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f105f304aec74e4cc83d8ecb0acb4749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoubleJumpActive: 0
-  WallJumpActive: 0
+  UltimateActive: 0
   DashActive: 0
+  WallJumpActive: 0
+  DoubleJumpActive: 0
 --- !u!70 &4258862801108272714
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

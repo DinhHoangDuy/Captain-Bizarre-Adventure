@@ -118,7 +118,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     private PlatformerMovement2D platformerMovement;
     // private ExpansionChipStatus.instance ExpansionChipStatus.instance;
     private Rigidbody2D rb;
-    private Animator anim;
+    [SerializeField] private Animator anim;
     #endregion
 
     #region Current Status 
@@ -132,32 +132,27 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     public float _ultimateCooldown { get { return ultimateCooldown; } }
     #endregion   
 
-    #region New Input System
-    private PlayerInput playerInput;
-    private InputAction FireInput;
-    private InputAction UltimateInput;
+    // #region New Input System
+    // private PlayerInput playerInput;
+    // private InputAction AttackInput;
+    // private InputAction UltimateInput;
 
 
-    private void OnEnable()
-    {
-        playerInput = new PlayerInput();
-        FireInput = playerInput.Player.Fire;
-        UltimateInput = playerInput.Player.Spell;
-        UltimateInput.performed += ctx => UltimatePressed();
-        playerInput.Enable();
-    }
-    private void UltimatePressed()
-    {
-        UltimateAttack();
-    }
+    // private void OnEnable()
+    // {
+    //     playerInput = new PlayerInput();
+    //     AttackInput = playerInput.Player.Attack;
+    //     UltimateInput = playerInput.Player.Spell;
+    //     UltimateInput.performed += ctx => UltimatePressed();
+    //     playerInput.Enable();
+    // }
 
-    #endregion
+    // #endregion
 
     private void Awake()
     {
         platformerMovement2D = GetComponent<PlatformerMovement2D>();
         dmgCalulator = GetComponent<DamageOutCalculator>();
-        anim = GetComponent<Animator>();
         platformerMovement = GetComponent<PlatformerMovement2D>();
         rb = GetComponent<Rigidbody2D>();
         // ExpansionChipStatus.instance = GameObject.Find("/Player UI").GetComponent<ExpansionChipStatus.instance>();
@@ -193,10 +188,17 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         // Check if the player is attacking
         if (!isAttacking)
         {
-            if (playerInput.Player.Fire.triggered)
+            // if (playerInput.Player.Attack.triggered)
+            if (InputManager.instance.attackInputTriggered && attackKeyReleasedBefore)
             {
                 BasicAttack();
+                attackKeyReleasedBefore = false;
             }
+
+        }
+        if (!InputManager.instance.attackInputTriggered)
+        {
+            attackKeyReleasedBefore = true;
         }
 
         #region Hammer Expansion Chip
@@ -224,6 +226,12 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
             isWarthCritDMGBuffActive = false;
             criticalDamageMultiplier -= ExpansionChipStatus.instance.wrathCritDMGBuffValue;
         }
+
+        // Input Action
+        if (InputManager.instance.ultimateInputTriggered)
+        {
+            UltimateAttack();
+        }
     }
 
 
@@ -232,17 +240,21 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     {
         //Calculate the Basic Attack Damage
         basicAttackDamage = basicAttackBaseDMG + (basicATK * basicAttackMultiplier / 100);
-        basicAttackDamage = dmgCalulator.BoostDamage(basicAttackDamage);
 
         // Sent the trigger to the animator coder
         if (Time.time >= nextAttackTime)
         {
             nextAttackTime = Time.time + 1f / attackRate;
+            basicAttackDamage = dmgCalulator.BoostDamage(basicAttackDamage);
             anim.SetTrigger("Basic Attack");
         }
     }
     public void UltimateAttack()
     {
+        //Check if Captain has enough SP, or isn't attacking, if not, return
+        if (!CanCastUltimate() || isAttacking) return;
+
+        //==========Pre-attack: Damage Calculation==========
         //Sent the ultimate damage to the wave of energy prefab
         ultimateDamage = ultimateBaseDamage + (basicATK * ultimateDamageMultiplier / 100);
         ultimateDamage = dmgCalulator.BoostDamage(ultimateDamage);
@@ -271,27 +283,27 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         {
             ultimateDamage += ultimateDamage * HammerChip.hammerChipBuffValue / 100;
         }
-        //Check if Captain has enough SP and one stack to cast the ultimate
-        if (CanCastUltimate() && !isAttacking)
+
+        //===========Attack Animation==========
+        // Shoot the wave of energy by using the animator
+        if (PlatformerMovement2D.instance.isWallSliding)
         {
-            if (PlatformerMovement2D.instance.isWallSliding)
-            {
-                PlatformerMovement2D.instance.Flip();
-            }
-            anim.SetTrigger("Ultimate");
-            ultimateTriggered = true;
-            CostSP(requiredSP);
-
-            //Set the Ultimate Cooldown
-            currentUltimateCooldown = ultimateCooldown;
-
-            // Start/Restart the passive coroutine of the passive 
-            if (passiveCoroutine != null)
-            {
-                StopCoroutine(passiveCoroutine);
-            }
-            passiveCoroutine = StartCoroutine(ActivatePassive());
+            PlatformerMovement2D.instance.Flip();
         }
+        anim.SetTrigger("Ultimate");
+        ultimateTriggered = true;
+        CostSP(requiredSP);
+
+        //=========Post-attack: Set cooldown==========
+        //Set the Ultimate Cooldown
+        currentUltimateCooldown = ultimateCooldown;
+
+        // Start/Restart the passive coroutine of the passive 
+        if (passiveCoroutine != null)
+        {
+            StopCoroutine(passiveCoroutine);
+        }
+        passiveCoroutine = StartCoroutine(ActivatePassive());
     }
     //Ultimate Requirement
     public bool CanCastUltimate()
@@ -305,6 +317,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     //Passive
     private Coroutine passiveCoroutine;
     public bool isAttacking = false;
+    private bool attackKeyReleasedBefore = true;
 
     private IEnumerator ActivatePassive()
     {
@@ -410,13 +423,15 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
     public void AttackStart()
     {
         PlatformerMovement2D.instance.inputBlocked = true;
-        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero; 
+        isAttacking = true;
         rb.gravityScale = 0;
     }
     public void AttackEnd()
     {
         PlatformerMovement2D.instance.inputBlocked = false;
         rb.gravityScale = originalGravityScale;
+        isAttacking = false;
     }
     #endregion    
 

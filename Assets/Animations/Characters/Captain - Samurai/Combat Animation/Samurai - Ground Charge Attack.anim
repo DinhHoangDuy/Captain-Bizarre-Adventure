@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Samurai - Ground Attack 1
+  m_Name: Samurai - Ground Charge Attack
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,22 +21,25 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 6548489276043825817, guid: 9e4faca65a8309946a88210f1a400b50,
+      value: {fileID: -8067064155683005559, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
         type: 3}
-    - time: 0.05
-      value: {fileID: 4970056502602508726, guid: 9e4faca65a8309946a88210f1a400b50,
+    - time: 0.083333336
+      value: {fileID: -8026145847568802193, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
         type: 3}
-    - time: 0.1
-      value: {fileID: 1935231433567745852, guid: 9e4faca65a8309946a88210f1a400b50,
+    - time: 0.18333334
+      value: {fileID: 6107270647747243749, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
         type: 3}
-    - time: 0.15
-      value: {fileID: 8810267081325647525, guid: 9e4faca65a8309946a88210f1a400b50,
+    - time: 0.23333333
+      value: {fileID: 4187692278994487492, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
         type: 3}
-    - time: 0.2
-      value: {fileID: 4172772526038875549, guid: 9e4faca65a8309946a88210f1a400b50,
+    - time: 0.33333334
+      value: {fileID: -1672537753692768648, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
         type: 3}
-    - time: 0.25
-      value: {fileID: -9022913262071093832, guid: 9e4faca65a8309946a88210f1a400b50,
+    - time: 0.4
+      value: {fileID: 8584599048589331450, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
+        type: 3}
+    - time: 0.48333332
+      value: {fileID: -6942383819428705121, guid: 3adaa237860f7d270a7dfbbbc6fdb425,
         type: 3}
     attribute: m_Sprite
     path: 
@@ -60,18 +63,19 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 6548489276043825817, guid: 9e4faca65a8309946a88210f1a400b50, type: 3}
-    - {fileID: 4970056502602508726, guid: 9e4faca65a8309946a88210f1a400b50, type: 3}
-    - {fileID: 1935231433567745852, guid: 9e4faca65a8309946a88210f1a400b50, type: 3}
-    - {fileID: 8810267081325647525, guid: 9e4faca65a8309946a88210f1a400b50, type: 3}
-    - {fileID: 4172772526038875549, guid: 9e4faca65a8309946a88210f1a400b50, type: 3}
-    - {fileID: -9022913262071093832, guid: 9e4faca65a8309946a88210f1a400b50, type: 3}
+    - {fileID: -8067064155683005559, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
+    - {fileID: -8026145847568802193, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
+    - {fileID: 6107270647747243749, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
+    - {fileID: 4187692278994487492, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
+    - {fileID: -1672537753692768648, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
+    - {fileID: 8584599048589331450, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
+    - {fileID: -6942383819428705121, guid: 3adaa237860f7d270a7dfbbbc6fdb425, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.31666666
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -90,25 +94,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0
-    functionName: AttackStart
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.15
-    functionName: DealBasicDMG
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.31666666
-    functionName: AttackEnd
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []
