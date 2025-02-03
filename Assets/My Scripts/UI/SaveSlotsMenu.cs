@@ -64,7 +64,7 @@ public class SaveSlotsMenu : MonoBehaviour
                 firstSlotWithData.GetComponent<Button>().Select();
             }
             // Case 2: if there's more than one slot with data, select the most recently updated slot
-            else
+            else if (numberOfSlotsWithData > 1)
             {
                 string mostRecentlyUpdatedProfileID = DataPersistenceManager.instance.GetMostRecentlyUpdatedProfileID();
                 foreach (SaveSlot saveSlot in saveSlots)
@@ -76,6 +76,11 @@ public class SaveSlotsMenu : MonoBehaviour
                         break;
                     }
                 }
+            }
+            else // Default: select the first slot because of an unexpected error which should not happen.
+            {
+                Debug.Log("Default: No data found in any slot. Selecting the first slot.");
+                saveSlots[0].GetComponent<Button>().Select();
             }
         }
     }

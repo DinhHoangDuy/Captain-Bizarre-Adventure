@@ -8,6 +8,7 @@ public class DialogueVisualCueTrigger : MonoBehaviour
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
     [SerializeField] private bool oneTimeUseOnly = false;
+    private BoxCollider2D boxCollider2D;
 
     [Header("Ink JSON")]
     [SerializeField] private TextAsset inkJSON;
@@ -19,6 +20,10 @@ public class DialogueVisualCueTrigger : MonoBehaviour
         playerInRange = false;
         isUsed = false;
         visualCue.SetActive(false);
+
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        // Set the "isTrigger" property to true
+        boxCollider2D.isTrigger = true;
     }
 
     private void Update() 

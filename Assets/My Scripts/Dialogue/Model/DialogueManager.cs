@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
 
     [Header("Dialogue UI")]
     [SerializeField] private Canvas dialogueCanvas;
+    [SerializeField] private GameObject playerUI;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI dialogueText;
     //[SerializeField] private GameObject continueIcon;
@@ -51,7 +52,7 @@ public class DialogueManager : MonoBehaviour
     private string BGMFilePath = "";
     [Header("Voice acting")]
     [SerializeField] private AudioSource voiceActing;
-    private const string VoicePath = "Music/VoiceActing/";    
+    private const string VoicePath = "Music/VoiceActing/";
     private const string VOICE_TAG = "voice";
     private const string VOICESOURCE_TAG = "voiceSource";
 
@@ -60,11 +61,11 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Button skipVideoButton;
     [SerializeField] private float autoHideDelay = 3f;
     private bool skipVideoButtonShowed = false;
-    private Animator skipVideoButtonAnimator;    
+    private Animator skipVideoButtonAnimator;
     private const string VideoPath = "Videos/";
     private const string VIDEO_TAG = "video";
     private string VideoFilePath = "";
-    private bool IsVideoPlaying = false;   
+    private bool IsVideoPlaying = false;
 
     private Coroutine skipButtonCoroutine;
 
@@ -95,7 +96,7 @@ public class DialogueManager : MonoBehaviour
         PlatformerMovement2D.instance.inputBlocked = false;
 
         //Gain access to the Dialogue Panel, which is the parrent of the Dialogue Box
-        dialoguePanel = dialogueBox.transform.parent.gameObject;        
+        dialoguePanel = dialogueBox.transform.parent.gameObject;
 
         //Initiate Show/Hide Dialogue Button
         showHideButton = showHideObj.GetComponent<Button>();
@@ -121,10 +122,7 @@ public class DialogueManager : MonoBehaviour
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
             index++;
         }
-        //Make it touch-ready
-        Button PanelClick = dialogueBox.GetComponent<Button>();
-        PanelClick.onClick.AddListener(ClickToContinue);
-        
+
     }
 
     private void Update()
@@ -139,13 +137,13 @@ public class DialogueManager : MonoBehaviour
         else
         {
             PlatformerMovement2D.instance.inputBlocked = true;
-            PlatformerMovement2D.instance.rb.linearVelocity = Vector2.zero; 
+            PlatformerMovement2D.instance.rb.linearVelocity = Vector2.zero;
             // Debug.Log("Dialogue is playing");       
         }
 
-        if(Input.GetButtonDown("Submit"))
+        if (Input.GetButtonDown("Submit"))
         {
-            if(!DialogueHidden)
+            if (!DialogueHidden)
             {
                 ClickToContinue();
                 EventSystem.current.SetSelectedGameObject(null);
@@ -155,13 +153,14 @@ public class DialogueManager : MonoBehaviour
                 ShowHideDialogue();
                 EventSystem.current.SetSelectedGameObject(null);
             }
-        }       
+        }
     }
 
     public void EnterDialogueMode(TextAsset inkJSON)
     {
         dialogueCanvas.gameObject.SetActive(true);
-        
+        playerUI.SetActive(false);
+
         currentStory = new Story(inkJSON.text);
         DialogueIsPlaying = true;
         PlatformerMovement2D.instance.inputBlocked = true;
@@ -180,7 +179,8 @@ public class DialogueManager : MonoBehaviour
     {
         Debug.Log("The story has ended");
         yield return new WaitForSeconds(0.2f);
-        DialogueIsPlaying = false;    
+        playerUI.SetActive(true);
+        DialogueIsPlaying = false;
         dialogueText.text = "";
         PlatformerMovement2D.instance.inputBlocked = false;
         // ExternalDialogueManager.instance.ExitDialogueMode();
@@ -190,16 +190,13 @@ public class DialogueManager : MonoBehaviour
     }
     private void ClickToContinue()
     {
+        if (IsVideoPlaying) return;
         if (CanContinueToNextLine)
         {
             if (currentStory.currentChoices.Count == 0)
             {
                 ContinueStory();
-            }     
-        }
-        else if (IsVideoPlaying)
-        {
-            HandleSkipVideoButton();
+            }
         }
         else
         {
@@ -212,7 +209,7 @@ public class DialogueManager : MonoBehaviour
         if (currentStory.canContinue && videoPlayer.clip == null)
         {
             //Initiate Coroutine for typing effect
-            if(displayLineCoroutine != null)
+            if (displayLineCoroutine != null)
             {
                 StopCoroutine(displayLineCoroutine);
             }
@@ -224,9 +221,9 @@ public class DialogueManager : MonoBehaviour
             && !IsVideoPlaying)
         {
             StartVideo();
-        }        
+        }
         else
-        {            
+        {
             StartCoroutine(ExitDialogueMode());
         }
     }
@@ -267,7 +264,7 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case PORTRAIT_TAG:
                     //Bring the portraitCharacter variable to the Location tag handler
-                    portraitCharacter = tagValue; 
+                    portraitCharacter = tagValue;
                     break;
                 case PORTRAITLOCATION_TAG:
                     //portraitCharacter from PORTRAIT_TAG is now used to change portrait to desired character
@@ -286,9 +283,9 @@ public class DialogueManager : MonoBehaviour
                             portraitRightAnimator.Play("none");
                             portraitCenterAnimator.Play(portraitCharacter);
                             break;
-                    }                    
+                    }
                     break;
-                    //Change the background of the dialogue
+                //Change the background of the dialogue
                 case BACKGROUND_TAG:
                     backgroundAnimator.Play(tagValue);
                     break;
@@ -318,11 +315,11 @@ public class DialogueManager : MonoBehaviour
                     //Debug.Log("voiceSource: " + tagValue);
                     break;
                 */
-                
+
                 //Video player
                 case VIDEO_TAG:
                     VideoFilePath = VideoPath + tagValue;
-                    ReadyToPlayVideo(VideoFilePath);                    
+                    ReadyToPlayVideo(VideoFilePath);
                     break;
                 default:
                     Debug.LogWarning("Tag came in but not handled yet:" + tag);
@@ -345,7 +342,7 @@ public class DialogueManager : MonoBehaviour
             if (letter == '<' || isAddingRichTextTag)
             {
                 isAddingRichTextTag = true;
-                if(letter == '>')
+                if (letter == '>')
                 {
                     isAddingRichTextTag = false;
                 }
@@ -474,58 +471,60 @@ public class DialogueManager : MonoBehaviour
         showHideObj.SetActive(false);
         skipDialogueButton.gameObject.SetActive(false);
         skipVideoButton.gameObject.SetActive(true);
+        skipVideoButtonAnimator.SetBool("IsShowed", true);
         videoPlayer.Play();
         Debug.Log("The video is Playing");
     }
     private void CloseVideo(VideoPlayer vp)
     {
+        IsVideoPlaying = false;
         videoPlayer.Stop();
         videoPlayer.clip = null;
-        IsVideoPlaying = false;
         CanContinueToNextLine = true;
-        
+        skipVideoButtonAnimator.SetBool("IsShowed", false);
+
         //Auto move to the next line or exit the dialogue when it ends after the video
         if (currentStory.canContinue)
-            {
-                //Show Everything belongs to the dialogue system
-                dialoguePanel.SetActive(true);
-                backgroundAnimator.gameObject.SetActive(true);
-                showHideObj.SetActive(true);
-                skipDialogueButton.gameObject.SetActive(true);
-                skipVideoButton.gameObject.SetActive(false);
-                //Auto continue to next line
-                ContinueStory();
-            }
-        else
-            {
-                StartCoroutine(ExitDialogueMode());
-            }
-
-    }    
-    private void HandleSkipVideoButton()
-    {
-        if (skipButtonCoroutine != null)
         {
-            StopCoroutine(skipButtonCoroutine);
-        }
-
-        if (skipVideoButtonShowed)
-        {
-            skipVideoButtonAnimator.SetBool("IsShowed", false);
-            StopCoroutine(skipButtonCoroutine);
+            //Show Everything belongs to the dialogue system
+            dialoguePanel.SetActive(true);
+            backgroundAnimator.gameObject.SetActive(true);
+            showHideObj.SetActive(true);
+            skipDialogueButton.gameObject.SetActive(true);
+            skipVideoButton.gameObject.SetActive(false);
+            //Auto continue to next line
+            ContinueStory();
         }
         else
         {
-            skipVideoButtonAnimator.SetBool("IsShowed", true);            
-            skipButtonCoroutine = StartCoroutine(AutoHideSkipVideoButton());
+            StartCoroutine(ExitDialogueMode());
         }
-        skipVideoButtonShowed = !skipVideoButtonShowed;
+
     }
-    private IEnumerator AutoHideSkipVideoButton()
-    {
-        yield return new WaitForSeconds(autoHideDelay);
-        skipVideoButtonAnimator.SetBool("IsShowed", false);
-    }
+    // private void HandleSkipVideoButton()
+    // {
+    //     if (skipButtonCoroutine != null)
+    //     {
+    //         StopCoroutine(skipButtonCoroutine);
+    //     }
+
+    //     if (skipVideoButtonShowed)
+    //     {
+    //         skipVideoButtonAnimator.SetBool("IsShowed", false);
+    //         StopCoroutine(skipButtonCoroutine);
+    //     }
+    //     else
+    //     {
+    //         skipVideoButtonAnimator.SetBool("IsShowed", true);
+    //         skipButtonCoroutine = StartCoroutine(AutoHideSkipVideoButton());
+    //     }
+    //     skipVideoButtonShowed = !skipVideoButtonShowed;
+    // }
+    // private IEnumerator AutoHideSkipVideoButton()
+    // {
+    //     yield return new WaitForSeconds(autoHideDelay);
+    //     skipVideoButtonAnimator.SetBool("IsShowed", false);
+    // }
     private void SkipVideo()
     {
         CloseVideo(videoPlayer);

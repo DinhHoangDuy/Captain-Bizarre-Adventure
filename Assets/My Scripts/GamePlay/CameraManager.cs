@@ -38,6 +38,10 @@ public class CameraManager : MonoBehaviour
                 Debug.LogError("Cinemachine Camera " + camera.name + " does not have the CameraAutoEnable script attached.");
             }
         }
+
+        currentActiveVirtualCamera = GetCurrentActiveCamera();
+        SetLastSavedChairVirtualCamera();
+        SetLastSavedCheckpointVirtualCamera(currentActiveVirtualCamera);
     }
 
     void Update()
@@ -89,6 +93,10 @@ public class CameraManager : MonoBehaviour
     internal void SetLastSavedCheckpointVirtualCamera(CinemachineCamera checkpointVirtualCamera)
     {
         lastSavedCheckpointVirtualCamera = checkpointVirtualCamera;
+    }
+    internal void LoadCheckpointVirtualCamera()
+    {
+        UseThisCamera(lastSavedCheckpointVirtualCamera);
     }
     #endregion
 

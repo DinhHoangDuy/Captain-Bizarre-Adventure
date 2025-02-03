@@ -13,20 +13,27 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private Button firstSelectedMenuButton;
     [SerializeField] private string mainMenuScene = "My Scenes/MainMenu/Welcome";
+    [Header("Player Guide")]
+    [SerializeField] private GameObject playerGuidePanel;
     public static bool isPaused = false;
     [Header("Pause Menu Buttons")]
     [SerializeField] private Button resumeButton;
-    [SerializeField] private Button exitButton;
+    [SerializeField] private Button gameExitButton;
+    [SerializeField] private Button playerGuideButton;
+    [SerializeField] private Button guideExitButton;
     //Adapt new Input System
     private PlayerInput playerInput;
     private InputAction pauseInput;
     private void Awake()
     {
         playerInput = new PlayerInput();
-        //Pause Menu Button
+        //Pause Menu Buttons
         resumeButton.onClick.AddListener(ResumeGame);
-        exitButton.onClick.AddListener(ExitGame);
+        gameExitButton.onClick.AddListener(ExitGame);
+        playerGuideButton.onClick.AddListener(OpenPlayerGuidePanel); 
+        guideExitButton.onClick.AddListener(ClosePlayerGuidePanel);
     }
+
     private void OnEnable()
     {
         pauseInput = playerInput.Player.Pause;
@@ -40,10 +47,11 @@ public class PauseMenu : MonoBehaviour
 
     private void Start()
     {
-        //=====Pause Menu=====
         //Preventing the game automatically paused when started
         Time.timeScale = 1f;
-        // pauseMenuPanel.SetActive(false);     
+        // Hide the Pause Menu Panel and Player Guide Panel when the game starts
+        pauseMenuPanel.SetActive(false);  
+        playerGuidePanel.SetActive(false);   
     }
 
     // Update is called once per frame
@@ -53,6 +61,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuPanel.SetActive(isPaused);
     }
 
+    #region Pause Mene Functions
     //pauseInput trigger method
     private void PauseMenuPanel(InputAction.CallbackContext context)
     {
@@ -91,4 +100,20 @@ public class PauseMenu : MonoBehaviour
         isPaused = false;
         SceneManager.LoadScene(mainMenuScene);
     }
+    #endregion
+
+    #region Player Guide Functions
+    private void OpenPlayerGuidePanel()
+    {
+        // Hide the Pause Menu Panel and show the Player Guide Panel
+        pauseMenuPanel.SetActive(false);
+        playerGuidePanel.SetActive(true);
+    }
+    private void ClosePlayerGuidePanel()
+    {
+        // Hide the Player Guide Panel and show the Pause Menu Panel
+        playerGuidePanel.SetActive(false);
+        pauseMenuPanel.SetActive(true);
+    }
+    #endregion
 }
