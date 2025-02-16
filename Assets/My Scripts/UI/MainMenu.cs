@@ -59,12 +59,13 @@ public class MainMenu : MonoBehaviour
         // mainMenuAnimator.SetTrigger("Start"); // Trigger the fade out animation, then quit the game
 
     }
-    private void BackToMainMenu()
+    internal void BackToMainMenu()
     {
         mainMenuPanel.SetActive(true);
         saveSlotMenuPanel.SetActive(false);
         EnableMainMenuButtons();
         firstSelectedMenuButton.Select();
+
     }
     private void OpenSaveSlotMenu()
     {
@@ -83,5 +84,6 @@ public class MainMenu : MonoBehaviour
     {
         startGameButton.interactable = true;
         exitGameButton.interactable = true;
+
     }
 }

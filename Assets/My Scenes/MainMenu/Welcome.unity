@@ -1960,6 +1960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapSceneName: My Scenes/Stages/Maps/Global Map
+  exitSaveSlotsMenuButton: {fileID: 1728473297}
 --- !u!1001 &697653382658847468
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -385,7 +385,7 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
             // Push the enemy
             if (!enemy.GetComponent<EnemyHealth>().unableToPush)
             {
-                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(pushDirection * basicAttackHitForce, 0), ForceMode2D.Impulse);
+                enemy.GetComponent<Rigidbody2D>().AddForce(new Vector2(pushDirection * basicAttackHitForce * 6f, 0), ForceMode2D.Impulse);
             }
 
             // Deal the damage to the enemy

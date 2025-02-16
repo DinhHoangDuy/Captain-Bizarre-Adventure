@@ -51,7 +51,7 @@ public class RoomTransitionAnimation : MonoBehaviour
     {
         if (targetTransform == null || cinemachineCameraRoomA == null || cinemachineCameraRoomB == null)
         {
-            Debug.LogWarningFormat("Transition information is missing! The game is not transitioning to the target room.");
+            Debug.LogWarningFormat("Transition information is missing! The game is not transitioning to the target room. GameObject:" + gameObject.name);
             return;
         }
         // Transitioning the player to the target room

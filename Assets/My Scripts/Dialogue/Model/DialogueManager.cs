@@ -61,7 +61,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Button skipVideoButton;
     [SerializeField] private float autoHideDelay = 3f;
     private bool skipVideoButtonShowed = false;
-    private Animator skipVideoButtonAnimator;
+    // private Animator skipVideoButtonAnimator;
     private const string VideoPath = "Videos/";
     private const string VIDEO_TAG = "video";
     private string VideoFilePath = "";
@@ -105,7 +105,6 @@ public class DialogueManager : MonoBehaviour
 
         //Initiate Skip Buttons
         skipDialogueButton.onClick.AddListener(SkipDialogue);
-        skipVideoButtonAnimator = skipVideoButton.gameObject.GetComponent<Animator>();
         skipVideoButton.onClick.AddListener(SkipVideo);
         skipVideoButton.gameObject.SetActive(false);
 
@@ -143,6 +142,7 @@ public class DialogueManager : MonoBehaviour
 
         if (Input.GetButtonDown("Submit"))
         {
+            if (IsVideoPlaying) return;
             if (!DialogueHidden)
             {
                 ClickToContinue();
@@ -206,6 +206,7 @@ public class DialogueManager : MonoBehaviour
     private void ContinueStory()
     {
         DialogueIsPlaying = true;
+        if (IsVideoPlaying) return;
         if (currentStory.canContinue && videoPlayer.clip == null)
         {
             //Initiate Coroutine for typing effect
@@ -471,7 +472,6 @@ public class DialogueManager : MonoBehaviour
         showHideObj.SetActive(false);
         skipDialogueButton.gameObject.SetActive(false);
         skipVideoButton.gameObject.SetActive(true);
-        skipVideoButtonAnimator.SetBool("IsShowed", true);
         videoPlayer.Play();
         Debug.Log("The video is Playing");
     }
@@ -481,7 +481,7 @@ public class DialogueManager : MonoBehaviour
         videoPlayer.Stop();
         videoPlayer.clip = null;
         CanContinueToNextLine = true;
-        skipVideoButtonAnimator.SetBool("IsShowed", false);
+
 
         //Auto move to the next line or exit the dialogue when it ends after the video
         if (currentStory.canContinue)

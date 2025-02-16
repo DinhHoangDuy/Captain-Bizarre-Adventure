@@ -24,8 +24,11 @@ public class GameData
     public bool wallJumpUnlocked;
     public bool dashUnlocked;
     public bool ultimateUnlocked;
-    public SerializableDictionary<string, bool> unlockedSkills;
+    public SerializableDictionary<string, bool> unlockedSkills; // This is to keep track of the unlockable skills item on the ground.
 
+    // Expansion Chip System
+    public SerializableDictionary<string, bool> unlockedChips;
+    public SerializableDictionary<string, bool> equippedChips;
     
     // Constructor to initialize the game data with default values
     public GameData()
@@ -45,5 +48,7 @@ public class GameData
         wallJumpUnlocked    = false;
         ultimateUnlocked    = false;
         unlockedSkills      = new SerializableDictionary<string, bool>();
+        // Default Expansion Chip System
+        unlockedChips = new SerializableDictionary<string, bool>();
     }
 }

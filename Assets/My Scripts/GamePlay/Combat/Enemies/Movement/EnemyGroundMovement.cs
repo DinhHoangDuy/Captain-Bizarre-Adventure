@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyHealth))]
@@ -47,8 +48,8 @@ public class EnemyGroundMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GetComponent<EnemyHealth>().isDead) return;
-        
+        if (GetComponent<EnemyHealth>().isDead) return;
+
         int direction = isLookingRight ? 1 : -1;
         anim.SetBool("isWalking", rb.linearVelocityX != 0);
         if (enemyHealth.isDummy)
@@ -58,35 +59,46 @@ public class EnemyGroundMovement : MonoBehaviour
 
         if (!EnemyFound())
         {
-            Debug.Log("Enemy is not seeing the player. Wandering around.");
+            // Debug.Log("Enemy is not seeing the player. Wandering around.");
             if (movementRoutineTimer <= 0)
             {
                 Flip();
+                movementRoutineTimer = movementRoutineTime;
+                // StartCoroutine(PauseBeforeTurning());
             }
             else
             {
                 movementRoutineTimer -= Time.deltaTime;
-                rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
+                // rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
+                float targetSpeed = direction * speed;
+                MoveWithForce(targetSpeed);
                 // rb.AddForce(new Vector2(direction * speed, 0), ForceMode2D.Force);
                 MovingCheck();
             }
         }
         else if (EnemyFound())
         {
-            if (isAttacking)
+            // if (isAttacking)
+            // {
+            //     rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+            // }
+            // else
+            // {
+            //     if (IsEnemyBehind())
+            //     {
+            //         Flip();
+            //     }
+            //     // rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
+            //     float targetSpeed = direction * speed;
+            //     MoveWithForce(targetSpeed);
+            // }
+            if (IsEnemyBehind())
             {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocityY);
+                Flip();
             }
-            else
-            {
-                if (IsEnemyBehind())
-                {
-                    Flip();
-                }
-                // rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocityY);
-                float targetSpeed = direction * speed;
-                MoveWithForce(targetSpeed);
-            }
+
+            float targetSpeed = direction * speed;
+            MoveWithForce(targetSpeed);
         }
 
         // Update Animation
@@ -96,7 +108,6 @@ public class EnemyGroundMovement : MonoBehaviour
     {
         isLookingRight = !isLookingRight;
         transform.Rotate(0f, 180f, 0f);
-        movementRoutineTimer = movementRoutineTime;
     }
 
     void MoveWithForce(float targetSpeed)
@@ -118,12 +129,16 @@ public class EnemyGroundMovement : MonoBehaviour
         if (!Physics2D.OverlapCircle(cliffCheck.transform.position, 0.2f, groundLayer))
         {
             Flip();
-            Debug.Log("Cliff detected. Turning around.");
+            movementRoutineTimer = movementRoutineTime;
+            // Debug.Log("Cliff detected. Turning around.");
+            // StartCoroutine(PauseBeforeTurning());
         }
         if (Physics2D.OverlapCircle(wallCheck.transform.position, 0.2f, groundLayer))
         {
             Flip();
-            Debug.Log("Wall detected. Turning around.");
+            movementRoutineTimer = movementRoutineTime;
+            // Debug.Log("Wall detected. Turning around.");
+            // StartCoroutine(PauseBeforeTurning());
         }
     }
     internal bool EnemyFound()
@@ -133,6 +148,16 @@ public class EnemyGroundMovement : MonoBehaviour
     private bool IsEnemyBehind()
     {
         return enemyBackSight.IsTouchingLayers(LayerMask.GetMask("Player"));
+    }
+
+    private IEnumerator PauseBeforeTurning()
+    {
+        // Pause for a bit before turning around
+        yield return new WaitForSeconds(1.0f); // Adjust the wait time as needed
+
+        Flip();
+        movementRoutineTimer = movementRoutineTime;
+        // Debug.Log("Turning around after pause.");
     }
 
     void OnDrawGizmosSelected()

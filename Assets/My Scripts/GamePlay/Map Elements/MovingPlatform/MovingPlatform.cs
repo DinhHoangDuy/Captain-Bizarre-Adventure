@@ -11,8 +11,8 @@ public class MovingPlatform : MonoBehaviour
 
     // The speed at which the platform moves
     [Header("Speed: The speed at which the platform moves.")]
-    [SerializeField] private float speed;
-    [SerializeField] private float delayTime;
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private float delayTime = 1f;
 
     // The current point the platform is moving towards
     private int currentPoint;

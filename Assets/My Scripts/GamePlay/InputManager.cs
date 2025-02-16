@@ -24,7 +24,7 @@ public class InputManager : MonoBehaviour
     {
         inputActions.Disable();
     }
-    
+
     void Start()
     {
         if (instance == null)
@@ -34,7 +34,7 @@ public class InputManager : MonoBehaviour
 
         // Performed Method is called when the button is pressed
         inputActions.Player.Heal.performed += ctx => healInputTriggered = true;
-        inputActions.Player.ExpansionChipPanel.performed += ctx => expansionChipPanelInputTriggered = true; 
+        inputActions.Player.ExpansionChipPanel.performed += ctx => expansionChipPanelInputTriggered = true;
         inputActions.Player.Interact.performed += ctx => interactionInputTriggered = true;
 
         inputActions.Player.Attack.performed += ctx => attackInputTriggered = true;
@@ -47,17 +47,6 @@ public class InputManager : MonoBehaviour
 
         inputActions.Player.Attack.canceled += ctx => attackInputTriggered = false;
         inputActions.Player.Ultimate.canceled += ctx => ultimateInputTriggered = false;
-
-        // Move Input
-        inputActions.Player.Move.performed += ctx =>
-        {
-            Vector2 moveInput = ctx.ReadValue<Vector2>();
-            Debug.Log("Move Input: " + moveInput);
-        };
-    }
-
-    void Update()
-    {
 
     }
 }

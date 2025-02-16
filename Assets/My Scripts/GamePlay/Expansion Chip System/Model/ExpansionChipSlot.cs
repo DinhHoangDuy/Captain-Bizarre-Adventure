@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
+public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler, IDataPersistence
 {
     [Header("Chip Variables on the inspector")]
     public ExpansionChipSO chipData;
+    public string chipName;
     public TextMeshProUGUI chipNameUIText;
     public Image chipIconUIImage;
     public Image selectedShader;
@@ -110,6 +111,46 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler
             isSelected = false;
             ExpansionChipManager.instance.DeleteDescription();
         }
+    }
+    #endregion
+
+
+    #region Save and Load Data
+    public void LoadData(GameData data)
+    {
+        // Load the data from the GameData
+        if (chipData == null)
+        {
+            return;
+        }
+
+        data.unlockedChips.TryGetValue(chipName, out isLocked);
+        if (isLocked)
+        {
+            // Set the chip icon to gray if it is locked
+            chipIconUIImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            lockedShader.gameObject.SetActive(true);
+        }
+        else
+        {
+            chipIconUIImage.color = new Color(1f, 1f, 1f, 1f);
+            lockedShader.gameObject.SetActive(false);
+        }
+        // data.equippedChips.TryGetValue(chipName, out isEquipped);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if (chipData == null)
+        {
+            return;
+        }
+        if(data.unlockedChips.ContainsKey(chipNameData))
+        {
+            data.unlockedChips.Remove(chipNameData);
+        }
+        data.unlockedChips.Add(chipNameData, !isLocked);
+        // data.equippedChips.Add(chipName, isEquipped);
     }
     #endregion
 }

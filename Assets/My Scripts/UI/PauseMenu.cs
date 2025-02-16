@@ -16,6 +16,7 @@ public class PauseMenu : MonoBehaviour
     [Header("Player Guide")]
     [SerializeField] private GameObject playerGuidePanel;
     public static bool isPaused = false;
+    public bool isUsingPlayerGuide = false;
     [Header("Pause Menu Buttons")]
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button gameExitButton;
@@ -59,15 +60,30 @@ public class PauseMenu : MonoBehaviour
     {
         //Auto enable pause menu Panel 
         pauseMenuPanel.SetActive(isPaused);
+
+        if (isPaused || isUsingPlayerGuide)
+        {
+            Time.timeScale = 0f;
+        }
+        else if (!isPaused && !isUsingPlayerGuide)
+        {
+            Time.timeScale = 1f;
+        }
+
+        PlatformerMovement2D.instance.inputBlocked = isPaused;
     }
 
     #region Pause Mene Functions
     //pauseInput trigger method
     private void PauseMenuPanel(InputAction.CallbackContext context)
     {
-        if (isPaused)
+        if (isPaused && !isUsingPlayerGuide)
         {
             ResumeGame();
+        }
+        else if (isUsingPlayerGuide)
+        {
+            ClosePlayerGuidePanel();
         }
         else
         {
@@ -85,15 +101,11 @@ public class PauseMenu : MonoBehaviour
     public void PauseGame()
     {
         firstSelectedMenuButton.Select();
-        isPaused = true;
-        Time.timeScale = 0f;
-        PlatformerMovement2D.instance.inputBlocked = true;       
+        isPaused = true;     
     }
     public void ResumeGame()
     {
         isPaused = false;
-        Time.timeScale = 1f;
-        PlatformerMovement2D.instance.inputBlocked = false;
     }
     public void ExitGame()
     {
@@ -108,12 +120,15 @@ public class PauseMenu : MonoBehaviour
         // Hide the Pause Menu Panel and show the Player Guide Panel
         pauseMenuPanel.SetActive(false);
         playerGuidePanel.SetActive(true);
+        isUsingPlayerGuide = true;
+        guideExitButton.Select();
     }
     private void ClosePlayerGuidePanel()
     {
         // Hide the Player Guide Panel and show the Pause Menu Panel
         playerGuidePanel.SetActive(false);
         pauseMenuPanel.SetActive(true);
+        isUsingPlayerGuide = false;
     }
     #endregion
 }

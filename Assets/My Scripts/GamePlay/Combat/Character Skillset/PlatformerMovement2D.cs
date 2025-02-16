@@ -119,6 +119,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
     {
         if (isDashing) return;
         horizontal = playerInput.Player.Move.ReadValue<Vector2>().x;
+        //TODO: Change this to use the InputManager instance to get the horizontal input
         if (horizontal < 0)
         {
             moveDirection = -1f;

@@ -12,6 +12,8 @@ public class ExpansionChipManager : MonoBehaviour
 
     [Header("Panel Components")]
     [SerializeField] private GameObject expansionChipPanel;
+    private CanvasGroup expansionChipPanelCanvasGroup;
+    private bool isPanelActive = false;
     [SerializeField] private ExpansionChipSlot[] expansionChipSlots;
     [SerializeField] private Button equipButton;
     [SerializeField] private TextMeshProUGUI loadIndicatorNumber;
@@ -42,18 +44,38 @@ public class ExpansionChipManager : MonoBehaviour
 
     private void Start()
     {
+        if (expansionChipSlots.Length == 0)
+        {
+            Debug.LogError("No Expansion Chip Slot is assigned in the Inspector");
+        }
         expansionChipStatus = GetComponent<ExpansionChipStatus>();
-        expansionChipPanel.SetActive(false);
+        expansionChipPanel.SetActive(true);
+        expansionChipPanelCanvasGroup = expansionChipPanel.GetComponent<CanvasGroup>();
+        DisableExpansionChipPanel();
+        // expansionChipPanel.SetActive(false);
 
         DeselectAllSlots();
         DeleteDescription();
         equipButton.onClick.AddListener(ToggleEquipButton);
     }
+
+   
+
     private void Update()
     {
         if (InputManager.instance.expansionChipPanelInputTriggered)
         {
-            expansionChipPanel.SetActive(!expansionChipPanel.activeSelf);
+            // expansionChipPanel.SetActive(!expansionChipPanel.activeSelf);
+            if (isPanelActive)
+            {
+                DisableExpansionChipPanel();
+                isPanelActive = false;
+            }
+            else
+            {
+                EnableExpansionChipPanel();
+                isPanelActive = true;
+            }
             InputManager.instance.expansionChipPanelInputTriggered = false;
         }
 
@@ -256,6 +278,21 @@ public class ExpansionChipManager : MonoBehaviour
     public void ChangeChipAmount(int amount)
     {
         currentChipAmount += amount;
+    }
+    #endregion
+
+    #region Show Hide Expansion Chip Panel
+     private void EnableExpansionChipPanel()
+    {
+        expansionChipPanelCanvasGroup.alpha = 1;
+        expansionChipPanelCanvasGroup.interactable = true;
+        expansionChipPanelCanvasGroup.blocksRaycasts = true;
+    }
+    private void DisableExpansionChipPanel()
+    {
+        expansionChipPanelCanvasGroup.alpha = 0;
+        expansionChipPanelCanvasGroup.interactable = false;
+        expansionChipPanelCanvasGroup.blocksRaycasts = false;
     }
     #endregion
 }
