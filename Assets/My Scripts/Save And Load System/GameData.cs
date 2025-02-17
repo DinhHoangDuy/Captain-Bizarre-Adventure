@@ -50,5 +50,6 @@ public class GameData
         unlockedSkills      = new SerializableDictionary<string, bool>();
         // Default Expansion Chip System
         unlockedChips = new SerializableDictionary<string, bool>();
+        equippedChips = new SerializableDictionary<string, bool>();
     }
 }

@@ -20,13 +20,13 @@ public class ExpansionChipManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI loadIndicatorText;
     [SerializeField] private int maxLoad = 10;
     [SerializeField] private int maxChipAmount = 6;
-    private int currentLoad = 0;
+    private int currentChipLoad = 0;
     private int currentChipAmount = 0;
 
     [Header("Add Chip Name, Chip Icon Image and Chip Description from the Description Panel here")]
     [SerializeField] private Image chipIconDescription;
     public Sprite blankChipIcon;
-    [SerializeField] private TextMeshProUGUI  chipNameDescriptionPanel;
+    [SerializeField] private TextMeshProUGUI chipNameDescriptionPanel;
     [SerializeField] private TextMeshProUGUI chipDescriptionText;
 
     // Manager State
@@ -40,10 +40,7 @@ public class ExpansionChipManager : MonoBehaviour
         {
             instance = this;
         }
-    }
 
-    private void Start()
-    {
         if (expansionChipSlots.Length == 0)
         {
             Debug.LogError("No Expansion Chip Slot is assigned in the Inspector");
@@ -53,14 +50,32 @@ public class ExpansionChipManager : MonoBehaviour
         expansionChipPanelCanvasGroup = expansionChipPanel.GetComponent<CanvasGroup>();
         DisableExpansionChipPanel();
         // expansionChipPanel.SetActive(false);
-
         DeselectAllSlots();
         DeleteDescription();
         equipButton.onClick.AddListener(ToggleEquipButton);
     }
 
-   
+    private void Start()
+    {
+        // Update the current Chip Load
+        currentChipLoad = 0;
+        currentChipAmount = 0;
+        for (int i = 0; i <= expansionChipSlots.Length; i++)
+        {
+            if (expansionChipSlots[i].isEquipped)
+            {
+                currentChipLoad += expansionChipSlots[i].chipLoadData;
+                if (expansionChipSlots[i].chipSO.name != "Key Of Blood Moon")
+                {
+                    currentChipAmount++;
+                }
+            }
+        }
 
+    }
+
+
+    #region Update
     private void Update()
     {
         if (InputManager.instance.expansionChipPanelInputTriggered)
@@ -101,7 +116,8 @@ public class ExpansionChipManager : MonoBehaviour
                     buttonText = "Locked";
                     buttonInteractable = false;
                 }
-                else if (isEquipped)
+
+                if (isEquipped)
                 {
                     buttonText = "Unequip";
                 }
@@ -121,7 +137,7 @@ public class ExpansionChipManager : MonoBehaviour
                     }
                     else
                     {
-                        int futureLoad = currentLoad + chipLoadData;
+                        int futureLoad = currentChipLoad + chipLoadData;
                         int futureChipAmount = currentChipAmount + (chipLoadData > 0 ? 1 : 0);
 
                         if (expansionChipStatus.isKeyOfBloodMoonEquipped)
@@ -146,14 +162,14 @@ public class ExpansionChipManager : MonoBehaviour
                 // Apply the calculated text and interactability to the button
                 equipButton.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
                 equipButton.interactable = buttonInteractable;
-            }        
+            }
         }
         equipButton.gameObject.SetActive(anySlotSelected);
 
         #region Update Chip Load/Amount
-        if(!expansionChipStatus.isKeyOfBloodMoonEquipped)
-        { 
-            if(currentLoad > maxLoad)
+        if (!expansionChipStatus.isKeyOfBloodMoonEquipped)
+        {
+            if (currentChipLoad > maxLoad)
             {
                 ExpansionChipStatus.instance.isOverclocked = true;
             }
@@ -162,7 +178,7 @@ public class ExpansionChipManager : MonoBehaviour
                 ExpansionChipStatus.instance.isOverclocked = false;
             }
         }
-        else 
+        else
         {
             // Key of Blood Moon is equipped
             ExpansionChipStatus.instance.isOverclocked = true; // Overclock state is forced to be active when the Key of Blood Moon is equipped
@@ -172,56 +188,58 @@ public class ExpansionChipManager : MonoBehaviour
         UpdateLoadIndicatorText();
         #endregion
     }
+    #endregion
 
+    #region Update UI
+    // This method is called when the equip button is clicked
     private void ToggleEquipButton()
     {
-        for(int i = 0; i < expansionChipSlots.Length; i++)
+        for (int i = 0; i < expansionChipSlots.Length; i++)
         {
             if (expansionChipSlots[i].isSelected)
             {
-                if(expansionChipSlots[i].isLocked)
+                if (expansionChipSlots[i].isLocked)
                 {
                     return;
                 }
                 if (expansionChipSlots[i].isEquipped)
                 {
+                    #region Unequip Chip
                     // This is to unequip the selected Chip
                     expansionChipSlots[i].isEquipped = false;
                     expansionChipSlots[i].equippedShader.enabled = false;
 
+                    // Update the current Chip Load
                     ChangeChipLoad(-expansionChipSlots[i].chipLoadData);
-                
-                    if(expansionChipSlots[i].chipLoadData > 0)
+                    // Update the current Chip Amount
+                    if (expansionChipSlots[i].chipSO.chipName != "Key Of Blood Moon")
                     {
                         ChangeChipAmount(-1);
                     }
-                    else
-                    {
-                        ChangeChipAmount(0);
-                    }
+
                     return;
+                    #endregion
                 }
                 else
                 {
+                    #region Equip Chip
                     // This is to equip the selected Chip
                     expansionChipSlots[i].isEquipped = true;
                     expansionChipSlots[i].equippedShader.enabled = true;
 
+                    // Update the current Chip Load
                     ChangeChipLoad(expansionChipSlots[i].chipLoadData);
-                    if(expansionChipSlots[i].chipLoadData > 0)
+                    // Update the current Chip Amount
+                    if (expansionChipSlots[i].chipSO.chipName != "Key Of Blood Moon")
                     {
                         ChangeChipAmount(1);
                     }
-                    else
-                    {
-                        ChangeChipAmount(0);
-                    }
                     return;
+                    #endregion
                 }
             }
         }
     }
-
     public void DeselectAllSlots()
     {
         for (int i = 0; i < expansionChipSlots.Length; i++)
@@ -230,11 +248,21 @@ public class ExpansionChipManager : MonoBehaviour
         }
         anySlotSelected = false;
     }
+    private void ChangeChipLoad(int loadChange)
+    {
+        currentChipLoad += loadChange;
+    }
+    private void ChangeChipAmount(int amountChange)
+    {
+        currentChipAmount += amountChange;
+    }
+    #endregion
+
     public void UnlockChip(ExpansionChipSO chipData)
     {
         for (int i = 0; i < expansionChipSlots.Length; i++)
         {
-            if (expansionChipSlots[i].chipData == chipData)
+            if (expansionChipSlots[i].chipSO == chipData)
             {
                 expansionChipSlots[i].isLocked = false;
                 return;
@@ -251,13 +279,13 @@ public class ExpansionChipManager : MonoBehaviour
     #region Load Indicator
     public void UpdateLoadIndicator()
     {
-        if(expansionChipStatus.isKeyOfBloodMoonEquipped)
+        if (expansionChipStatus.isKeyOfBloodMoonEquipped)
         {
             loadIndicatorNumber.text = (currentChipAmount) + "/" + maxChipAmount;
         }
         else
         {
-            loadIndicatorNumber.text = currentLoad + "/" + maxLoad;
+            loadIndicatorNumber.text = currentChipLoad + "/" + maxLoad;
         }
     }
     public void UpdateLoadIndicatorText()
@@ -271,18 +299,11 @@ public class ExpansionChipManager : MonoBehaviour
             loadIndicatorText.text = "Current Chip Load: ";
         }
     }
-    public void ChangeChipLoad(int loadChange)
-    {
-        currentLoad += loadChange;
-    }
-    public void ChangeChipAmount(int amount)
-    {
-        currentChipAmount += amount;
-    }
+
     #endregion
 
     #region Show Hide Expansion Chip Panel
-     private void EnableExpansionChipPanel()
+    private void EnableExpansionChipPanel()
     {
         expansionChipPanelCanvasGroup.alpha = 1;
         expansionChipPanelCanvasGroup.interactable = true;

@@ -8,8 +8,9 @@ using UnityEngine.UI;
 public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler, IDataPersistence
 {
     [Header("Chip Variables on the inspector")]
-    public ExpansionChipSO chipData;
-    public string chipName;
+    public ExpansionChipSO chipSO;
+    private ExpansionChipItem chipItem;
+    // public string chipName;
     public TextMeshProUGUI chipNameUIText;
     public Image chipIconUIImage;
     public Image selectedShader;
@@ -18,46 +19,55 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler, IDataPersi
 
     [Header("Add Chip Name, Chip Icon Image and Chip Description from the Description Panel here")]
     [SerializeField] private Image chipIconDescription;
-    [SerializeField] private TextMeshProUGUI  chipNameDescriptionPanel;
+    [SerializeField] private TextMeshProUGUI chipNameDescriptionPanel;
     [SerializeField] private TextMeshProUGUI chipDescriptionText;
 
     // Chip Data
-    [HideInInspector] public string chipNameData;
-    [HideInInspector] public string chipDescriptionData;
-    [HideInInspector] private Sprite chipIconData;
-    [HideInInspector] public int chipLoadData;
-    public bool isLocked;
-    [HideInInspector] public bool isEquipped = false;
-    [HideInInspector] public bool isSelected = false;
+    public string chipNameData;
+    public string chipDescriptionData;
+    private Sprite chipIconData;
+    public int chipLoadData;
+    public bool isLocked = true;
+    public bool isEquipped = false;
+    public bool isSelected = false;
 
 
 
-    void Start()
+    void Awake()
     {
-        if (chipData == null)
+        if (chipSO == null)
         {
             isLocked = true;
             chipIconData = ExpansionChipManager.instance.blankChipIcon;
             return;
         }
+        // Lock/Unlock the chip based on the data
+        isLocked = true;
 
-        // Obtain Chip Data, ready to be used in the UI
-        chipNameData = chipData.chipName;
-        chipDescriptionData = chipData.chipDescription;
-        chipIconData = chipData.chipIcon;
-        chipLoadData = chipData.chipLoad;
+        // Obtain Chip Data, ready to be used when needed
+        chipNameData = chipSO.chipName;
+        chipDescriptionData = chipSO.chipDescription;
+        chipIconData = chipSO.chipIcon;
+        chipLoadData = chipSO.chipLoad;
 
         // Set Chip Name in the UI
         chipNameUIText.text = chipNameData;
 
         // Set the chip icon in the UI
         chipIconUIImage.sprite = chipIconData;
-
-        // Lock the chip
-        isLocked = true;
     }
     void Update()
     {
+        ExpansionChipItem[] chipItems = FindObjectsOfType<ExpansionChipItem>();
+        foreach (ExpansionChipItem item in chipItems)
+        {
+            if (item.chipSO == chipSO)
+            {
+                chipItem = item;
+                break;
+            }
+        }
+        if (chipItem != null) isLocked = !chipItem.isUnlocked;
         // Check if the chip is locked
         if (isLocked)
         {
@@ -79,16 +89,16 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler, IDataPersi
         else
         {
             selectedShader.gameObject.SetActive(false);
-            if(isEquipped)
+            if (isEquipped)
             {
                 equippedShader.gameObject.SetActive(true);
             }
-        }        
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
             OnLeftClick();
         }
@@ -96,7 +106,7 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler, IDataPersi
     #region On Left Click
     void OnLeftClick()
     {
-        if(!isSelected)
+        if (!isSelected)
         {
             ExpansionChipManager.instance.DeselectAllSlots();
             isSelected = true;
@@ -118,39 +128,26 @@ public class ExpansionChipSlot : MonoBehaviour, IPointerClickHandler, IDataPersi
     #region Save and Load Data
     public void LoadData(GameData data)
     {
-        // Load the data from the GameData
-        if (chipData == null)
+        if (chipSO == null)
         {
             return;
         }
 
-        data.unlockedChips.TryGetValue(chipName, out isLocked);
-        if (isLocked)
-        {
-            // Set the chip icon to gray if it is locked
-            chipIconUIImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
-            lockedShader.gameObject.SetActive(true);
-        }
-        else
-        {
-            chipIconUIImage.color = new Color(1f, 1f, 1f, 1f);
-            lockedShader.gameObject.SetActive(false);
-        }
-        // data.equippedChips.TryGetValue(chipName, out isEquipped);
+        data.equippedChips.TryGetValue(chipSO.chipName, out isEquipped);
     }
 
     public void SaveData(ref GameData data)
     {
-        if (chipData == null)
+        if (chipSO == null)
         {
             return;
         }
-        if(data.unlockedChips.ContainsKey(chipNameData))
+
+        if (data.equippedChips.ContainsKey(chipSO.chipName))
         {
-            data.unlockedChips.Remove(chipNameData);
+            data.equippedChips.Remove(chipSO.chipName);
         }
-        data.unlockedChips.Add(chipNameData, !isLocked);
-        // data.equippedChips.Add(chipName, isEquipped);
+        data.equippedChips.Add(chipSO.chipName, isEquipped);
     }
     #endregion
 }

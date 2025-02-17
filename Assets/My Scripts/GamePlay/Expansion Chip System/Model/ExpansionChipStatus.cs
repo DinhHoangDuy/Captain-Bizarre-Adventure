@@ -103,17 +103,16 @@ public class ExpansionChipStatus : MonoBehaviour
         {
             instance = this;
         }
-    }
 
-    private void Start()
-    {
         skillSet = GameObject.FindGameObjectWithTag("Player").GetComponent<CaptainSkillSet>();
         playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerHealth>();
         damageOutCalculator = GameObject.FindGameObjectWithTag("Player").GetComponent<DamageOutCalculator>();
 
         // For speed boots chip
         originalSpeed = PlatformerMovement2D.instance.moveSpeed;
+        Debug.Log ("Original Speed is: " + originalSpeed);
         speedDifference = originalSpeed * (speedBootChipBuffValue / 100);
+        Debug.Log ("Speed Difference is: " + speedDifference);
     }
 
     private void Update()
