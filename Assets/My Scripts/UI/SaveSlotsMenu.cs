@@ -8,7 +8,6 @@ public class SaveSlotsMenu : MonoBehaviour
 {
     [SerializeField] private String mapSceneName;
     [SerializeField] private Button exitSaveSlotsMenuButton;
-    [SerializeField] private MainMenu mainMenu;
     private SaveSlot[] saveSlots;
 
     private void Awake()
@@ -24,17 +23,17 @@ public class SaveSlotsMenu : MonoBehaviour
     {
         Dictionary<string, GameData> gameData = DataPersistenceManager.instance.GetAllProfilesGameData();
 
-        bool anySlotHasData = false;
+        // bool anySlotHasData = false;
         foreach (SaveSlot saveSlot in saveSlots)
         {
             GameData profileData = null;
             gameData.TryGetValue(saveSlot.GetProfileId(), out profileData);
             saveSlot.SetData(profileData);
 
-            if (profileData != null)
-            {
-                anySlotHasData = true;
-            }
+            // if (profileData != null)
+            // {
+            //     anySlotHasData = true;
+            // }
         }
          
         //====== Choose the Slot automatically ======
@@ -96,16 +95,17 @@ public class SaveSlotsMenu : MonoBehaviour
     public void OnSaveSlotClicked(SaveSlot saveSlot)
     {
         DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
-
-
         // if the profile has data, load the game. Otherwise, start a new game
         if(!saveSlot.profileHasData)
         {
             DataPersistenceManager.instance.NewGame();
         }
 
-        SceneManager.LoadScene(mapSceneName);
+        // SceneManager.LoadScene(mapSceneName);
+        MainMenu.instance.LoadGameAnimation(mapSceneName);
     }
 
     // TODO: implement the "Delete" button
+
+    
 }

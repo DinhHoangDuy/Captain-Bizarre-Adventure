@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Unity.Cinemachine;
+using System;
 public class RoomTransitionAnimation : MonoBehaviour
 {
     [Tooltip("Enable this option if you want to use the animation for the room transition. (Should be used to debug the room transition)")]
@@ -13,6 +14,8 @@ public class RoomTransitionAnimation : MonoBehaviour
     internal AutoMoveDirection autoMoveDirection;
     private Animator crossfadeAnimator;
     private Animator playerUIAnimator;
+    private bool isExitingGame = false;
+    private String mainMenuScene;
 
     void Awake()
     {
@@ -93,6 +96,19 @@ public class RoomTransitionAnimation : MonoBehaviour
             PlatformerMovement2D.instance.rb.linearVelocity = new Vector2(0, 0);
             PlatformerMovement2D.instance.inputBlocked = false;
         }
+    }
 
+    public void ExitGame()
+    {
+        // UnityEngine.SceneManager.LoadScene(mainMenuScene);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuScene);
+    }
+    
+    public void ExitGameAnimation(string mainMenuScene)
+    {
+        isExitingGame = true;
+        this.mainMenuScene = mainMenuScene;
+        crossfadeAnimator.SetTrigger("Start");
+        playerUIAnimator.SetTrigger("Start");
     }
 }

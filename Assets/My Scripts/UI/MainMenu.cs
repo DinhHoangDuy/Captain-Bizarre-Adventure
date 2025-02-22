@@ -1,33 +1,42 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+// using UnityEditor;
+// using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
-// TODO: Add a fade in animation for the main menu!!
 {
     [Header("Main Menu")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private Button startGameButton;
     [SerializeField] private Button exitGameButton;
     [SerializeField] private Button firstSelectedMenuButton;
+    [SerializeField] private bool isUsingAnimation;
+    public NextAction nextAction;
+    private String mapSceneName;
 
     [Header("Save Slot Menu")]
     [SerializeField] private SaveSlotsMenu saveSlotsMenu;
     [SerializeField] private GameObject saveSlotMenuPanel;
     [SerializeField] private Button backButton;
 
-    // private Animator mainMenuAnimator;
-    private bool quitGame = false;
+    private Animator mainMenuAnimator;
+    public static MainMenu instance;
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+
         //Main Menu Button
         startGameButton.onClick.AddListener(StartGame);
-        exitGameButton.onClick.AddListener(ExitGame);
+        exitGameButton.onClick.AddListener(ExitGameAnimation);
         //Save Slot Menu Button
         backButton.onClick.AddListener(BackToMainMenu);
         // Main Menu Animator
-        // mainMenuAnimator = GetComponent<Animator>();
+        mainMenuAnimator = GetComponent<Animator>();
     }
     private void Start()
     {
@@ -43,21 +52,55 @@ public class MainMenu : MonoBehaviour
         // Open the save slot menu
         OpenSaveSlotMenu();
     }
-    private void ExitGame()
+    private void ExitGameAnimation()
     {
         DisableMainMenuButtons();
-        DataPersistenceManager.instance.SaveGame();
-        quitGame = true;
-        if (Application.isEditor)
+        nextAction = NextAction.ExitGame;
+        if (isUsingAnimation)
         {
-            UnityEditor.EditorApplication.isPlaying = false;
+            mainMenuAnimator.SetTrigger("Start");
         }
         else
         {
-            Application.Quit();
+            ExitGame();
         }
-        // mainMenuAnimator.SetTrigger("Start"); // Trigger the fade out animation, then quit the game
+    }
+    public void LoadGameAnimation(String mapSceneName)
+    {
+        nextAction = NextAction.StartGame;
+        this.mapSceneName = mapSceneName;
+        if (isUsingAnimation)
+        {
+            mainMenuAnimator.SetTrigger("Start");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(mapSceneName);
+        }
+    }
 
+    // Animation events
+    public void ExitGame()
+    {
+        if (nextAction == NextAction.ExitGame)
+        {
+            DataPersistenceManager.instance.SaveGame();
+            if (Application.isEditor)
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+            }
+            else
+            {
+                Application.Quit();
+            }
+        }
+    }
+    public void LoadSaveGame()
+    {
+        if (nextAction == NextAction.StartGame)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(mapSceneName);
+        }
     }
     internal void BackToMainMenu()
     {
@@ -86,4 +129,10 @@ public class MainMenu : MonoBehaviour
         exitGameButton.interactable = true;
 
     }
+}
+
+public enum NextAction
+{
+    StartGame,
+    ExitGame
 }

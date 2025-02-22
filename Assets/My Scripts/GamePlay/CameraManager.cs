@@ -24,7 +24,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        cinemachineCameras = FindObjectsOfType<CinemachineCamera>();
+        cinemachineCameras = FindObjectsByType<CinemachineCamera>(FindObjectsSortMode.None);
         if (cinemachineCameras.Length == 0)
         {
             Debug.LogError("No Cinemachine Camera found in the scene.");

@@ -131,7 +131,7 @@ public class DataPersistenceManager : MonoBehaviour
         
         // Save the game data to a file using a data handler
         fileDataHandler.Save(gameData, selectedProfileID);
-        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+        PlayerHealth playerHealth = FindFirstObjectByType<PlayerHealth>();
         if (playerHealth != null)
         {
             playerHealth.FullyHealHP();
@@ -139,7 +139,6 @@ public class DataPersistenceManager : MonoBehaviour
         }
         else Debug.LogWarning("PlayerHealth script not found in the scene."); 
     }
-
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
         IEnumerable<IDataPersistence> dataPersistencesObjects = FindObjectsOfType<MonoBehaviour>().OfType<IDataPersistence>();

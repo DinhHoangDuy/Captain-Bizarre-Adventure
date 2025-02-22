@@ -110,7 +110,8 @@ public class PauseMenu : MonoBehaviour
     public void ExitGame()
     {
         isPaused = false;
-        SceneManager.LoadScene(mainMenuScene);
+        // SceneManager.LoadScene(mainMenuScene);
+        RoomTransitionAnimation.instance.ExitGameAnimation(mainMenuScene);
     }
     #endregion
 
