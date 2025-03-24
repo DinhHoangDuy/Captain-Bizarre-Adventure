@@ -101,10 +101,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         playerInput = new PlayerInput();
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<MovementStats>();
-    }
 
-    private void Start()
-    {
         coyoteTimeCounter = coyoteTime;
         moveSpeed = stats.MoveSpeed;
         jumpingPower = stats.JumpForce;
@@ -113,6 +110,11 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
         dashForce = stats.DashForce;
         dashForce = stats.DashForce;
         extraJumpsCounter = extraJumps;
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void Update()

@@ -85,14 +85,7 @@ public class MainMenu : MonoBehaviour
         if (nextAction == NextAction.ExitGame)
         {
             DataPersistenceManager.instance.SaveGame();
-            if (Application.isEditor)
-            {
-                UnityEditor.EditorApplication.isPlaying = false;
-            }
-            else
-            {
-                Application.Quit();
-            }
+            Application.Quit();
         }
     }
     public void LoadSaveGame()

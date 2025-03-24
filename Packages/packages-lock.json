@@ -32,7 +32,7 @@
     },
     "com.unity.2d.aseprite": {
       "version": "1.1.8",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.2d.common": "6.0.6",
@@ -110,7 +110,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ai.navigation": {
-      "version": "2.0.4",
+      "version": "2.0.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -243,7 +243,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.11.2",
+      "version": "1.13.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
