@@ -25,7 +25,6 @@ public class ExpansionChipStatus : MonoBehaviour
     */
     [HideInInspector] public bool isKeyOfBloodMoonEquipped = false;
     [HideInInspector] public bool isOverclocked = false;
-    private bool overloadDebuffApplied = false;
     #endregion
 
     #region Sharpened Sword Chip
@@ -68,9 +67,9 @@ public class ExpansionChipStatus : MonoBehaviour
     public bool isHammerChipEquipped = false;
     #endregion
 
-    #region Wraith Chip
+    #region Wrath Chip
     /*
-        Wraith Chip Equipped: If passive "Unbreakable Will" is active, Captain has +20% Crit DMG.
+        Wrath Chip Equipped: If passive "Unbreakable Will" is active, Captain has +20% Crit DMG.
     */
     [Header("Wrath Chip Buff")]
     public bool isWrathChipEquipped;

@@ -12,14 +12,14 @@ public class PauseMenu : MonoBehaviour
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private Button firstSelectedMenuButton;
-    [SerializeField] private string mainMenuScene = "My Scenes/MainMenu/Welcome";
+    [SerializeField] private string mainMenuScene = "My Scenes/MainMenu/Welcome"; 
     [Header("Player Guide")]
     [SerializeField] private GameObject playerGuidePanel;
     public static bool isPaused = false;
     public bool isUsingPlayerGuide = false;
     [Header("Pause Menu Buttons")]
     [SerializeField] private Button resumeButton;
-    [SerializeField] private Button gameExitButton;
+    [SerializeField] private Button gameExitButton;     
     [SerializeField] private Button playerGuideButton;
     [SerializeField] private Button guideExitButton;
     //Adapt new Input System

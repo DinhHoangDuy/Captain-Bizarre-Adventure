@@ -5,7 +5,7 @@ using UnityEngine;
 public class WrathChip : MonoBehaviour, IChip
 {   
     /*
-        If passive "Unbreakable Will" is active, Captain has +20% Crit DMG.
+        Captain has +20% Crit DMG.
     */
 
 

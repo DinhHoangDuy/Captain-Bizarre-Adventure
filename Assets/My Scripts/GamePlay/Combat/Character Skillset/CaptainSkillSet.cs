@@ -104,8 +104,8 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
 
     // Wrath Chip Buff: If passive "Unbreakable Will" is active, Captain deals 20% bonus Crit DMG.
     public bool isWrathChipEquipped = false;
-    private bool isWarthCritDMGBuffActive = false;
-    // [HideInInspector] public float WarthCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
+    private bool isWrathCritDMGBuffActive = false;
+    // [HideInInspector] public float wrathCritDMGBuffValue; // Receive the value from the Wrath Chip Buff script
     #endregion
 
     #region Script Dependencies
@@ -215,16 +215,16 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         }
         #endregion
 
-        if (ExpansionChipStatus.instance.isWrathChipEquipped && !isWarthCritDMGBuffActive)
+        if (ExpansionChipStatus.instance.isWrathChipEquipped && !isWrathCritDMGBuffActive)
         {
-            Debug.Log("Warth Chip is equipped. Crit DMG Bonus: " + ExpansionChipStatus.instance.wrathCritDMGBuffValue + "%");
-            isWarthCritDMGBuffActive = true;
+            Debug.Log("Wrath Chip is equipped. Crit DMG Bonus: " + ExpansionChipStatus.instance.wrathCritDMGBuffValue + "%");
+            isWrathCritDMGBuffActive = true;
             criticalDamageMultiplier += ExpansionChipStatus.instance.wrathCritDMGBuffValue;
         }
-        else if (!ExpansionChipStatus.instance.isWrathChipEquipped && isWarthCritDMGBuffActive)
+        else if (!ExpansionChipStatus.instance.isWrathChipEquipped && isWrathCritDMGBuffActive)
         {
-            Debug.Log("Warth Chip is removed. Crit DMG Bonus: " + ExpansionChipStatus.instance.wrathCritDMGBuffValue + "%");
-            isWarthCritDMGBuffActive = false;
+            Debug.Log("Wrath Chip is removed. Crit DMG Bonus: " + ExpansionChipStatus.instance.wrathCritDMGBuffValue + "%");
+            isWrathCritDMGBuffActive = false;
             criticalDamageMultiplier -= ExpansionChipStatus.instance.wrathCritDMGBuffValue;
         }
 
@@ -274,9 +274,11 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
         {
             criticalHit = false;
         }
+        // Calculate the critical hit damage
         if (criticalHit)
         {
-            ultimateDamage = ultimateDamage * (criticalDamageMultiplier / 100);
+            // ultimateDamage = ultimateDamage * (criticalDamageMultiplier / 100);
+            ultimateDamage = dmgCalulator.CalculateCriticalDamage(ultimateDamage, criticalDamageMultiplier);
             criticalHit = false;
         }
 
@@ -371,8 +373,8 @@ public class CaptainSkillSet : MonoBehaviour, IDataPersistence
             // Calculate the damage taken only when enemy is found in the range      
             if (criticalHit)
             {
-                basicAttackDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
-
+                // basicAttackDamage = basicAttackDamage * (criticalDamageMultiplier / 100);
+                basicAttackDamage = dmgCalulator.CalculateCriticalDamage(basicAttackDamage, criticalDamageMultiplier);
             }
 
             // Deal the damage to the enemy

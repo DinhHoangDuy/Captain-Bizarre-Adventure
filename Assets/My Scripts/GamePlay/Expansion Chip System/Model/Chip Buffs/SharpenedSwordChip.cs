@@ -5,18 +5,16 @@ using UnityEngine;
 public class SharpenedSwordChip : MonoBehaviour, IChip
 {
     /*
-        Increase 5% of Basic attack value when equipped
+        Increase 10 of Basic attack value when equipped
     */
 
     #region Dependencies
     public bool isBuffActive { get; set; }
     [HideInInspector] public ExpansionChipSlot expansionChipSlot {get; set;}
-    private CaptainSkillSet skillset;
 
     private void Start()
     {
         expansionChipSlot = GetComponent<ExpansionChipSlot>();
-        skillset = GameObject.FindGameObjectWithTag("Player").GetComponent<CaptainSkillSet>();
     }
     #endregion
     private void Update()

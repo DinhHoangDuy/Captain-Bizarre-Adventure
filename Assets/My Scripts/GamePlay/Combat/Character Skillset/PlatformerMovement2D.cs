@@ -132,7 +132,9 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
             moveDirection = 0f;
         }
         #region Vertical Jumping
-        if (playerInput.Player.Jump.triggered && !isWallSliding)
+        if (!inputBlocked)
+        {
+            if (playerInput.Player.Jump.triggered && !isWallSliding)
         {
             if (coyoteTimeCounter <= 0f)
             {
@@ -152,6 +154,7 @@ public class PlatformerMovement2D : MonoBehaviour, IDataPersistence
                 groundJumpAnimation = true;
                 wallJumpAnimation = false;
             }
+        }
         }
         if (playerInput.Player.Jump.WasReleasedThisFrame() && rb.linearVelocity.y > 0 && !isTransitingFromTheBottomUp)
         {

@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 using System;
 public class RoomTransitionAnimation : MonoBehaviour
 {
-    [Tooltip("Enable this option if you want to use the animation for the room transition. (Should be used to debug the room transition)")]
+    [Tooltip("Disable this option if you don't want to use the animation for the room transition. This is for faster testing.")]
     [SerializeField] private bool useAnimation = true;
     public static RoomTransitionAnimation instance;
     internal Transform targetTransform = null;
@@ -100,15 +100,26 @@ public class RoomTransitionAnimation : MonoBehaviour
 
     public void ExitGame()
     {
-        // UnityEngine.SceneManager.LoadScene(mainMenuScene);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuScene);
+        if (isExitingGame)
+        {
+            // UnityEngine.SceneManager.LoadScene(mainMenuScene);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuScene);
+        }
+        
     }
     
     public void ExitGameAnimation(string mainMenuScene)
     {
         isExitingGame = true;
         this.mainMenuScene = mainMenuScene;
-        crossfadeAnimator.SetTrigger("Start");
-        playerUIAnimator.SetTrigger("Start");
+        if (useAnimation)
+        {
+            crossfadeAnimator.SetTrigger("Start");
+            playerUIAnimator.SetTrigger("Start");
+        }
+        else
+        {
+            ExitGame();
+        }
     }
 }

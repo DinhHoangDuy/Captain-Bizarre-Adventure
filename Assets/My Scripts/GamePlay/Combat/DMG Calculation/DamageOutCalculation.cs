@@ -38,5 +38,16 @@ public class DamageOutCalculator : MonoBehaviour
     {
         Mathf.Clamp(totalDMGBoost, int.MinValue, int.MaxValue);
     }
+
+    internal float CalculateCriticalDamage(float damage, float criticalDamageMultiplier)
+    {
+        return damage * (1 + criticalDamageMultiplier / 100);
+        /*
+            Example: 
+            damage = 100
+            criticalDamageMultiplier = 50
+            return 100 * (1 + 50 / 100) = 100 * 1.5 = 150
+        */
+    }
 }
 
