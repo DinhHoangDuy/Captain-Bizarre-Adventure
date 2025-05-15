@@ -20,10 +20,22 @@ public class YarnDialogueTrigger : MonoBehaviour
 
         if (autoStart)
         {
-            // TODO: Add these to a function.
-            scriptScheduler.gameObject.SetActive(true);
-            scriptScheduler.ReadNode(yarnNodeName);  
+            StartDialogue();
         }
         // scriptSchedueler = YarnScriptSchedueler.instance;         
+    }
+    
+    private void StartDialogue()
+    {
+        // Check if the node exists in the Yarn Project
+        if (scriptScheduler.yarnNodeName == null)
+        {
+            Debug.LogWarning($"The Yarn Project {scriptScheduler.name} does not contain a node named \"{yarnNodeName}\"", scriptScheduler);
+            return;
+        }
+        Debug.Log($"The Yarn Project {scriptScheduler.name} contains a node named \"{yarnNodeName}\"", scriptScheduler);
+        // Start the dialogue with the specified node
+        scriptScheduler.gameObject.SetActive(true);
+        scriptScheduler.ReadNode(yarnNodeName);
     }
 }

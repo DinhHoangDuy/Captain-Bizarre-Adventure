@@ -1,7 +1,8 @@
 ﻿// ===================================My Story===================================
 title: MoonlightWish_Start
-tags:
-position: 0,0
+tags: Campaign
+group: Campaign
+position: 125,15
 ---
 
 Tôi đột nhiên rơi vào bóng đen đáng sợ. Cơn đau nhói bắt đầu từ ngực, rồi nhanh chóng lan ra toàn thân.
@@ -20,8 +21,9 @@ Luna: Con người, giết ta đi... Đây sẽ là ân huệ lớn nhất của
 ===
 
 title: Official_Ending
-position: 300,150
-group: Official_Ending
+position: 425,165
+group: Campaign
+
 ---
 Một màn chắn đen kịt bao trùm lấy mắt tôi, chiếm lĩnh cả thị giác và xúc giác của tôi.#speaker:Narrator #BGM:stop
 Tôi dùng hết sức để giãy giụa, mò mẫm, trong bóng tối vô tận, tôi nhất định phải nắm lấy bàn tay ấy...
@@ -83,8 +85,8 @@ Game System: TODO: Play a cutscene here
 
 // False_Ending
 title: False_Ending
-position: 300,-150
-group: False_Ending
+position: 425,-135
+group: Campaign
 ---
 Trong bóng tối hoàn toàn, tôi không thể nhìn thấy gì, và dần dần, không còn nghe thấy âm thanh nào nữa - Như thể bóng tối nắm lấy và kéo tôi vào bóng tối sâu thẳm.
 Thuyền Trưởng: Ư.. Không có sức, không được, giờ mình phải...
@@ -105,8 +107,8 @@ Tôi thật sự sắp mất cô ấy rồi...
         <<jump Restart>>
 ===
 title: Restart
-position: 600,-150
-group: False_Ending
+position: 725,-135
+group: Campaign
 ---
 Luna: Không được, con người, anh không có quyền từ chối.
 Luna: Hãy để ta ương bướng một lần nữa. Anh phải sống lâu trường thọ, như vậy mới luôn ghi nhớ ta được.
@@ -137,3 +139,24 @@ Thuyền Trưởng: Không! Không thể như vậy được!!!
 Tôi lại rơi vào bóng đêm, dường như có thứ gì đó bị tách ra khỏi cơ thể.
 ===
 
+
+
+title: VideoTest
+position: 127,374
+group: Demo
+---
+Thuyền Trưởng: Luna... Anh tới rồi đây.
+<<PlayVideo YarnDialogueSystem Luna_HappyEnding_VN>>
+Thuyền Trưởng: Luna!!
+===
+
+title: DemoDialogue
+position: 127,544
+group: Demo
+---
+Narrator: Đây là một đoạn hội thoại thử nghiệm. Bao gồm một số câu thoại và một số lựa chọn.
+    -> Okay.... Sao nữa?
+        Narrator: Bạn đã chọn "Okay.... Sao nữa?"
+    -> Không sao cả, chỉ là một đoạn hội thoại thử nghiệm thôi.
+        Narrator: Bạn đã chọn "Không sao cả, chỉ là một đoạn hội thoại thử nghiệm thôi."
+===

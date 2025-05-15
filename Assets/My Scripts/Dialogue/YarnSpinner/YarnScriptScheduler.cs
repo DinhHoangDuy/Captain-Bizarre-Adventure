@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 public class YarnScriptScheduler : MonoBehaviour
 {
+    // TODO: Work with the Skip button to skip the dialogue.
     // Create a singleton instance
     // public static YarnScriptSchedueler instance;
 
@@ -19,6 +20,7 @@ public class YarnScriptScheduler : MonoBehaviour
         {
             Debug.LogError("No Runner found");
         }
+        runner.onDialogueComplete.AddListener(() => gameObject.SetActive(false));
 
         // // Show Yarn Nodes it have.
         // for (int i = 0; i < yarnNodes.Length; i++)
