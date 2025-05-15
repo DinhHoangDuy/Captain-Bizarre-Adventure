@@ -1,0 +1,123 @@
+using UnityEngine;
+using Yarn.Unity;
+using System.Linq;
+using System.Collections.Generic;
+public class YarnScriptSchedueler : MonoBehaviour
+{
+    // Create a singleton instance
+    public static YarnScriptSchedueler instance;
+
+    // Define needed variables
+    private DialogueRunner runner;
+
+    [Tooltip("Add nodes here. The Runner will run dialogues from 0 -> Lenght")]
+    public List<string> yarnNodes = new List<string>();
+    private int order = -1; // Default value for order. Should be set to 0 if node(s) are added. (0 = first node, 1 = second node, etc.) 
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            Debug.Log("New instance created");
+        }
+        else 
+        {
+            Destroy(gameObject);
+        }
+
+        runner = GetComponent<DialogueRunner>();
+        if (runner == null)
+        {
+            Debug.Log("No Runner found");
+        }
+
+        // // Show Yarn Nodes it have.
+        // for (int i = 0; i < yarnNodes.Length; i++)
+        // {
+        //     Debug.Log(yarnNodes[i]);
+        //     if (runner.yarnProject.NodeNames.Contains(yarnNodes[i]) == false) {
+        //         Debug.LogWarning($"The Yarn Project {runner.name} does not contain a node named \"{yarnNodes[i]}\"", runner.yarnProject);
+        //         return;
+        //     }
+        // }        
+
+    }
+    void Start()
+    {
+        RunNextNode();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void ReadNodes(string[] neededNodes)
+    {
+        // Read the nodes sent by YarnDialogueTrigger
+        foreach (var node in neededNodes)
+        {
+            if (!runner.yarnProject.NodeNames.Contains(node))
+            {
+                Debug.LogWarning($"The Yarn Project {runner.name} does not contain a node named \"{node}\"", runner.yarnProject);
+                Debug.Log($"Skipping node {node}");
+            }
+            else 
+            {
+                if (!yarnNodes.Contains(node)) // Avoid duplicates
+                {
+                    yarnNodes.Add(node); // Add new node
+                    Debug.Log($"Added node: {node}");
+                }
+            }
+        }
+        if (yarnNodes.Count > 0)
+        {
+            order = 0; // Set order to 0 if nodes are added (first node)
+            Debug.Log($"Total nodes: {yarnNodes.Count}");
+            Debug.Log("Finished reading nodes");
+        }
+        else 
+        {
+            order = -1; // Set order to -1 if no nodes are added
+            Debug.Log("No nodes to read");
+        }
+    }
+
+    public void ClearNodes()
+    {
+        // Clear the nodes and order
+        order = -1;
+        yarnNodes.Clear();
+        Debug.Log("Cleared all nodes");
+    }
+
+    public void RunNextNode()
+    {
+        // Check if there are nodes to run
+        if (yarnNodes.Count > 0)
+        {
+            // Check if the order is within the range of yarnNodes
+            if (order >= 0 && order < yarnNodes.Count)
+            {
+                // Run the next node
+                runner.StartDialogue(yarnNodes[order]);
+                Debug.Log($"Running node: {yarnNodes[order]}");
+                order++;
+            }
+            else 
+            {
+                Debug.Log("No more nodes to run");
+            }
+        }
+        else 
+        {
+            Debug.Log("No nodes to run");
+            // Clear the order and nodes
+            ClearNodes();
+        }
+    }
+}
