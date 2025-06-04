@@ -1,0 +1,29 @@
+﻿title: VideoDemo
+position: 127,374
+group: Demo
+---
+Thuyền Trưởng: Luna... Anh tới rồi đây.
+<<PlayVideo YarnDialogueBackground Luna_HappyEnding_VN>>
+Thuyền Trưởng: Luna!!
+===
+
+title: DialogueDemo
+position: 127,544
+group: Demo
+---
+// <<NextDialogueNode YarnDialogueSkipper VideoDemo>>
+Narrator: Đây là một đoạn hội thoại thử nghiệm. Bao gồm một số câu thoại và một số lựa chọn.
+    -> Okay.... Sao nữa?
+        <<PlayBackgroundMusic YarnDialogueBackground If_I_Can_Stop_One_Heart_From_Breaking_Encore>>
+        Narrator: Bạn đã chọn "Okay.... Sao nữa?"
+        Tôi: Ủa???? Nhạc gì đây?? Sao nghe quen quen vậy?
+        Hệ Thống: À, đây là một đoạn nhạc nền thử nghiệm thôi. Bịt tai lại đi.
+        Tôi: Bịt tai lại? Tại sao?
+        <<PlayEffectSound YarnDialogueBackground Gunshot>>
+        Bằng! 
+        Tôi: Ủa, bắn ai vậy?
+        Hệ Thống: À, đây là một đoạn hiệu ứng âm thanh thử nghiệm thôi. Không ai chết cả... Chắc vậy?
+        Tôi: WHAT?????
+    -> Không sao cả, chỉ là một đoạn hội thoại thử nghiệm thôi.
+        Narrator: Bạn đã chọn "Không sao cả, chỉ là một đoạn hội thoại thử nghiệm thôi."
+===

@@ -25,61 +25,61 @@ position: 425,165
 group: Campaign
 
 ---
-Một màn chắn đen kịt bao trùm lấy mắt tôi, chiếm lĩnh cả thị giác và xúc giác của tôi.#speaker:Narrator #BGM:stop
+Một màn chắn đen kịt bao trùm lấy mắt tôi, chiếm lĩnh cả thị giác và xúc giác của tôi.
 Tôi dùng hết sức để giãy giụa, mò mẫm, trong bóng tối vô tận, tôi nhất định phải nắm lấy bàn tay ấy...
-Thuyền Trưởng: Anh hiểu tâm ý của em, nhưng anh không chấp nhận! TUYỆT ĐỐI KHÔNG!#speaker:Captain
+Thuyền Trưởng: Anh hiểu tâm ý của em, nhưng anh không chấp nhận! TUYỆT ĐỐI KHÔNG!
 Thuyền Trưởng: Nếu em đang tìm khẩu súng và viên đạn đặc biệt đó, rất tiếc, trước khi đi anh đã trả lại cho Kallen rồi.
 Thuyền Trưởng: Vì lần này anh nhất định không hy sinh ai cả, dù là em hay là anh!
-Luna: Haiz...#speaker:Luna
+Luna: Haiz...
 Giọng nói nhẹ tênh không biết từ đâu tới, cuốn lấy cảm xúc hỗn loạn của tôi. Tri giác đột nhiên hồi phục bình thường - Hoặc có thể nói, chưa bao giờ nhạy bén như vậy...#speaker:Narrator #background:Luna 
 // Change background to Luna_Farewell
-<<UseImage YarnDialogueSystem Luna_Farewell>>
+<<UseImage YarnDialogueBackground Luna_Farewell>>
 Vì vậy tôi ngửi được mùi hương thơm mãnh liệt, nghe được tiếng thiếu nữ nức nở thê lương, nhìn thấy váy trắng tung bay trong gió.
-Luna: Con người, quả nhiên, người dịu dàng như anh...#speaker:Luna
+Luna: Con người, quả nhiên, người dịu dàng như anh...
 Luna: Hoàn toàn không thể làm ra bất cứ chuyện gì để làm hại em, cho dù em tàn nhẫn, ngang ngược...
-Thuyền Trưởng: Vì anh luôn tin em, không thật sự muốn làm chuyện đó.#speaker:Captain
-Luna: Sự xuất hiện của anh, là kỳ tích lớn nhất em gặp trong đời, nhưng để đáp ứng nguyện vọng của em, anh đã quan sát số phận của em quá nhiều lần, trong vô thức đã...#speaker:Luna
+Thuyền Trưởng: Vì anh luôn tin em, không thật sự muốn làm chuyện đó.
+Luna: Sự xuất hiện của anh, là kỳ tích lớn nhất em gặp trong đời, nhưng để đáp ứng nguyện vọng của em, anh đã quan sát số phận của em quá nhiều lần, trong vô thức đã...
 Luna: Bị em "nguyền rủa" rồi.
-Thuyền Trưởng: Quan sát thế giới của em là nguyện vọng của anh, không liên quan đến em, em không cần phải hy sinh vì anh.#speaker:Captain
-Luna: Nhưng chết vì anh cũng là nguyện vọng của em. Con người, là anh cho em ý nghĩa để sống tiếp, lần này em muốn trả cơ hội sống tiếp cho anh.#speaker:Luna
-Thuyền Trưởng: Không... Luna, nhất định còn cách khác!#speaker:Captain
+Thuyền Trưởng: Quan sát thế giới của em là nguyện vọng của anh, không liên quan đến em, em không cần phải hy sinh vì anh.
+Luna: Nhưng chết vì anh cũng là nguyện vọng của em. Con người, là anh cho em ý nghĩa để sống tiếp, lần này em muốn trả cơ hội sống tiếp cho anh.
+Thuyền Trưởng: Không... Luna, nhất định còn cách khác!
 Thuyền Trưởng: Anh nhất định sẽ tìm được cách tách rời số phận của chúng ta, bất chấp quy tắc thế giới! Xin em... hãy cho anh thêm thời gian...
-Luna: Em đoán đúng rồi, anh quả nhiên có suy nghĩ giống em. Vì thế em mới làm như vậy...#speaker:Luna
+Luna: Em đoán đúng rồi, anh quả nhiên có suy nghĩ giống em. Vì thế em mới làm như vậy...
 Luna: Vì anh, em buộc phải xóa bỏ tất cả những yếu tố có thể tạo ra uy hiếp, cho dù là quy tắc thế giới, hay là...
 Luna: Kết cục mà anh không thể chấp nhận.
-Khoan đã, em định làm gì?#speaker:Captain
+Khoan đã, em định làm gì?
 Tôi đưa tay định nắm lấy cổ tay mềm mại, nhỏ nhắn của cô ấy, nhưng...#speaker:Narrator 
-Thuyền Trưởng: Luna!#speaker:Captain
+Thuyền Trưởng: Luna!
 Tay của tôi xuyên qua cánh tay của cô ấy, không chạm được vào bất kì thứ gì.#speaker:Narrator
-Thuyền Trưởng: Em đã làm gì? Tại sao...? #speaker:Captain
-Luna: Con người, tuy không nỡ, nhưng lần này thật sự phải nói lời tạm biệt rồi.#speaker:Luna
+Thuyền Trưởng: Em đã làm gì? Tại sao...? 
+Luna: Con người, tuy không nỡ, nhưng lần này thật sự phải nói lời tạm biệt rồi.
 Luna: Nếu em không biến mất, anh nhất định sẽ còn thông qua phản chiếu ý thức tìm cách thay đổi mọi thứ đúng không.
 Luna: Nhưng như vậy quá nguy hiểm, em không muốn anh mạo hiểm vì em. Thế nên...
 Luna: Nếu anh đã không làm hại em, thì em đành phải chủ động rời đi thôi.
-Thuyền Trưởng: Không, không, mau dừng lại đi...#speaker:Captain
-Luna: Đừng lo cho em, em đã chuẩn bị tâm lý cho khoản khắc này rồi...#speaker:Luna
+Thuyền Trưởng: Không, không, mau dừng lại đi...
+Luna: Đừng lo cho em, em đã chuẩn bị tâm lý cho khoản khắc này rồi...
 Luna: Cho dù không có viên đạn đó, em cũng chuẩn bị cách chủ động biến mất rồi. Nhưng lúc này, biết ngay từ đầu anh đã vứt khẩu súng đó, em thật sự...
 Luna: Em thật sự, thật sự rất vui...
-Thuyền Trưởng: Không được! Anh khó khăn lắm mới tìm được em, không thể cứ thế mà kêt thúc được!#speaker:Captain
+Thuyền Trưởng: Không được! Anh khó khăn lắm mới tìm được em, không thể cứ thế mà kêt thúc được!
 Thuyền Trưởng: Anh còn chưa thực hiện được nguyện vọng của em, anh còn chưa cùng em đi công viên, đi chơi đu quay khổng lồ, cùng mở một nhà hàng, cùng em ăn bít tết nướng sốt truffle sô-cô-la đen, vì thế...
 Tôi thử giữ lấy cô ấy, nhưng cô ấy như bóng trăng dưới nước, dùng tay vớt thì sẽ vỡ tan, và biến mất nhanh hơn...#speaker:Narrator
-Thuyền Trưởng: Xin em, đừng đi...#speaker:Captain
-Luna: Được rồi, con người, khi từ biệt đừng nói như thế, đáp ứng nguyện vọng cuối cùng của em được không?#speaker:Luna
-Thuyền Trưởng: ...Cái gì? Em đang nói gì?#speaker:Captain
-Luna: Anh nói xem, hôm nay em có đẹp không?#speaker:Luna
-Thuyền Trưởng: ...#speaker:Captain
+Thuyền Trưởng: Xin em, đừng đi...
+Luna: Được rồi, con người, khi từ biệt đừng nói như thế, đáp ứng nguyện vọng cuối cùng của em được không?
+Thuyền Trưởng: ...Cái gì? Em đang nói gì?
+Luna: Anh nói xem, hôm nay em có đẹp không?
+Thuyền Trưởng: ...
 Thuyền Trưởng: Đẹp... Lễ phục trắng, rất hợp với ánh trăng đêm nay.
-Luna: Tốt quá, con người quả nhiên nhận ra được mà.#speaker:Luna
+Luna: Tốt quá, con người quả nhiên nhận ra được mà.
 Luna: Tuy đối với anh quên em đi thì tốt hơn, nhưng em vẫn không kìm lòng được thay bộ lễ phục này. Em muốn để lại trong ký ức của anh dáng vẻ tuyệt vời nhất.
 Luna: Anh sẽ mãi nhớ về em, đúng không?
-Thuyền Trưởng: Anh sẽ không bao giờ quên, anh sẽ luôn nhớ về em...#speaker:Captain
-Luna: Vậy em không còn gì nuối tiếc nữa rồi.#speaker:Luna
+Thuyền Trưởng: Anh sẽ không bao giờ quên, anh sẽ luôn nhớ về em...
+Luna: Vậy em không còn gì nuối tiếc nữa rồi.
 Luna: Em phải đi rồi, trở về nơi em vốn nên tới...
 Luna: Ở đó... Nhất định sẽ như một căn nhà kho chất đầy rất nhiều "Em" nhỉ...
-Thuyền Trưởng: Vậy, thì anh sẽ tìm được em!#speaker:Captain
-Luna: Không, con người, anh đã làm cho em đủ rồi, anh phải sống thật lâu và nhớ kỹ hình dáng của em.#speaker:Luna
-Thuyền Trưởng: Dù cần bao nhiêu thời gian, dù em đang ở đâu, anh đều sẽ tìm được em! Chúng ta nhất định sẽ...#speaker:Captain
-Luna: Cảm ơn đã ở bên em lâu như vậy, em rất vui...#speaker:Luna
+Thuyền Trưởng: Vậy, thì anh sẽ tìm được em!
+Luna: Không, con người, anh đã làm cho em đủ rồi, anh phải sống thật lâu và nhớ kỹ hình dáng của em.
+Thuyền Trưởng: Dù cần bao nhiêu thời gian, dù em đang ở đâu, anh đều sẽ tìm được em! Chúng ta nhất định sẽ...
+Luna: Cảm ơn đã ở bên em lâu như vậy, em rất vui...
 Game System: TODO: Play a cutscene here
 ===
 
@@ -114,7 +114,7 @@ Luna: Không được, con người, anh không có quyền từ chối.
 Luna: Hãy để ta ương bướng một lần nữa. Anh phải sống lâu trường thọ, như vậy mới luôn ghi nhớ ta được.
 Đùng! 
 // Change background to Luna_Farewell
-<<UseImage YarnDialogueSystem Luna_DeathWish>>
+<<UseImage YarnDialogueBackground Luna_DeathWish>>
 Tiếng súng rền vang, phá tan bóng đen hỗn độn trước mắt, thay vào đó là màu đỏ tanh lòm tuyệt vọng
 Thuyền Trưởng: ...!
 Thuyền Trưởng: Tại sao?? Luna... anh đã làm những gì?
@@ -137,26 +137,4 @@ Luna: Nếu em chỉ là một Theresa bình thường, thì sẽ...
 Luna: Tốt biết mấy...
 Thuyền Trưởng: Không! Không thể như vậy được!!!
 Tôi lại rơi vào bóng đêm, dường như có thứ gì đó bị tách ra khỏi cơ thể.
-===
-
-
-
-title: VideoTest
-position: 127,374
-group: Demo
----
-Thuyền Trưởng: Luna... Anh tới rồi đây.
-<<PlayVideo YarnDialogueSystem Luna_HappyEnding_VN>>
-Thuyền Trưởng: Luna!!
-===
-
-title: DemoDialogue
-position: 127,544
-group: Demo
----
-Narrator: Đây là một đoạn hội thoại thử nghiệm. Bao gồm một số câu thoại và một số lựa chọn.
-    -> Okay.... Sao nữa?
-        Narrator: Bạn đã chọn "Okay.... Sao nữa?"
-    -> Không sao cả, chỉ là một đoạn hội thoại thử nghiệm thôi.
-        Narrator: Bạn đã chọn "Không sao cả, chỉ là một đoạn hội thoại thử nghiệm thôi."
 ===

@@ -6,11 +6,37 @@ using Yarn.Unity;
 public class YarnDialogueBackground : MonoBehaviour
 {
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private AudioSource backgroundMusic;
+    [SerializeField] private AudioSource effectSound;
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private GameObject videoCanvas;
 
     void Start()
     {
+        if (backgroundImage == null)
+        {
+            Debug.LogError("Background Image component is not assigned!");
+            return;
+        }
+
+        if (backgroundMusic == null)
+        {
+            Debug.LogError("Background Music component is not assigned!");
+            return;
+        }
+
+        if (effectSound == null)
+        {
+            Debug.LogError("Effect Sound component is not assigned!");
+            return;
+        }
+
+        if (videoPlayer == null)
+        {
+            Debug.LogError("Video Player component is not assigned!");
+            return;
+        }
+
         if (videoCanvas == null)
         {
             Debug.LogError("Video Canvas component is not assigned!");
@@ -19,6 +45,7 @@ public class YarnDialogueBackground : MonoBehaviour
         else videoCanvas.gameObject.SetActive(false);
     }
 
+    #region Background Image
     [YarnCommand("UseImage")]
     public void UseImage(string imageName)
     {
@@ -43,9 +70,11 @@ public class YarnDialogueBackground : MonoBehaviour
             return;
         }
 
-        // Set the new background image
+        // Set the new background image     
         backgroundImage.sprite = sprite;
     }
+    #endregion
+
     #region Video Player
     [YarnCommand("PlayVideo")]
     public void PlayVideo(string videoName)
@@ -94,5 +123,94 @@ public class YarnDialogueBackground : MonoBehaviour
 
         Debug.Log("Video finished playing, canvas deactivated");
     }
+    #endregion
+
+    #region Background Music and Sound Effects
+    [YarnCommand("PlayBackgroundMusic")]
+    public void PlayBackgroundMusic(string musicName)
+    {
+        if (backgroundMusic == null)
+        {
+            Debug.LogError("Background Music component is not assigned!");
+            return;
+        }
+
+        // Try to load the audio clip from Resources/Musics/BGM folder
+        AudioClip audioClip = Resources.Load<AudioClip>("Musics/BGM/" + musicName);
+
+        // If not found, try without the folder prefix (in case full path was provided)
+        if (audioClip == null)
+        {
+            audioClip = Resources.Load<AudioClip>(musicName);
+        }
+
+        if (audioClip == null)
+        {
+            Debug.LogWarning($"Could not find audio clip with name '{musicName}'");
+            return;
+        }
+
+        // Set the new background music
+        backgroundMusic.clip = audioClip;
+        backgroundMusic.Play();
+    }
+    [YarnCommand("StopBackgroundMusic")]
+    public void StopBackgroundMusic()
+    {
+        if (backgroundMusic == null)
+        {
+            Debug.LogError("Background Music component is not assigned!");
+            return;
+        }
+
+        // Stop the background music
+        backgroundMusic.Stop();
+        backgroundMusic.clip = null; // Clear the audio clip
+    }
+
+
+    [YarnCommand("PlayEffectSound")]
+    public void PlayEffectSound(string soundName)
+    {
+        if (effectSound == null)
+        {
+            Debug.LogError("Effect Sound component is not assigned!");
+            return;
+        }
+
+        // Try to load the audio clip from Resources/Musics/Sound_Effect folder
+        AudioClip audioClip = Resources.Load<AudioClip>("Musics/Sound_Effect/" + soundName);
+
+        // If not found, try without the folder prefix (in case full path was provided)
+        if (audioClip == null)
+        {
+            audioClip = Resources.Load<AudioClip>(soundName);
+        }
+
+        if (audioClip == null)
+        {
+            Debug.LogWarning($"Could not find audio clip with name '{soundName}'");
+            return;
+        }
+
+        // Set the new effect sound
+        effectSound.clip = audioClip;
+        effectSound.Play();
+    }
+
+    public void ResetAudioSources()
+    {
+        if (backgroundMusic != null)
+        {
+            backgroundMusic.Stop();
+            backgroundMusic.clip = null; // Clear the audio clip
+        }
+
+        if (effectSound != null)
+        {
+            effectSound.Stop();
+            effectSound.clip = null; // Clear the audio clip
+        }
+    } 
     #endregion
 }

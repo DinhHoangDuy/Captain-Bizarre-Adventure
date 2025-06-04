@@ -1332,7 +1332,6 @@ GameObject:
   - component: {fileID: 7316953907182951656}
   - component: {fileID: 6153349386405622755}
   - component: {fileID: 9111789391751834518}
-  - component: {fileID: 1596490932066309383}
   - component: {fileID: 3369249153710285524}
   m_Layer: 5
   m_Name: Yarn Dialogue System
@@ -1371,15 +1370,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   yarnProject: {fileID: 7545569452688597077, guid: 59b6db93e14d8c5e398af95df5fe99db,
     type: 3}
-  _variableStorage: {fileID: 9111789391751834518}
-  dialogueViews:
+  variableStorage: {fileID: 0}
+  lineProvider: {fileID: 3369249153710285524}
+  dialoguePresenters:
   - {fileID: 1812041909829143309}
   - {fileID: 1925007695035713831}
+  autoStart: 0
   startNode: Start
-  startAutomatically: 1
   runSelectedOptionAsLine: 0
-  lineProvider: {fileID: 3369249153710285524}
-  verboseLogging: 1
   onNodeStart:
     m_PersistentCalls:
       m_Calls: []
@@ -1392,7 +1390,7 @@ MonoBehaviour:
   onDialogueComplete:
     m_PersistentCalls:
       m_Calls: []
-  onCommand:
+  onUnhandledCommand:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &9111789391751834518
@@ -1409,19 +1407,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showDebug: 0
   debugTextView: {fileID: 0}
---- !u!114 &1596490932066309383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9181752845342973738}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f23d7748973dd7005b862248ce7aa8a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  yarnNodeName: 
 --- !u!114 &3369249153710285524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,5 +1419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6798449caec4a32a5ad27badb06624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textLanguageCode: en-US
-  audioLanguageCode: en-US
+  _textLocaleCode: en
+  _assetLocaleCode: en
+  _useFallback: 0
+  _fallbackLocaleCode: en

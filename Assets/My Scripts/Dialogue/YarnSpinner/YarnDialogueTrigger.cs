@@ -30,12 +30,11 @@ public class YarnDialogueTrigger : MonoBehaviour
         // Check if the node exists in the Yarn Project
         if (scriptScheduler.yarnNodeName == null)
         {
-            Debug.LogWarning($"The Yarn Project {scriptScheduler.name} does not contain a node named \"{yarnNodeName}\"", scriptScheduler);
+            // Debug.LogWarning($"The Yarn Project {scriptScheduler.name} does not contain a node named \"{yarnNodeName}\"", scriptScheduler);
+            Debug.LogError("No Yarn Node Name set in the YarnScriptScheduler.");
             return;
         }
-        Debug.Log($"The Yarn Project {scriptScheduler.name} contains a node named \"{yarnNodeName}\"", scriptScheduler);
         // Start the dialogue with the specified node
-        scriptScheduler.gameObject.SetActive(true);
         scriptScheduler.ReadNode(yarnNodeName);
     }
 }

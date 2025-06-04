@@ -1,59 +1,46 @@
 using UnityEngine;
 using Yarn.Unity;
 using System.Linq;
-using System.Collections.Generic;
+
+
 public class YarnScriptScheduler : MonoBehaviour
 {
-    // TODO: Work with the Skip button to skip the dialogue.
-    // Create a singleton instance
-    // public static YarnScriptSchedueler instance;
 
     // Define needed variables
-    private DialogueRunner runner;
-
+    [Header("Dialogue Componenets")]
+    [SerializeField] private DialogueRunner dialogueRunner;
+    [SerializeField] private YarnDialogueSkipper dialogueSkipper;
+    [SerializeField] private YarnDialogueBackground dialogueBackground;
     public string yarnNodeName;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        runner = GetComponent<DialogueRunner>();
-        if (runner == null)
+        if (dialogueRunner == null)
         {
             Debug.LogError("No Runner found");
         }
-        runner.onDialogueComplete.AddListener(() => gameObject.SetActive(false));
-
-        // // Show Yarn Nodes it have.
-        // for (int i = 0; i < yarnNodes.Length; i++)
-        // {
-        //     Debug.Log(yarnNodes[i]);
-        //     if (runner.yarnProject.NodeNames.Contains(yarnNodes[i]) == false) {
-        //         Debug.LogWarning($"The Yarn Project {runner.name} does not contain a node named \"{yarnNodes[i]}\"", runner.yarnProject);
-        //         return;
-        //     }
-        // }        
-
-    }
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // dialogueRunner.onDialogueComplete.AddListener(() => dialogueRunner.gameObject.SetActive(false));
+        dialogueRunner.onDialogueComplete.AddListener(() => EndDialogue());
     }
 
     public void ReadNode(string nodeName)
     {
         // Check if the node exists in the Yarn Project
-        if (runner.yarnProject.NodeNames.Contains(nodeName) == false)
+        if (dialogueRunner.YarnProject.NodeNames.Contains(nodeName) == false)
         {
-            Debug.LogWarning($"The Yarn Project {runner.name} does not contain a node named \"{nodeName}\"", runner.yarnProject);
+            Debug.LogWarning($"The Yarn Project {dialogueRunner.name} does not contain a node named \"{nodeName}\"", dialogueRunner.YarnProject);
             return;
         }
-        Debug.Log($"The Yarn Project {runner.name} contains a node named \"{nodeName}\"", runner.yarnProject);    
+        Debug.Log($"The Yarn Project {dialogueRunner.name} contains a node named \"{nodeName}\"", dialogueRunner.YarnProject);
         // Start the dialogue with the specified node
-        runner.StartDialogue(nodeName);
+        dialogueRunner.StartDialogue(nodeName);
+    }
+
+    private void EndDialogue()
+    {
+        dialogueBackground.ResetAudioSources();
+
+        // Finally, diactivate the dialogue runner (by SetActive(false))
+        dialogueRunner.gameObject.SetActive(false);
     }
 
 }
